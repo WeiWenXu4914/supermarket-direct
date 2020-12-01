@@ -1,0 +1,124 @@
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+p {
+  line-height: 1.5em;
+}
+.flex {
+  display: flex;
+}
+.flex-column{
+  flex-direction: column;
+}
+.flex-full{
+  flex: 1;
+}
+.flex-center {
+  justify-content: center;
+}
+.flex-between {
+  justify-content: space-between;
+}
+.flex-around {
+  justify-content: space-around;
+}
+.flex-start {
+  justify-content: flex-start;
+}
+.align-center {
+  align-items: center;
+}
+
+.float-right {
+  float: right;
+}
+.pointer{
+  cursor: pointer;
+}
+.ell{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.text-gray{
+  color: #727272;
+}
+.text-error{
+  color: #ff6d6d;
+}
+.img-responsive{
+  width: 100%;
+  height: auto;
+}
+.div-split {
+  height: 25px;
+  max-width: $max-width;
+  text-align: left;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.pull-left, .float-left {
+  float: left;
+}
+
+.color-link {
+  color: $color-primary;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+.font-bolder {
+  font-weight: bolder;
+}
+.font-30 {
+  font-size: 30px !important;
+}
+.font-22 {
+  font-size: 22px !important;
+}
+.font-24 {
+  font-size: 24px !important;
+}
+.font-sm {
+  font-size: 12px !important;
+}
+.font-12 {
+  font-size: 12px !important;
+}
+.font-13 {
+  font-size: 13px !important;
+}
+.font-14 {
+  font-size: 14px !important;
+}
+.font-16 {
+  font-size: 16px !important;
+}
+
+.font-18 {
+  font-size: 18px !important;
+}
+.font-20 {
+  font-size: 20px !important;
+}
+.font-big, font-16 {
+  font-size: 16px !important;
+}
+.textarea-text{
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.page-section-title{
+  .more{
+    float: right;
+    color: $color-primary;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+  }
+
+}

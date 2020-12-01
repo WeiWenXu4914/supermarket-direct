@@ -1,0 +1,45 @@
+@media screen and (max-width:1000px) {
+  .contacts .header{
+    /*height: 50px;*/
+    /*line-height: 50px;*/
+    /*font-size: 20px;*/
+  }
+  .contacts .noinfo {
+    height: 100%;
+    padding: 50% 20%;
+    line-height: 100%;
+    font-size: 17px;
+    color: #2ddcd3;
+  }
+  .contacts .user-list-item{
+    height: 50px;
+    padding: 0px 0px 0px 10px;
+  }
+  .contacts .user-item-avatar{
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+  }
+  .contacts .user-item-info{
+    height: 50px;
+    padding-right: 10px;
+    line-height: 10px;
+  }
+  .contacts .user-item-info__name{
+    font-size: 15px;
+  }
+  .contacts .user-item-info__tips{
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    font-size: 8px;
+    line-height: 20px;
+  }
+  .contacts .online-dot{
+    position: absolute;
+    width: 10px!important;
+    height: 10px!important;
+    right: 0;
+    bottom: 0;
+  }
+}

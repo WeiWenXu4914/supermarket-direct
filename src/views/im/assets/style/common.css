@@ -1,0 +1,224 @@
+/*login*/
+.login{
+  width:100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login .title {
+  font-family: Source Han Sans CN;
+  font-style: normal;
+  font-weight: bold;
+  color: #D02129;
+}
+.login .input-box {
+  border:1px solid #e0e0e0;
+  outline: none;
+}
+
+.login .alert-box{
+  display: flex;
+  align-content: center;
+  background: rgba(208, 33, 41, 0.1);
+  overflow: hidden;
+  color: #D02129;
+}
+.login .login-btn{
+  text-align: center;
+  color: #ffffff;
+  background: #D02129;
+  outline: none;
+  border: 0;
+}
+
+
+
+/*contacts*/
+.contacts{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts .header{
+  /*background: linear-gradient(0deg, #D02129, #D02129),*/
+  /*linear-gradient(195.96deg, #F33A3A 9.83%, #D02129 105.7%);*/
+  /*font-family: Source Han Sans CN;*/
+  /*font-style: normal;*/
+  /*font-weight: 500;*/
+  /*text-align: center;*/
+  /*color: #FFFFFF;*/
+}
+.contacts .current-user{
+  background: #efefef;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  color: #262628;
+  font-family: Source Han Sans CN;
+}
+
+.contacts .contacts-container{
+  width: 100%;
+  overflow: auto;
+}
+
+.contacts .offline-gray{
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+}
+
+.contacts .user-list{
+  flex-grow: 1;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts .user-list-item{
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #EFEFEF;
+}
+
+.contacts .user-item-avatar{
+  overflow: hidden;
+  position: relative;
+}
+.contacts .user-item-avatar img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 20px;
+}
+
+.contacts .user-item-info{
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.contacts .user-item-info__name{
+  font-family: Source Han Sans CN;
+  font-style: normal;
+  font-weight: bold;
+  color: #262628;
+}
+.contacts .user-item-info__tips{
+  background: #D02129;
+  color: #ffffff;
+  font-family: Cabin;
+  text-align: center;
+}
+
+/*private*/
+.chatInterface{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.chatInterface .header{
+  background: linear-gradient(0deg, #D02129, #D02129),
+  linear-gradient(195.96deg, #F33A3A 9.83%, #D02129 105.7%);
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  color: #ffffff;
+  justify-content: center;
+  text-align: center;
+  z-index: 50;
+}
+.chatInterface .back-btn{
+  position: absolute;
+}
+
+
+.chatInterface .avatar{
+  overflow: hidden;
+  float: left;
+}
+.chatInterface .avatar img{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.chatInterface .content{
+  float: left;
+  overflow: hidden;
+}
+.chatInterface .content span{
+  font-family: Source Han Sans CN;
+  letter-spacing: -0.41px;
+  color: #262628;
+  background: #efefef;
+  display: inline-block;
+  word-break: break-all;
+}
+.chatInterface .message-item.self{
+  margin-right: 0;
+}
+.chatInterface .message-item.self .avatar{
+  margin-right: 0;
+  float: right;
+}
+.chatInterface .message-item.self .content{
+  text-align: right;
+  float: right;
+}
+.chatInterface .message-item.self .content .text-content{
+  color: #ffffff;
+  background:#D02129;
+  word-break: break-all;
+  text-align: left;
+}
+.chatInterface .action-box{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #FAFAFA;
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+.chatInterface .message-input input{
+  background: #efefef;
+  border: 0;
+  outline: none;
+  border-radius: 0.05rem;
+}
+
+.chatInterface .send-message-btn{
+  flex-grow: 1;
+  text-align: center;
+  color: #95949A;
+}
+
+.chatInterface .member-layer{
+  width:100%;
+  height: 104%;
+  background: #FFFFFF;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+.member-layer .member{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chatInterface .group-icon{
+  position: absolute;
+}
+
+.chatInterface .gray{
+  color: gray!important;
+  text-decoration: none!important;
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="stylesheet" type="text/css" href="http://api.lejiagx.cn/static/css/publicIndex.css">
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=16f47d2092642e915ecce4e31861fb7e"></script>
+
+    <script src="http://api.lejiagx.cn/static/js/vuex.min.js"></script>
+    <script src="http://api.lejiagx.cn/static/js/vue-router.min.js"></script>
+    <script src="http://api.lejiagx.cn/static/js/axios.min.js"></script>
+    <script src="http://api.lejiagx.cn/static/js/vue.min.js"></script>
+    <script src="http://api.lejiagx.cn/static/adv/weui/js/lrz.min.js"></script>
+    <!-- <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> -->
+    <!-- <script src="http://api.lejiagx.cn/static/adv/weui/js/eruda.js"></script> -->
+    <script src="https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js" charset="utf-8"></script>
+    <script src='https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js'></script>
+    <!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+    <!-- <script src="http://api.lejiagx.cn/static/js/KUI.js"></script> -->
+    <!-- <script src="http://api.lejiagx.cn/static/js/Animation.js"></script> -->
+    
+    <title>超市直通</title>
+</head>
+
+    <body>
+        <div id="publicAdv" class="publicIndex">
+            <!-- <span class="AdvClose" id="DaoJS">请稍等（3）秒</span> -->
+            <iframe class="IfAdv" src="http://api.lejiagx.cn/static/adv"></iframe>
+        </div>
+        <noscript>
+          <strong>We're sorry but v_mobile_project doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+        </noscript>
+        <div id="app"></div>
+        <!-- built files will be auto injected -->
+    </body>
+    <script>
+
+        // 进入页面立即触发
+        (()=>{
+
+            var La = sessionStorage.getItem("LoadingAdv");
+            if (!La) {
+                var box = document.getElementById('publicAdv');
+                box.style.display = 'block';
+            }
+
+        })();
+
+        window.onload = function () {
+
+            var La = sessionStorage.getItem("LoadingAdv");
+            if (!La) {
+                sessionStorage.setItem("LoadingAdv",1);
+                setTimeout(function() {
+                    var box = document.getElementById('publicAdv');
+                    box.style.display = 'none';
+                }, 200);
+            }
+        }
+
+        // var ws = new WebSocket("ws://39.100.118.74:2345");
+
+        // ws.onopen = function(evt) {  //绑定连接事件
+        // 　　console.log("Connection open ...");
+        // 　　ws.send("发送的数据");
+        // };
+
+        // ws.onmessage = function(evt) {//绑定收到消息事件
+        // 　　console.log( "Received Message: " + evt.data);
+        // };
+
+        // ws.onclose = function(evt) { //绑定关闭或断开连接事件
+        // 　　console.log("Connection closed.");
+        // };
+    </script>
+</html>

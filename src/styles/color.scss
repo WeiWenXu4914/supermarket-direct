@@ -1,0 +1,47 @@
+@import "variables";
+.color-darkred{
+  color:$dark-red;
+}
+
+.color-red {
+  color: $red;
+}
+.color-write {
+  color: #fff;
+}
+.color-require {
+  color: #ff0000;
+}
+
+.color-blue {
+  color: $color-primary;
+}
+
+.color-link, .color-primary {
+  color: $color-primary;
+}
+.color-warning{
+  color: $yellow;
+}
+.color-success{
+  color: $green;
+}
+.color-gray {
+  color: $gray;
+}
+
+.color-optional {
+  color: #5F5F5F
+}
+
+.color-label {
+  color: $color-label;
+}
+
+.color-green {
+  color: $green;
+}
+
+.mute {
+  color: $mute;
+}
