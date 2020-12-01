@@ -42,7 +42,7 @@
         </div>
         <div class="user_home_wra flex flex-center">
           <div class="user_home text-center color-write">
-            个人主页 <van-icon name="arrow" />
+            个人设置 <van-icon name="arrow" />
           </div>
         </div>
       </div>

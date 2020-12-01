@@ -12,26 +12,26 @@
 </template>
 
 <style lang="less">
-// html,
-// body,
-// #app,
-// .wx-pages {
-//   padding: 0;
-//   margin: 0;
-//   height: 100%;
-//   overflow: hidden;
-//   -webkit-overflow-scrolling: touch;
-// }
+html,
+body,
+#app,
+.wx-pages {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
 </style>
 
 <script>
-// document.body.addEventListener(
-//   "touchmove",
-//   function (e) {
-//     e.preventDefault();
-//   },
-//   {
-//     passive: false,
-//   }
-// );
+document.body.addEventListener(
+  "touchmove",
+  function (e) {
+    e.preventDefault();
+  },
+  {
+    passive: false,
+  }
+);
 </script>

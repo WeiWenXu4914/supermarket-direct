@@ -66,7 +66,7 @@
       <p class="p1">商品详情</p>
       <div class="pro_desc" v-if="proDetail.pro_desc != null">
         <!-- <img v-lazy="item.pro_des_path" v-for="(item, index) in proDetail.pro_desc" :key="index" /> -->
-        <div v-html="proDetail.pro_desc" class="html-class"></div>
+        <div v-html="proDetail.pro_desc" class="html-class" @click="showImg($event)"></div>
       </div>
       <van-empty
         style="margin-top: 10px"
@@ -271,7 +271,7 @@ import {
   memberCommentList,
   shippingAddress,
 } from "./actions/index.js";
-import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon } from "vant";
+import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon, ImagePreview } from "vant";
 import { wxJSSDK } from "@/utils/wxshare.js";
 export default {
   name: "detail",
@@ -358,6 +358,16 @@ export default {
     countNum() {
       if (this.countChoose == 0) {
         this.countChoose = 1;
+      }
+    },
+    showImg(e) {
+      if (e.target.tagName == "IMG") {
+        ImagePreview({
+          images: [e.target.src],
+          showIndex: false,
+          closeOnPopstate: true, //页面回退关闭预览
+          closeable: true,
+        });
       }
     },
     toAllCommet() {
@@ -451,7 +461,9 @@ export default {
         if (res.data[0].is_collect == 1) {
           this.collctionState = true;
         }
-        Toast.clear();
+        setTimeout(function () {
+          Toast.clear();
+        }, 200);
       });
 
       //获取评论列表
@@ -1175,8 +1187,7 @@ export default {
     /deep/ p {
       img {
         width: 100%;
-        margin-bottom: 3px;
-        object-fit:cover;
+        height: auto;
       }
     }
   }

@@ -349,12 +349,9 @@ export default {
       };
 
       getHome(obj).then((res) => {
-        console.log(res);
+        Toast.clear();
         if (res.data.length > 0) {
           // 页面渲染完延时关闭
-          setTimeout(function () {
-            Toast.clear();
-          }, 200);
           this.activeNav[this.activeIndex].num > 1
             ? this.activeNav[this.activeIndex].pageData.push(...res.data)
             : (this.activeNav[this.activeIndex].pageData = res.data);
@@ -382,6 +379,12 @@ export default {
     },
     // 切换频道
     changeChannel(val) {
+      Toast.loading({
+        message: "加载中...",
+        forbidClick: true,
+        loadingType: "spinner",
+        overlay: true
+      });
       this.getHomeNav(2, this.activeNav[val].nid);
       if (this.activeNav[val].pageData.length <= 0) {
         this.getHomeData(this.activeNav[val].nid);

@@ -18,19 +18,19 @@
             }}</van-tag>
           </p>
         </div>
-        <div
+        <!-- <div
           class="buttons"
           v-if="user.id !== article.memid"
           @click="checkFouce(article.AattState)"
         >
           {{ article.AattName }}
-        </div>
+        </div> -->
         <div
           style="margin-left: 10px"
           v-if="article.mmt_id == 3"
           @click="userHandle"
         >
-          <van-button color="#D04443" plain hairline size="mini"
+          <van-button color="#D04443" size="mini"
             >进店</van-button
           >
         </div>
@@ -50,12 +50,9 @@
           >
             <img src="../../../assets/icons/hjzw.png" alt="" />
           </span>
-          <span
-            >{{ article.graphic_name | strSub(70) | emoji_decode
-            }}<span class="allArt" v-if="article.graphic_name.length > 70"
-              >全文</span
-            ></span
-          >
+          <span>{{ article.graphic_name | strSub(70) | emoji_decode }}
+            <span class="allArt" v-if="article.graphic_name.length > 70">全文</span>
+          </span>
         </div>
         <div class="item-img">
           <div class="imgs">
@@ -455,10 +452,8 @@ export default {
   .item-info {
     display: flex;
     align-items: center;
-    height: 34px;
     .avator {
       width: 34px;
-      height: 34px;
       // border-radius: 100%;
       // overflow: hidden;
       margin-right: 6px;
@@ -478,7 +473,6 @@ export default {
       p {
         font-size: 14px;
         color: #3a3a3a;
-        height: 14px;
         padding-bottom: 4px;
       }
       .icon {

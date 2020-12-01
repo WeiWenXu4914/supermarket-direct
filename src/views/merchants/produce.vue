@@ -22,6 +22,15 @@ export default {
   components: {
     Cardr
   },
+  beforeCreate() {
+    this.$toast.loading({
+      message: "加载中...",
+      forbidClick: true,
+      loadingType: "spinner",
+      overlay: true,
+      duration: 0,
+    });
+  },
   data () {
     return {
       proList:{},
@@ -41,6 +50,9 @@ export default {
 
       entProduct(data).then(res => {
         this.proList = res
+        setTimeout(()=> {
+          this.$toast.clear();
+        }, 200);
       })
     },
     productSearch(res) {

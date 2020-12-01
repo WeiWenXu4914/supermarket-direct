@@ -17,26 +17,31 @@
           <!-- <span class="icon" ></span> -->
         </p>
       </div>
-      <div
+      <!-- <div
         class="buttons"
         v-if="user.id !== videoItemVal.memid"
         @click="checkFouce(videoItemVal.AattState)"
       >
         {{ videoItemVal.AattName }}
-      </div>
+      </div> -->
       <div
         style="margin-left: 10px"
         v-if="videoItemVal.mmt_id == 3"
         @click="userHandle"
       >
-        <van-button color="#D04443" plain hairline size="mini">进店</van-button>
+        <van-button color="#D04443" size="mini">进店</van-button>
       </div>
     </div>
 
     <!--视频分类下视频信息区域-->
     <div @click="goDetail(videoItemVal.gid)">
       <div class="title">
-        {{ videoItemVal.graphic_name | emoji_decode }}
+        <span
+          >{{ videoItemVal.graphic_name | strSub(70) | emoji_decode }}
+          <span class="allArt" v-if="videoItemVal.graphic_name.length > 70"
+            >全文</span
+          >
+        </span>
       </div>
       <div class="item-playerimg">
         <van-image
@@ -78,11 +83,21 @@
         </div>
         <div class="handle-item" @click="like">
           <span class="icon">
-            <img src="../img/like.svg" v-show="status.isLike == '' ? true : false"/>
-            <img src="../img/likeActive.svg" v-show="status.isLike == '' ? false : true"/>
+            <img
+              src="../img/like.svg"
+              v-show="status.isLike == '' ? true : false"
+            />
+            <img
+              src="../img/likeActive.svg"
+              v-show="status.isLike == '' ? false : true"
+            />
           </span>
-          <span style="margin-left: 2px; margin: 4px" :style="status.isLike">点赞</span>
-          <span class="num" :style="status.isLike">{{ videoItemVal.graphic_like }}</span>
+          <span style="margin-left: 2px; margin: 4px" :style="status.isLike"
+            >点赞</span
+          >
+          <span class="num" :style="status.isLike">{{
+            videoItemVal.graphic_like
+          }}</span>
         </div>
       </div>
     </div>
@@ -137,13 +152,14 @@ export default {
       videoItemVal: "",
       isUser: false,
       visible: false,
-      status: {//点赞等状态
+      status: {
+        //点赞等状态
         // isLike: 'color:#d81e06'
-        isLike: ''
+        isLike: "",
       },
-      functionState: false,//是否显示功能区域(转发/点赞)
+      functionState: false, //是否显示功能区域(转发/点赞)
       timer: {},
-      videoTime: '', //视频时长
+      videoTime: "", //视频时长
     };
   },
   created() {
@@ -152,54 +168,51 @@ export default {
     if (this.user.id == this.videoItem.mem_id) {
       this.isUser = true;
     }
-
   },
 
   computed: {
     ...mapState(["user"]),
   },
   methods: {
-
     //处理视频时间
-     secondsFormat() {
-      let video = document.getElementById('video_null')
-      let sec = parseInt(video.duration)
-      
+    secondsFormat() {
+      let video = document.getElementById("video_null");
+      let sec = parseInt(video.duration);
+
       let hour = Math.floor(sec / 3600);
       let minute = Math.floor((sec - hour * 3600) / 60);
       let second = sec - hour * 3600 - minute * 60;
       if (hour < 10) {
-          hour = "0" + hour;
+        hour = "0" + hour;
       }
       if (minute < 10) {
-          minute = "0" + minute;
+        minute = "0" + minute;
       }
       if (second < 10) {
-          second = "0" + second;
+        second = "0" + second;
       }
 
-      if(hour > 0) {
+      if (hour > 0) {
         this.videoTime = hour + ":" + minute + ":" + second;
       } else {
-        this.videoTime = minute + ":" + second;   
+        this.videoTime = minute + ":" + second;
       }
-
     },
     //显示功能区
     changeFunctionState() {
       clearTimeout(this.timer);
       this.functionState = !this.functionState;
-      if(this.functionState === true) {
+      if (this.functionState === true) {
         this.timer = setTimeout(() => {
           this.functionState = false;
-        },3000)
+        }, 3000);
       }
     },
     //判断是否点过赞
     //  isLike() {
     //     memberLike(this.videoItem.gid, 1, 1)
-    //     .then((res) => { 
-            
+    //     .then((res) => {
+
     //         if( res.code == 100 ) {
     //             this.status.isLike = '';
     //             memberLike(this.videoItem.gid, 1, 0)
@@ -243,9 +256,8 @@ export default {
     },
     userHandle() {
       if (this.videoItem.mmt_id === 3) {
-
-        if(this.$route.path == "/merchants/produce"){
-          Toast('您已经在店铺内了');
+        if (this.$route.path == "/merchants/produce") {
+          Toast("您已经在店铺内了");
           return;
         }
 
@@ -268,9 +280,8 @@ export default {
         //   query: {id: this.videoItem.rel_id}
         // })
       } else {
-
-        if(this.$route.path == `/user/page/${this.videoItem.mem_id}`){
-          Toast('您已经在自己的主页了');
+        if (this.$route.path == `/user/page/${this.videoItem.mem_id}`) {
+          Toast("您已经在自己的主页了");
           return;
         }
 
@@ -333,7 +344,7 @@ export default {
           this.$toast.success(res.msg);
           this.videoItem.graphic_like =
             parseInt(this.videoItem.graphic_like) + 1;
-            this.status.isLike = 'color:#d81e06';
+          this.status.isLike = "color:#d81e06";
         } else {
           memberLike(this.videoItem.gid, 1, 0)
             .then((res) => {
@@ -341,8 +352,8 @@ export default {
                 this.$toast.success(res.msg);
                 this.videoItem.graphic_like =
                   parseInt(this.videoItem.graphic_like) - 1;
-                
-                this.status.isLike = '';
+
+                this.status.isLike = "";
               } else {
                 this.$toast.fail(res.msg);
               }
@@ -357,7 +368,6 @@ export default {
       this.index = index;
     },
     operation(type, res) {
-      
       if (type == 0) {
         articleDel(res.gid).then((data) => {
           if (data.code == 100) {
@@ -395,13 +405,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 34px;
     margin-top: 0px;
     .avator {
       width: 34px;
-      height: 34px;
-      // border-radius: 100%;
-      // overflow: hidden;
       margin-right: 6px;
       img {
         width: 100%;
@@ -419,7 +425,6 @@ export default {
       p {
         font-size: 14px;
         color: #3a3a3a;
-        height: 14px;
         padding-bottom: 4px;
       }
       .icon {
@@ -494,34 +499,32 @@ export default {
         width: 160px;
         height: 90px;
         margin-left: 10px;
-          .van-image {
+        .van-image {
+          height: 100%;
+          height: 100%;
+          border-radius: 5px !important;
+          img {
             height: 100%;
             height: 100%;
-            border-radius: 5px !important;
-            img {
-              height: 100%;
-              height: 100%;
-              border-radius: 5px;
-            }
+            border-radius: 5px;
           }
-          .video-icon {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            bottom: 10px;
-            right: 10px;
-            img {
-              width: 15px;
-              height: 15px;
-            }
-            span {
-              padding-left: 5px;
-              color: #fff;
-              font-size: 12px;
-            }
+        }
+        .video-icon {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          bottom: 10px;
+          right: 10px;
+          img {
+            width: 15px;
+            height: 15px;
           }
-        
-        
+          span {
+            padding-left: 5px;
+            color: #fff;
+            font-size: 12px;
+          }
+        }
       }
     }
     .bottom {
@@ -534,7 +537,7 @@ export default {
         flex: 1;
         transition: all 0.8s linear 0.5s;
         span {
-          color:#737373;
+          color: #737373;
           margin-right: 12px;
           font-size: 12px;
         }
@@ -546,9 +549,9 @@ export default {
         align-items: center;
         // overflow: hidden;
         .van-icon-ellipsis::before {
-            /* content: "\F04E"; */
-            font-size: 25px;
-            color: #000;
+          /* content: "\F04E"; */
+          font-size: 25px;
+          color: #000;
         }
         .function-item-all {
           position: absolute;
@@ -574,7 +577,6 @@ export default {
             height: 18px;
             transform: translateY(2px);
           }
-          
         }
       }
     }
@@ -653,5 +655,9 @@ export default {
       }
     }
   }
+}
+.allArt {
+  color: rgba(4, 0, 255, 0.925);
+  padding-left: 5px;
 }
 </style>
