@@ -197,8 +197,7 @@ export default {
                       dataThis.uploadShow = false;
                       if (response.data.status === 100) {
 
-                        dataThis.articleForm.video_path[0] = response.data.data.file;
-                        dataThis.articleForm.video_path[1] = response.data.data.video_surface_plot_base;
+                        dataThis.articleForm.video_path = response.data.data;
 
                         let url = response.data.data.file;
                         let length = self.quill.getSelection().index; //获取当前鼠标焦点位置

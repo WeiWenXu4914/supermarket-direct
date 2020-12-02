@@ -69,6 +69,13 @@ const routes = [
         component: () =>
             import('@/views/article/detail')
     },
+    // 文章详情
+    {
+        path: '/article/full_screen_play/:id',
+        name: 'article-full_screen_play',
+        component: () =>
+            import('@/views/article/full_screen_play')
+    },
     { 
         path: '/article/create', 
         name: 'article-create', 

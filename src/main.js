@@ -12,7 +12,7 @@ import '@/styles/index.scss'
 import VideoPlayer from 'vue-video-player'
 import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
-import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import VueAwesomeSwiper from 'vue-awesome-swiper'
 // 1.全局引用
 import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
@@ -27,8 +27,8 @@ Vue.prototype.$Utils = Utils
 window.Vue.use(VideoPlayer)
 
 // import style
-import 'swiper/swiper-bundle.css'
-Vue.use(VueAwesomeSwiper)
+// import 'swiper/swiper-bundle.css'
+// Vue.use(VueAwesomeSwiper)
 
 // 大转盘抽奖
 import LuckDraw from 'vue-luck-draw'

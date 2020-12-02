@@ -34,7 +34,7 @@
     </div>
 
     <!--视频分类下视频信息区域-->
-    <div @click="goDetail(videoItemVal.gid)">
+    <div @click="goDetail(videoItemVal)">
       <div class="title">
         <span
           >{{ videoItemVal.graphic_name | strSub(70) | emoji_decode }}
@@ -56,7 +56,7 @@
             <van-loading type="spinner" size="20" />
           </template>
         </van-image>
-        <div class="imgPlayer" @click="goDetail(videoItemVal.gid)">
+        <div class="imgPlayer" @click="goDetail(videoItemVal)">
           <img
             src="http://apis.lejiagx.cn/static/img/video_player5.png"
             style="object-fit: cover; width: 70px"
@@ -379,17 +379,15 @@ export default {
         // 编辑
       }
     },
-    goDetail(id) {
-      // if (id != this.$route.params.id && this.$route.params.id != undefined) {
-      //   this.$router.push(`/article/detail/${id}`);
+    goDetail(val) {
+      
+      if(val.graphic_height >= 800){
 
-      //   setTimeout(()=>{
-      //     this.$router.go(0)
-      //   },200)
-
-      // }else{
-      this.$router.push(`/article/detail/${id}`);
-      // }
+        this.$router.push(`/article/full_screen_play/${val.gid}`);
+      }else{
+        
+        this.$router.push(`/article/detail/${val.gid}`);
+      }
     },
   },
 };
