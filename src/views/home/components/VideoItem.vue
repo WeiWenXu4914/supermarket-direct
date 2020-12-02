@@ -12,7 +12,7 @@
         <p>
           {{ videoItemVal.mem_name }}
           <van-tag plain color="#f3a683" v-if="videoItemVal.mmt_id == 3">{{
-            videoItemVal.mmt_type_name
+            videoItemVal.ent_district
           }}</van-tag>
           <!-- <span class="icon" ></span> -->
         </p>

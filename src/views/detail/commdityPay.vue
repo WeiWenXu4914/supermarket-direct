@@ -1185,6 +1185,8 @@ export default {
   .html-class {
     width: 100%;
     /deep/ p {
+      font-size: 17px;
+      text-indent: 2em;
       img {
         width: 100%;
         height: auto;

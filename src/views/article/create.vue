@@ -384,7 +384,11 @@ export default {
         overlay: true,
         duration: 0,
       });
-
+      
+      if(this.$route.query.id){
+        this.articleForm.nav_id = this.$route.query.id;
+      }
+      
       const res = await articleCreate(this.articleForm);
       if (res.code === 100) {
         localStorage.removeItem("create");

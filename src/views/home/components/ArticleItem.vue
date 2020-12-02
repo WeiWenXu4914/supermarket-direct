@@ -14,7 +14,7 @@
           <p>
             {{ article.mem_name }}
             <van-tag plain color="#f3a683" v-if="article.mmt_id == 3">{{
-              article.mmt_type_name
+              article.ent_district
             }}</van-tag>
           </p>
         </div>

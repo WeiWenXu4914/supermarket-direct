@@ -5,7 +5,7 @@
         <div class="title1" @click="intoStore(item.entid)">
           <div class="right">
             <span class="scrip">
-              <em>{{ item.ent_introduction }}</em>
+              <img :src="item.ent_logo" alt="">
             </span>
             <span class="shopname">{{ item.ent_name }}</span>
           </div>
@@ -155,6 +155,8 @@ export default {
       font-size: 16px;
       .right{
         width: 88%;
+        display: flex;
+        align-items: center;
         .scrip{
           em {
             background: linear-gradient(90deg, #FE674D 0%, #F82A2E 100%);
@@ -165,6 +167,11 @@ export default {
             font-weight: 600;
             padding: 5px 8px 5px 5px;
             margin-left: 5px;
+          }
+          img {
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
           }
         }
         .shopname{

@@ -1,5 +1,5 @@
 <template>
-  <div class="article-page">
+  <div class="article-page" v-if="article != ''">
     <page-title :title="atyicleTitle | emoji_decode" style="z-index: 999" />
 
     <div class="goindex" v-if="goindex == true" @click="goHome">

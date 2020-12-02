@@ -184,9 +184,6 @@ export default {
   width: 100%;
   background: #fff;
   z-index: 999;
-  -moz-box-shadow: 0px -1px 3px #E8E8E8;
-  -webkit-box-shadow: 0px -1px 3px #E8E8E8;
-  box-shadow: 0px -1px 3px #E8E8E8;
   .page-tabbar {
     display: flex;
     align-items: center;

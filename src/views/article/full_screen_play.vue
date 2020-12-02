@@ -301,13 +301,14 @@
       </div>
 
       <div class="mainBtn">
-        <div class="ctrlProcessWave" v-show="recTimer">
+        <!-- <div class="ctrlProcessWave" v-show="recTimer">
           <img src="./img/musicPlay.gif" alt="" />
-        </div>
+        </div> -->
         <button
           class="ctrlBtn"
-          @touchstart="startRecord"
-          @touchend="stopRecord"
+          @touchstart="gotouchstart" 
+          @touchmove="gotouchmove"
+          @touchend="gotouchend"
         >
           开始录音
         </button>
@@ -682,10 +683,6 @@ export default {
       this.changeStatus = !this.changeStatus;
     },
     gotouchstart() {
-      //暂停视频
-      if (this.article.gc_id == 2) {
-        this.detailVideo.pause();
-      }
       //上传语音大于5 提示用户
       if (this.musicList.length > 4) {
         Dialog.confirm({
@@ -695,21 +692,19 @@ export default {
         });
         return;
       }
-      if (!this.rec) {
-        this.recOpen();
-      }
+
       this.changeMirco = true;
       clearTimeout(this.timeOutEvent); //清除定时器
       this.timeOutEvent = 0;
       this.timeOutEvent = setTimeout(() => {
-        this.recStart();
+        this.startRecord();
       }, 600);
     },
     //手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
     gotouchend() {
       clearTimeout(this.timeOutEvent);
       if (this.timeOutEvent != 0) {
-        this.recStop();
+        this.stopRecord();
         this.RecStart = false;
       }
       this.changeMirco = false;

@@ -161,6 +161,7 @@ export default {
     }
   }
   .introduce {
+    min-height: 90vh;
     img {
       max-height: 100%;
       width: 100%;
