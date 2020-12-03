@@ -83,3 +83,11 @@ export const wexinConfig = (val) => {
 export const memberCollect = (id, type, state) => {
     return request('/api/memberCollect', 'post', { mem_collect_id: id, mem_collect_class: type, state: state} )
 }
+
+/**
+ * 点赞
+ * @param {*} id 
+ */
+export const memberLike = (mem_like_id, mem_like_class, state) => {
+    return request('/api/memberLike', 'post', { mem_like_id, mem_like_class, state })
+}

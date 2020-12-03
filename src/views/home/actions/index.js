@@ -44,3 +44,8 @@ export const memberLike = (mem_like_id, mem_like_class, state) => {
 export const articleDel = (id) => {
     return request('/api/articleDel', 'post', { id })
 }
+
+//文章收藏
+export const memberCollect = (id, type, state) => {
+    return request('/api/memberCollect', 'post', { mem_collect_id: id, mem_collect_class: type, state: state} )
+}

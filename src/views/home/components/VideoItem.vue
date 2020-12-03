@@ -380,13 +380,15 @@ export default {
       }
     },
     goDetail(val) {
-      
-      if(val.graphic_height >= 800){
+      if((val.graphic_width/val.graphic_height) < 1){
 
+        if(this.$route.path == `/article/full_screen_play/${val.gid}`) return;
+        
         this.$router.push(`/article/full_screen_play/${val.gid}`);
       }else{
-        
-        this.$router.push(`/article/detail/${val.gid}`);
+        if(this.$route.path == `/videoDetail/${val.gid}`) return;
+
+        this.$router.push(`/videoDetail/${val.gid}`);
       }
     },
   },
