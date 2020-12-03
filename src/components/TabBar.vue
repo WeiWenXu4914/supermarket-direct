@@ -135,20 +135,20 @@ export default {
     // tabbar用户点击操作
     handle(val) {
       
-      var sel = localStorage.getItem('selective');
-      if(val.class == 4 && !sel){
-        this.$dialog.confirm({
-          title: '区域选择?',
-          message: '请您确认您选择的是否为您的位置!',
-        })
-        .then(() => {
-          localStorage.setItem('selective', JSON.stringify(val))
-        })
-        .catch(() => {
+      // var sel = localStorage.getItem('selective');
+      // if(val.class == 4 && !sel){
+      //   this.$dialog.confirm({
+      //     title: '区域选择?',
+      //     message: '请您确认您选择的是否为您的位置!',
+      //   })
+      //   .then(() => {
+      //     localStorage.setItem('selective', JSON.stringify(val))
+      //   })
+      //   .catch(() => {
           localStorage.removeItem('selective')
-          return false;
-        });
-      }
+      //     return false;
+      //   });
+      // }
 
       this.show = false;
       this.$router.push(val.href + '?id=' + val.id);

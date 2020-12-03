@@ -380,7 +380,7 @@ export default {
       }
     },
     goDetail(val) {
-      
+
       if(val.graphic_height >= 800){
 
         this.$router.push(`/article/full_screen_play/${val.gid}`);

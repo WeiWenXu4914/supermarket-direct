@@ -8,17 +8,13 @@
       @change="change_event"
     >
       <van-swipe-item>
-        <div
-          class="video-class"
-          :style="{
-            backgroundImage: 'url(' + article.graphic_surface_plot + ')',
-          }"
-        >
+        <div class="video-class">
           <div class="back" @click="$router.go(-1)">
             <van-icon name="arrow-left" size="30px" color="#fff" />
             <span>{{ article.graphic_name | strSub(15) | emoji_decode }}</span>
           </div>
 
+          <div class="video-top"></div>
           <video
             ref="detailVideo0"
             class="video-item"
@@ -50,6 +46,8 @@
               @click="play_video(2)"
             />
           </div>
+
+          <div class="video-bottom"></div>
 
           <div class="video-detail">
             <div
@@ -306,7 +304,7 @@
         </div> -->
         <button
           class="ctrlBtn"
-          @touchstart="gotouchstart" 
+          @touchstart="gotouchstart"
           @touchmove="gotouchmove"
           @touchend="gotouchend"
         >
@@ -451,7 +449,7 @@ export default {
       if (to.query) {
         this.$router.go(0);
       }
-    }
+    },
   },
   created() {
     this.isComm();
@@ -522,6 +520,7 @@ export default {
     play_video(type) {
       if (type == 1) {
         this.$refs.detailVideo0.play();
+        // this.FullScreen();
         this.play_pause = false;
         setTimeout(() => {
           this.pause_show = false;
@@ -530,6 +529,29 @@ export default {
         this.$refs.detailVideo0.pause();
         this.play_pause = true;
         this.pause_show = true;
+      }
+    },
+    //进入全屏
+    FullScreen() {
+      var ele = document.documentElement;
+      console.log(ele)
+      if (ele.requestFullscreen) {
+        ele.requestFullscreen();
+      } else if (ele.mozRequestFullScreen) {
+        ele.mozRequestFullScreen();
+      } else if (ele.webkitRequestFullScreen) {
+        ele.webkitRequestFullScreen();
+      }
+    },
+    //退出全屏
+    exitFullscreen() {
+      var de = document;
+      if (de.exitFullscreen) {
+        de.exitFullscreen();
+      } else if (de.mozCancelFullScreen) {
+        de.mozCancelFullScreen();
+      } else if (de.webkitCancelFullScreen) {
+        de.webkitCancelFullScreen();
       }
     },
     // 暂停播放,加载推荐
@@ -990,9 +1012,9 @@ export default {
       const res = await articleDetail(obj);
 
       setTimeout(function () {
-          Toast.clear();
-        }, 200);
-        
+        Toast.clear();
+      }, 200);
+
       if (res.code === 100) {
         this.article = res.data;
         this.intro = res.data.graphic_intro || res.data.graphic_name;
@@ -1222,14 +1244,16 @@ export default {
   .video-class {
     width: 100%;
     height: 100vh;
+    background: #000;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    position: relative;
+    background-image: url("http://api.lejiagx.cn/static/adv2/img/6.jpg");
     background-size: cover;
     background-repeat: "no-repeat";
     background-position: center;
-    position: relative;
     .back {
       width: 100%;
       height: 40px;
@@ -1252,7 +1276,7 @@ export default {
       position: absolute;
       text-align: center;
       width: 100%;
-      top: 50vh;
+      top: calc(50vh - 40px);
     }
     .video-item {
       width: 100%;
@@ -1276,6 +1300,23 @@ export default {
         background: rgba(0000, 0000, 0000, 0.5);
         padding: 4px;
         border-radius: 5px;
+        .user-name {
+          span:nth-child(1) {
+            font-size: 17px;
+            font-weight: 600;
+          }
+          span:nth-child(2) {
+            background: #d04443;
+            margin-left: 8px;
+            padding: 2px 4px 2px 4px;
+            border-radius: 4px;
+          }
+        }
+        .video-title {
+          font-size: 15px;
+          font-weight: 500;
+          margin-top: 5px;
+        }
       }
       .video-detail-user {
         flex: 1;
@@ -1376,6 +1417,14 @@ export default {
           z-index: 2;
         }
       }
+    }
+    .video-bottom {
+      flex: 1;
+      width: 100%;
+    }
+    .video-top {
+      flex: 1;
+      width: 100%;
     }
   }
 }

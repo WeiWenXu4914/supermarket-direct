@@ -1,13 +1,11 @@
 <template>
   <div
-    :class="[!btnShow ? 'home-page' : 'home-pages']"
-    :style="[{ height: seaShow && btnShow ? 'calc(100vh - 41px)' : '' }]"
-  >
-    <page-header ref="pageHeader" :local="local" />
+    :class="[!btnShow ? 'home-page' : 'home-pages']">
+    <page-header ref="pageHeader" />
 
-    <!-- <span class="bar_btn" @click="showChannel" v-if="activeNav.length > 0">
+    <span class="bar_btn" @click="showChannel" v-if="activeNav.length > 20">
       <van-icon name="wap-nav" size="20" color="#909090" />
-    </span> -->
+    </span>
 
     <van-tabs
       v-if="activeNav.length > 0"
@@ -25,7 +23,7 @@
         v-for="(item, index) in activeNav"
         :key="index"
       >
-        <div ref="scroll-wrapper" class="scroll-wrapper">
+        <div ref="scroll-wrapper" class="scroll-wrapper" @scroll="remember($event)">
           <!-- <van-cell-group> -->
           <div class="pre-nav-class" v-if="activePreNav.length > 0">
             <div class="pre-nav-item" @click="onRefresh">全部</div>
@@ -62,28 +60,19 @@
               <van-icon name="arrow-up" />
             </div>
           </div>
-          <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-            <!-- 二级菜单  -->
-            <!-- <van-grid
-                :disabled="true"
-                :column-num="5"
-                square
-                icon-size="25px"
-                clickable
-                :border="false"
-              >
-                <van-grid-item
-                  :icon="preitems.nav_icon"
-                  :key="preindex"
-                  v-for="(preitems, preindex) in activePreNav"
-                  :text="preitems.nav_name"
-                  @click="preNav(preitems.nid, preitems.nav_name)"
-                />
-              </van-grid> -->
-
-            <van-list v-model="loading" :finished="finished" @load="onLoad" finished-text="没有更多了">
-              <div v-if="item.pageData.length > 0">
-                <div v-for="(items, index) in item.pageData" :key="items.gid">
+          <van-pull-refresh v-model="item.downLoading" @refresh="onRefresh">
+            <van-list
+              v-model="item.upLoading"
+              :finished="item.finished"
+              @load="onLoad"
+              finished-text="没有更多了"
+            >
+              <div v-if="item.pageData.length > 0" :class="[item.nid == 77 ? 'pageData-item-father' : '']">
+                <div
+                  v-for="(items, index) in item.pageData"
+                  :key="items.gid"
+                  :class="[item.nid == 77 ? 'pageData-item' : '']"
+                >
                   <van-cell>
                     <template v-if="items.gc_id === 1">
                       <!-- 图文 -->
@@ -99,7 +88,7 @@
                       />
                     </template>
 
-                    <template v-else-if="items.gc_id === 2">
+                    <template v-else-if="items.gc_id === 2 && item.nid != 77">
                       <!-- 视频 -->
                       <video-item
                         :videoItem="items"
@@ -153,6 +142,40 @@
                         :key="items.gid"
                       />
                     </template>
+
+                    <template v-else-if="item.nid === 74">
+                      <new-add-merchant
+                        :merItem="items"
+                        :key="items.entid + '-' + item.nid"
+                      />
+                    </template>
+
+                    <template v-else-if="item.nid === 71">
+                      <new-add-merchant
+                        :merItem="items"
+                        :key="items.entid + '-' + item.nid"
+                      />
+                    </template>
+
+                    <template v-else-if="item.nid === 77">
+                      <small-video 
+                        :smallItem="items"
+                        :key="items.entid + '-' + item.nid" />
+                    </template>
+
+                    <template v-else-if="item.nid === 75">
+                      <van-card
+                        :num="items.pro_inventory"
+                        :price="priceTransform(items.pro_price)"
+                        :desc="items.pro_introduction"
+                        :title="items.pro_name"
+                        :thumb="items.pro_thumbnail"
+                      >
+                        <template #footer>
+                          <van-button size="mini">去购买</van-button>
+                        </template>
+                      </van-card>
+                    </template>
                   </van-cell>
                 </div>
               </div>
@@ -191,18 +214,11 @@
         </div>
       </div>
     </transition>
-
-    <!-- 底部tab栏 -->
-    <transition transition name="van-slide-up">
-      <tab-bar ref="TabBar" v-show="tabShow" :tabbarItem="2"></tab-bar>
-    </transition>
   </div>
 </template>
 
 <script>
-import * as click from "../../assets/lottie/click.json";
 import PageHeader from "@/components/PageHeader";
-import FirmRecom from "@/views/home/components/FirmRecom";
 import ArticleItem from "@/views/home/components/ArticleItem";
 import RentItem from "@/views/home/components/RentItem";
 import AdvItem from "@/views/home/components/AdvItem";
@@ -211,6 +227,8 @@ import VideoItem from "@/views/home/components/VideoItem";
 import RecommendedVideoItem from "@/views/home/components/RecommendedVideoItem";
 import MerChant from "@/views/home/components/MerChant";
 import ChannelEdit from "@/views/home/components/ChannelEdit";
+import newAddMerchant from "@/views/home/components/newAddMerchant";
+import smallVideo from "@/views/home/components/smallVideo";
 import {
   getHome,
   getHomeList,
@@ -225,15 +243,13 @@ import wx from "weixin-js-sdk";
 import { getLocation, getLngLatLocation } from "@/utils/map.js";
 import { wxJSSDK } from "@/utils/wxshare.js";
 import Vue from "vue";
-import { Grid, GridItem, Toast, Notify } from "vant";
+import { Toast, Notify } from "vant";
 import { userInfo } from "../user/actions/index";
-import TabBar from "@/components/TabBar";
 
 export default {
   name: "home",
   components: {
     PageHeader,
-    FirmRecom,
     ArticleItem,
     RentItem,
     AdvItem,
@@ -242,7 +258,8 @@ export default {
     VideoItem,
     RecommendedVideoItem,
     ChannelEdit,
-    TabBar,
+    newAddMerchant,
+    smallVideo,
   },
   beforeCreate() {
     Toast.loading({
@@ -255,47 +272,24 @@ export default {
   },
   data() {
     return {
-      VideoShow: false,
-      videoVal: {},
-      GraphicRecommended: {},
-      channelsList: [],
-      downLoadText: "",
-
-      activeIndex: 1,
-      activeNav: [],
-      activePreNav: [],
-      pageData: [],
-      isLoading: false,
-      loading: false,
-      finished: false,
-      tabShow: true,
+      activeIndex: 1, //导航选中索引
+      activeNav: [], //导航数据
+      activePreNav: [], //二级导航数据
+      pageData: [], //页面数据
       showAllPrenav: false, // 显示所有二级分类
-
-      showEditChannel: false,
-      value: "",
-      firmList: [],
-      btnShow: false,
-      seaShow: true,
-      scrollTop: 0,
-      forwardMark: false,
+      showEditChannel: false, //我的导航
+      value: "", //我的导航数据
+      btnShow: false, //置顶按钮
+      forwardMark: false, //分享弹窗
       videoKey: 1, // 更新视频组件
-      preDataId: 0, // 二级导航
-      preData: {}, // 二级导航数据
-      local: {},
-      Loading: false,
-      tabbarShow: 0,
-      SuperiorNavName: [],
-      clickOptions: {
-        animationData: click.default,
-      },
+      tabbarShow: 0, //底部导航
     };
   },
   // 组件开启缓存生效，激活组件(初始化和激活都执行)
   activated() {
-    // 驼峰获取dom无效问题
     if (this.$refs["scroll-wrapper"]) {
-      const dom = this.$refs["scroll-wrapper"][this.activeIndex];
-      dom.scrollTop = this.activeChannel.scrollTop;
+      const dom = this.$refs["scroll-wrapper"][this.activeNav[this.activeIndex].scrollWrapper];
+      dom.scrollTop = this.activeNav[this.activeIndex].scrollTop;
     }
   },
   created() {
@@ -311,19 +305,24 @@ export default {
   },
   computed: {
     ...mapState(["user"]),
-    activeChannel() {
-      return this.channelsList[this.activeIndex];
-    },
-    nid() {
-      return this.activeIndex + 1;
-    },
-    isFocus() {
-      return this.activeIndex === 0;
-    },
   },
   methods: {
+    priceTransform(val) {
+      return parseFloat(val).toFixed(2);
+    },
     getHomeNav(type = 1, id = 0) {
       getHomeNav(type, id).then((res) => {
+
+        res.data.forEach((item,index) => {
+          item['downLoading'] = false;
+          item['upLoading'] = false;
+          item['finished'] = false; 
+          item['pageData'] = [];
+          item['num'] = 0;
+          item['size'] = 10;
+          item['scrollWrapper'] = 0;
+        });
+
         if (type == 1) {
           this.activeNav = res.data;
         } else {
@@ -333,14 +332,6 @@ export default {
     },
     // 首页数据
     getHomeData(id) {
-      this.activeNav[this.activeIndex].size = 10;
-
-      if (
-        this.activeNav[this.activeIndex].num <= 1 ||
-        !this.activeNav[this.activeIndex].num
-      ) {
-        this.activeNav[this.activeIndex].num = 1;
-      }
 
       var obj = {
         size: this.activeNav[this.activeIndex].size,
@@ -354,42 +345,46 @@ export default {
           // 页面渲染完延时关闭
           this.activeNav[this.activeIndex].num > 1
             ? this.activeNav[this.activeIndex].pageData.push(...res.data)
-            : (this.activeNav[this.activeIndex].pageData = res.data);
-        } else {
-          this.finished = true;
+            : this.activeNav[this.activeIndex].pageData = res.data;
+
+        }else{
+          this.activeNav[this.activeIndex].finished = true;
+          this.activeNav[this.activeIndex].downLoading = false;
         }
       });
-    },
-    TabBar(val) {
-      if (val == 2) {
-        this.$refs.TabBar.getTabbat();
-      } else if (val == 1) {
-        if (this.tabShow == true) {
-          this.tabShow = !this.tabShow;
-        }
-      } else {
-        if (this.tabShow == false) {
-          this.tabShow = !this.tabShow;
-        }
-      }
     },
     preNav(id) {
       this.activeNav[this.activeIndex].pageData = [];
       this.getHomeData(id);
+      this.getHomeNav(2, id);
     },
     // 切换频道
     changeChannel(val) {
+      
+      this.$parent.TabBar(0);
+
+      if(this.activeNav[this.activeIndex].scrollWrapper == 0 && this.activeIndex != 1){
+        this.activeNav[this.activeIndex].scrollWrapper++;
+      }
+      
       Toast.loading({
         message: "加载中...",
         forbidClick: true,
         loadingType: "spinner",
-        overlay: true
+        overlay: true,
       });
       this.getHomeNav(2, this.activeNav[val].nid);
       if (this.activeNav[val].pageData.length <= 0) {
+
         this.getHomeData(this.activeNav[val].nid);
-        this.finished = true;
-        this.isLoading = false;
+      }else{
+        
+        Toast.clear();
+        // 下一帧：延时一会执行，定位到以往阅读位置
+        this.$nextTick(() => {
+          const dom = this.$refs['scroll-wrapper'][this.activeNav[this.activeIndex].scrollWrapper]
+          dom.scrollTop = this.activeNav[this.activeIndex].scrollTop
+        })
       }
     },
     // 触底加载数据
@@ -398,12 +393,14 @@ export default {
 
       this.getHomeData(this.activeNav[this.activeIndex].nid);
       setTimeout(() => {
-        this.loading = false;
-      }, 2000);
+        this.activeNav[this.activeIndex].upLoading = false;
+      }, 1000);
     },
     // 下拉刷新
     async onRefresh() {
+      this.$parent.TabBar(0);
       this.getHomeData(this.activeNav[this.activeIndex].nid);
+      this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
       setTimeout(() => {
         this.finished = true;
         this.isLoading = false;
@@ -504,13 +501,35 @@ export default {
       this.showEditChannel = true;
     },
     // 监听滚动事件
-    remember(e) {},
+    remember (e) {
+      // tabbarS大于0向下滑动,小于0向上滑动
+      var tabbarS = e.target.scrollTop - this.tabbarShow;
+      this.tabbarShow = e.target.scrollTop;
+      this.activeNav[this.activeIndex].scrollTop = e.target.scrollTop
+
+      if (tabbarS < 0) {
+        this.$parent.TabBar(0);
+
+        if (e.target.scrollTop <= 150) {
+          this.btnShow = false;
+        }
+      } else {
+        if (this.btnShow == true) {
+          this.$parent.TabBar(1);
+        }
+
+        if (e.target.scrollTop > 150) {
+          if (e.target.scrollTop >= 400) {
+            this.btnShow = true;
+          }
+        }
+      }
+    },
     // 回到顶部
     goTop() {
+
       if (this.$refs["scroll-wrapper"]) {
-        const dom = this.$refs["scroll-wrapper"][
-          this.activeNav[this.activeIndex].nid
-        ];
+        const dom = this.$refs["scroll-wrapper"][this.activeNav[this.activeIndex].scrollWrapper];
         let i = 0;
         const timeTop = setInterval(() => {
           dom.scrollTop = this.easeInOutQuad(
@@ -537,7 +556,7 @@ export default {
       }
     },
     del(index) {
-      this.channelsList[0].navVal.splice(index, 1);
+      this.activeNav[this.activeIndex].pageData.splice(index, 1);
     },
     userHandle(type) {
       if (this.user.mmtid === 3) {
@@ -688,7 +707,7 @@ export default {
 
         wxJSSDK(form);
       }
-    },
+    }
   },
   mounted: function () {
     this.initSocketIO();
@@ -956,6 +975,15 @@ export default {
   }
   .pre-nav-item:active {
     opacity: 0.1;
+  }
+}
+.pageData-item-father {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  .pageData-item {
+    width: 50%;
   }
 }
 </style>
