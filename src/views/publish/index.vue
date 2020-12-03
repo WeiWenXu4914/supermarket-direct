@@ -50,6 +50,10 @@ export default {
   },
   created () {
     this.getPublishList();
+    var sel = localStorage.getItem('selective');
+    if(sel){
+      this.$router.push('/');
+    }
   },
   methods: {
     onSelect (item) {
@@ -58,12 +62,28 @@ export default {
         return false;
       }
       if (item.nav_link) {
-        this.$router.push({
-          path: item.nav_link,
-          query: {
-            id:item.nid
-          }
-        })
+        
+        console.log(item)
+        var sel = localStorage.getItem('selective');
+        if(item.nav_class == 4 && !sel){
+          this.$dialog.confirm({
+            title: '区域选择?',
+            message: '请您确认您选择的是否为您的位置!',
+          })
+          .then(() => {
+            localStorage.setItem('selective', JSON.stringify(item))
+            this.$router.push({
+              path: item.nav_link,
+              query: {
+                id:item.nid
+              }
+            })
+          })
+          .catch(() => {
+            localStorage.removeItem('selective')
+            return false;
+          });
+        }
       }
     },
     getPublishList () {

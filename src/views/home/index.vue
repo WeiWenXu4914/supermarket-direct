@@ -402,8 +402,8 @@ export default {
       this.getHomeData(this.activeNav[this.activeIndex].nid);
       this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
       setTimeout(() => {
-        this.finished = true;
-        this.isLoading = false;
+        this.activeNav[this.activeIndex].finished = true;
+        this.activeNav[this.activeIndex].downLoading = false;
       }, 1000);
     },
 

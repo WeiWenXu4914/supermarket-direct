@@ -7,7 +7,7 @@
         :key="item.tab_link"
         @click="getVal(item)"
       >
-      <!-- :style="[{ display: item.tab_link == 'add' && !addshow ? 'none' : '' }]" -->
+        <!-- :style="[{ display: item.tab_link == 'add' && !addshow ? 'none' : '' }]" -->
         <template v-if="item.tab_link !== 'add'">
           <p class="tab-icon" v-if="activeImged === item.tab_link">
             <img :src="item.tab_iconed" alt="" />
@@ -68,9 +68,9 @@
           @click="handle(item)"
         >
           <div class="icon">
-            <img :src="item.icon" alt="" />
+            <img :src="item.icon || item.nav_icon" alt="" />
           </div>
-          <div class="type_item_text">{{ item.title }}</div>
+          <div class="type_item_text">{{ item.title || item.nav_name }}</div>
         </div>
       </div>
     </van-popup>
@@ -89,14 +89,14 @@ export default {
       tabbarData: "",
       publish: 0,
       publishData: [],
-      addshow: false
+      addshow: false,
     };
   },
   props: {
     tabbarItem: {
       type: Number,
       required: true,
-    }
+    },
   },
   watch: {},
   computed: {
@@ -106,7 +106,7 @@ export default {
     },
   },
   created() {
-    if(this.user.mmtid == 3){
+    if (this.user.mmtid == 3) {
       this.addshow = true;
     }
     this.show = false;
@@ -115,54 +115,43 @@ export default {
   },
   methods: {
     recommend() {
-      // console.log('123')
-      console.log(this.user.mmtid)
-      if(this.user.mmtid == 3){
+      this.getTabbat();
+      if (this.user.mmtid == 3) {
         this.show = true;
       } else {
         this.$router.replace("/inviteBusinessmen");
       }
     },
-    async getTabbat(type=2) {
+    async getTabbat(type = 2) {
       const res = await getTabbat(type);
       this.tabbarData = res.data.tabbar;
-      if(type == 2){
-        var sel = localStorage.getItem('selective');
-        if(sel){
+      if (type == 2) {
+        var sel = localStorage.getItem("selective");
+        if (sel) {
           res.data.publish = JSON.parse(sel);
+          console.log(res.data.publish);
           this.publishData[0] = res.data.publish;
-        }else{
+        } else {
           this.publishData = res.data.publish;
         }
-      }else{
+      } else {
         this.publishData = res.data.publish;
       }
     },
     // tabbar用户点击操作
     handle(val) {
-      
-      // var sel = localStorage.getItem('selective');
-      // if(val.class == 4 && !sel){
-      //   this.$dialog.confirm({
-      //     title: '区域选择?',
-      //     message: '请您确认您选择的是否为您的位置!',
-      //   })
-      //   .then(() => {
-      //     localStorage.setItem('selective', JSON.stringify(val))
-      //   })
-      //   .catch(() => {
-          localStorage.removeItem('selective')
-      //     return false;
-      //   });
-      // }
-
       this.show = false;
-      this.$router.push(val.href + '?id=' + val.id);
+      var href = val.href || val.nav_link;
+      var id = val.id || val.nid;
+      this.$router.push(href + "?id=" + id);
     },
     // 用户操作属性
     getVal(val) {
-
-      if (val.tab_link !== "add" && val.tab_link != "/no" && val.tab_link != "/jump_link") {
+      if (
+        val.tab_link !== "add" &&
+        val.tab_link != "/no" &&
+        val.tab_link != "/jump_link"
+      ) {
         if (val.tab_link == this.$route.path) {
           this.getTabbat();
           this.$router.go(0);
@@ -170,13 +159,14 @@ export default {
         this.$router.push(val.tab_link).catch(() => {});
       } else if (val.tab_link == "/no") {
         this.$toast("该功能正在火爆内测中,敬请期待");
-      } else if (val.tab_link == '/jump_link'){
+      } else if (val.tab_link == "/jump_link") {
         window.location.href = val.tab_href;
       }
     },
     // 是否显示添加面板
     addArticle() {
-      if(this.user.mmtid != 3){
+      this.getTabbat();
+      if (this.user.mmtid == 3) {
         this.show = true;
       } else {
         this.$router.replace("/inviteBusinessmen");
@@ -218,7 +208,7 @@ export default {
         font-size: 10px;
       }
       .active-text {
-        color: #07C062;
+        color: #07c062;
       }
       .add-class {
         position: relative;
