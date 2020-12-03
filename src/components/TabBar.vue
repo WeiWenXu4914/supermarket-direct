@@ -115,7 +115,13 @@ export default {
   },
   methods: {
     recommend() {
-      console.log('123')
+      // console.log('123')
+      console.log(this.user.mmtid)
+      if(this.user.mmtid == 3){
+        this.show = true;
+      } else {
+        this.$router.replace("/inviteBusinessmen");
+      }
     },
     async getTabbat(type=2) {
       const res = await getTabbat(type);
@@ -170,7 +176,11 @@ export default {
     },
     // 是否显示添加面板
     addArticle() {
-      this.show = true;
+      if(this.user.mmtid != 3){
+        this.show = true;
+      } else {
+        this.$router.replace("/inviteBusinessmen");
+      }
     },
   },
 };
