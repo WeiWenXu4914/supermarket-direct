@@ -62,6 +62,12 @@ const routes = [
             },
         ]
     },
+    {
+        path: '/videoDetail/:id',
+        name: 'videoDetail',
+        component: () =>
+            import('@/views/article/videoDetail')
+    },
     // 文章详情
     {
         path: '/article/detail/:id',

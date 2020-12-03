@@ -975,7 +975,7 @@ export default {
           : (this.show = true);
 
         const query = {
-          type: res.data.gc_id,
+          type: 1,
           id: res.data.gid,
         };
 
