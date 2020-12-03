@@ -91,3 +91,12 @@ export const memberCollect = (id, type, state) => {
 export const memberLike = (mem_like_id, mem_like_class, state) => {
     return request('/api/memberLike', 'post', { mem_like_id, mem_like_class, state })
 }
+
+/**
+ * 修改关注
+ * @param {*} mem_id 
+ * @param {*} state 
+ */
+export const changeFouce = (query) => {
+    return request('/api/memberAttention', 'post', query)
+}

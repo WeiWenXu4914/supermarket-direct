@@ -302,7 +302,7 @@ export default {
 
                 const commList = await articleCommList(query)
                 this.commList = commList.data.reverse()
-                console.log(commList,"评论列表")
+                
             } else {
 
                 this.$toast('这篇文章飞向外太空了！')
@@ -420,7 +420,7 @@ export default {
             }
             setTimeout(() => {
                 this.isLoading = false;
-            },1000);
+            },500);
             
         },
         //获取所有数据
@@ -435,6 +435,7 @@ export default {
                     this.dataAll = res.data;
                     this.buttonStatus = this.dataAll.mem_attention_state == 0 ? false : true;
                     this.isCollection = this.dataAll.mem_collect == '已收藏' ? true : false;
+                    this.$refs.video.play();
                 } else {
                     Toast(res.msg)
                 }
@@ -453,7 +454,6 @@ export default {
             } else {
                 this.videoStyle = "video";
             }
-            this.$refs.video.play();
         },
         // 点赞
         like () {
