@@ -1054,7 +1054,13 @@ const routes = [
         component: () => 
             import('@/views/inter_city_sale')
     },
-    
+    //招商
+    {
+        path: '/inviteBusinessmen',
+        name: 'inviteBusinessmen',
+        component: () => 
+            import('@/views/inter_city_sale/inviteBusinessmen')
+    },
 ]
 
 const router = new VueRouter({
