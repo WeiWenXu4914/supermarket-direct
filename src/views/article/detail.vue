@@ -76,12 +76,6 @@
             :poster="options.poster"
             preload="auto"
             autoplay="true"
-            webkit-playsinline=""
-            playsinline=""
-            x-webkit-airplay="allow"
-            x5-video-player-type="h5"
-            x5-video-player-fullscreen="true"
-            x5-video-orientation="portrait"
             :src="options.mp4"
           ></video>
         </div>
