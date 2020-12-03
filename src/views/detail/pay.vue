@@ -77,7 +77,7 @@
       </div>
     </div>
     
-    <div style="width: 100%; height: 90px"></div>
+    <div style="width: 100%; height: 2.75rem"></div>
     <div class="btn">
       <div class="text">
         <span>共{{ count }}件 实付款：</span>
@@ -85,12 +85,17 @@
       </div>
       <button class="payClick" @click="payMoney">提交订单</button>
     </div>
+
+    <van-overlay :show="isPaying">
+      <span class="overlay-text">正在为您进入支付环境</span>
+    </van-overlay>
+
   </div>
 </template>
 
 <script>
 import myAddress from "./components/address";
-import { Card, Icon, Toast, Dialog, ActionSheet } from "vant";
+import { Card, Icon, Toast, Dialog, ActionSheet, Overlay } from "vant";
 import {
   messageDetail,
   pay,
@@ -128,6 +133,7 @@ export default {
       couMoney: "",
       cou_id: "",
       isPaying: false, //是否正在支付
+      
     };
   },
   beforeCreate() {
@@ -276,13 +282,6 @@ export default {
       //   return;
       // }
       
-      //限制重复下单
-      // if(this.isPaying) {
-      //   Toast("请勿重复下单");
-      //   return;
-      // }
-      this.isPaying = true;
-
       if(this.$refs.myAddress.addressStoreList.length == 0  && this.active == 0) {
         Toast("该商家未设置店铺地址，无法下单")
         return;
@@ -318,12 +317,13 @@ export default {
         price: parseFloat(this.totalPrice).toFixed(2),
         num: this.count, //购买数量
         remark: this.textValue, //备注
-        way: this.active === 1 ? 3 : 1, //配送方式 3物流 1自取
+        way: this.active == 1 ? 3 : 1, //配送方式 3物流 1自取
         name: this.$refs.myAddress.addressStore.name,
         phone: this.$refs.myAddress.addressStore.phone,
-        pinv_id: this.$refs.myAddress.addressStoreList[this.$refs.myAddress.addressListResult].pinv_id,
       };
-
+      if(this.$refs.myAddress.addressStoreList.length !== 0  && this.active == 0) {
+        pinv_id: this.$refs.myAddress.addressStoreList[this.$refs.myAddress.addressListResult].pinv_id
+      }
       //使用了优惠券
       if (this.cou_id != "" && this.couMoney != "") {
         orderAdd.cou_id = this.cou_id;
@@ -357,13 +357,13 @@ export default {
             url: "http://apis.lejiagx.cn/api/wxpay",
             type: 1,
           };
-
+          this.isPaying = true;
           if (res.code != 100) {
             Toast(res.msg);
             this.isPaying = false;
             return false;
           }
-
+          
           wxpay(obj).then((res) => {
             this.wxMsg = res.data;
             this.callpay(1, obj, this);
@@ -371,6 +371,7 @@ export default {
         })
         .catch((e) => {
           console.log(e);
+          Toast("请求出错");
           this.isPaying = false;
         });
     },
@@ -416,7 +417,7 @@ export default {
             //删除支付失败订单  订单号
             orderDel(obj.order_no);
             Toast.fail("支付失败");
-            this.$router.go(-1);
+            This.isPaying = false;
           }
         }
       );
@@ -835,6 +836,15 @@ export default {
     padding: 10px 0;
     border-radius: 10px;
     background-color: #fff;
+  }
+  .overlay-text {
+    position: absolute;
+    color: #fff;
+    white-space: nowrap;
+    left: 50%;
+    top: 50%;
+    font-size: 20px;
+    transform: translate(-50%,-50%);
   }
 }
 </style>
