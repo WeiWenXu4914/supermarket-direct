@@ -10,12 +10,15 @@
       </div>
       <div class="name" @click.stop="userHandle">
         <p>
-          {{ videoItemVal.mem_name }}
-          <van-tag plain color="#f3a683" v-if="videoItemVal.mmt_id == 3">{{
-            videoItemVal.ent_district
-          }}</van-tag>
-          <!-- <span class="icon" ></span> -->
-        </p>
+            {{ videoItemVal.mem_name }}
+            <van-icon name="http://api.lejiagx.cn/static/icon/官方授权.png" 
+                size="15px" 
+                v-if="videoItemVal.mem_id == 1" 
+                style="margin-right:5px;" />
+            <van-tag plain color="#f3a683" v-if="videoItemVal.mmt_id == 3 && videoItemVal.mem_id != 1">{{
+              videoItemVal.ent_district || videoItemVal.mmt_type_name
+            }}</van-tag>
+          </p>
       </div>
       <!-- <div
         class="buttons"

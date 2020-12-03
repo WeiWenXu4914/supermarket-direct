@@ -13,8 +13,12 @@
         <div class="name" @click.stop="userHandle">
           <p>
             {{ article.mem_name }}
-            <van-tag plain color="#f3a683" v-if="article.mmt_id == 3">{{
-              article.ent_district
+            <van-icon name="http://api.lejiagx.cn/static/icon/官方授权.png" 
+                size="15px" 
+                v-if="article.mem_id == 1" 
+                style="margin-right:5px;" />
+            <van-tag plain color="#f3a683" v-if="article.mmt_id == 3 && article.mem_id != 1">{{
+              article.ent_district || article.mmt_type_name
             }}</van-tag>
           </p>
         </div>
