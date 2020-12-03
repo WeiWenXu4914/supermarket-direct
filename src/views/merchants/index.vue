@@ -223,14 +223,6 @@ export default {
     };
   },
   watch: {
-    merchantInfo: function () {
-      this.$nextTick(function () {
-        // 页面渲染完延时关闭
-        setTimeout(function () {
-          Toast.clear();
-        }, 200);
-      });
-    },
     'isActive':function (newVal,oldVal) {
 
       let obj = {
@@ -367,6 +359,9 @@ export default {
     getPageData() {
       var id = JSON.parse(this.$Utils.demoResponse(this.$route.query.res));
       getEnterpriseHomepage(id.entid).then((res) => {
+        setTimeout(function () {
+          Toast.clear();
+        }, 200);
         if (res.code === 100) {
           this.merchantInfo = res.data;
           this.flag = true;

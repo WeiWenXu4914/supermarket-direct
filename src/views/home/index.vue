@@ -170,6 +170,7 @@
                         :desc="items.pro_introduction"
                         :title="items.pro_name"
                         :thumb="items.pro_thumbnail"
+                        @click="goProductDetail(items)"
                       >
                         <template #footer>
                           <van-button size="mini">去购买</van-button>
@@ -307,6 +308,20 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    goProductDetail(val) {
+
+      var obj = {
+        proid: val.proid
+      };
+
+      var res = this.$Utils.demoRequest(JSON.stringify(obj));
+      this.$router.push({
+        path:'/commdityPay',
+        query:{
+          res:res
+        }
+      });
+    },
     priceTransform(val) {
       return parseFloat(val).toFixed(2);
     },
@@ -373,11 +388,12 @@ export default {
         loadingType: "spinner",
         overlay: true,
       });
+      
       this.getHomeNav(2, this.activeNav[val].nid);
-      if (this.activeNav[val].pageData.length <= 0) {
+      if (this.activeNav[val].pageData.length > 0) {
 
-        this.getHomeData(this.activeNav[val].nid);
-      }else{
+      //   this.getHomeData(this.activeNav[val].nid);
+      // }else{
         
         Toast.clear();
         // 下一帧：延时一会执行，定位到以往阅读位置

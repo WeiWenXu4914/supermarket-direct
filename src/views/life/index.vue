@@ -142,17 +142,6 @@ export default {
       duration:0
     });
   },
-  // beforeRouteLeave (to, from, next) { // 离开路由前
-  //   let that = this
-  //   if (to.meta.touFlag) {
-  //     let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-  //     console.log(scrollTop)
-  //     this.$store.commit('setCarrerTouScroll', scrollTop)
-  //   } else {
-  //     this.$store.commit('setCarrerTouScroll', 0)
-  //   }
-  //   next()
-  // },
   data () {
     return {
       navList: [],
@@ -184,16 +173,7 @@ export default {
       this.activeIndex = this.activeChannel.index
     }
   },
-  watch: {
-    pageData:function() {
-      this.$nextTick(function(){
-        // 页面渲染完延时关闭
-        setTimeout(function(){
-          Toast.clear();
-        },200)
-      })
-    }
-  },
+  watch: {},
   created () {
     this.get()
   },
@@ -238,6 +218,11 @@ export default {
     async get () {
 
         const res = await phoneList(this.query)
+
+        setTimeout(function(){
+          Toast.clear();
+        },200)
+
         const data = res.data
         
         this.prvUrl = res.data.prvUrl
@@ -325,7 +310,7 @@ export default {
 			}
 		}
   },
-  mounted:function(){}
+  mounted(){}
 }
 </script>
 

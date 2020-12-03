@@ -116,6 +116,7 @@ export default {
   methods: {
     recommend() {
       this.getTabbat();
+      localStorage.removeItem('selective');
       if (this.user.mmtid == 3) {
         this.show = true;
       } else {
@@ -126,10 +127,9 @@ export default {
       const res = await getTabbat(type);
       this.tabbarData = res.data.tabbar;
       if (type == 2) {
-        var sel = localStorage.getItem("selective");
+        var sel = localStorage.getItem("selectives");
         if (sel) {
           res.data.publish = JSON.parse(sel);
-          console.log(res.data.publish);
           this.publishData[0] = res.data.publish;
         } else {
           this.publishData = res.data.publish;
@@ -140,6 +140,7 @@ export default {
     },
     // tabbar用户点击操作
     handle(val) {
+      localStorage.removeItem('selective');
       this.show = false;
       var href = val.href || val.nav_link;
       var id = val.id || val.nid;
@@ -165,6 +166,7 @@ export default {
     },
     // 是否显示添加面板
     addArticle() {
+      localStorage.removeItem('selective');
       this.getTabbat();
       if (this.user.mmtid == 3) {
         this.show = true;
