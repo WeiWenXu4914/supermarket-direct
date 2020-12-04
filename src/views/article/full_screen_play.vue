@@ -13,7 +13,19 @@
             <van-icon name="arrow-left" size="30px" color="#fff" />
             <span>{{ article.graphic_name | strSub(15) | emoji_decode }}</span>
           </div>
-
+          <div class="rec-pro" v-if="ProductSetList != '' && recProShow">
+            <div class="pro-img" @click="recProShow = false">
+              <van-icon name="close" size="20" color="red" />
+              <img :src="ProductSetList.pro_thumbnail" alt="" />
+            </div>
+            <div class="pro-title" @click="goProductDetail(ProductSetList)">
+              <span>{{ ProductSetList.pro_name | strSub(5) }}</span>
+              <span>￥ {{ ProductSetList.pro_price }}</span>
+            </div>
+            <div class="pro-btn" @click="goProductDetail(ProductSetList)">
+              去购买
+            </div>
+          </div>
           <div class="video-top" :style="'backgroundImage:url(\''+ article.graphic_surface_plot + '\')'">
             <div class="bg"></div>
           </div>
@@ -352,6 +364,7 @@ import {
   GraphicRecommend,
   wexinConfig,
   memberCollect,
+  getProductSetList
 } from "./actions";
 import { changeFouce as focus, memberLike } from "@/views/home/actions/index";
 import { wxJSSDK } from "@/utils/wxshare.js";
@@ -446,6 +459,8 @@ export default {
       pause_show: true,
       musicListMore: false,
       intro: "",
+      ProductSetList: "",
+      recProShow: false,
     };
   },
   watch: {
@@ -521,6 +536,19 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    goProductDetail(val) {
+      var obj = {
+        proid: val.proid,
+      };
+
+      var res = this.$Utils.demoRequest(JSON.stringify(obj));
+      this.$router.push({
+        path: "/commdityPay",
+        query: {
+          res: res,
+        },
+      });
+    },
     play_video(type) {
       if (type == 1) {
         this.$refs.detailVideo0.play();
@@ -1018,6 +1046,12 @@ export default {
       setTimeout(function () {
         Toast.clear();
       }, 200);
+
+      if (res.data.pro_id) {
+        const prores = await getProductSetList(res.data.pro_id);
+        this.ProductSetList = prores.data[0];
+        this.recProShow = true;
+      }
 
       if (res.code === 100) {
         this.article = res.data;
@@ -1576,6 +1610,67 @@ video::-webkit-media-controls {
       }
       position: absolute;
     }
+  }
+}
+.rec-pro {
+  min-width: 50%;
+  height: 50px;
+  background: #fff;
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4px;
+  z-index:10;
+  .pro-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    position: relative;
+    i {
+      position: absolute;
+      top: -8px;
+      left: -8px;
+    }
+    img {
+      width: 100%;
+      height: 50px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+  }
+  .pro-title {
+    flex: 1;
+    height: 50rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    span:nth-child(1) {
+      flex: 1;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    span:nth-child(2) {
+      flex: 1;
+      margin-top: 5px;
+      text-align: right;
+      padding-right: 4px;
+      color: #d04443;
+    }
+  }
+  .pro-btn {
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    text-align: center;
+    background: #d04443;
+    border-radius: 4px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0 4px 0 4px;
   }
 }
 </style>

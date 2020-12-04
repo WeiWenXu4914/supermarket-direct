@@ -25,7 +25,7 @@
           :thumb="productListed.pro_thumbnail"
         >
           <template #footer>
-            <van-button size="mini" color="#D04443">重新选择</van-button>
+            <van-button size="mini" color="#D04443" @click.stop="productListed = ''">重新选择</van-button>
           </template>
         </van-card>
     </div>
@@ -612,6 +612,8 @@ export default {
   padding: 8px;
   position: fixed;
   bottom: 0px;
+  z-index: 2;
+  background: #fff;
 }
 /deep/ .ql-toolbar.ql-snow + .ql-container.ql-snow {
   /*border-top: 0px;*/
