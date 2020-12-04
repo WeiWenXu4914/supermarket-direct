@@ -48,7 +48,7 @@ export default {
       console.log(this.data)
     }
 
-    this.orderNumber = "http://merchant.lejiagx.cn/#/Ordercancellation?orderNumber="+this.data.order_number;
+    this.orderNumber = "http://wechat.lejiagx.cn/merchant/#/Ordercancellation?orderNumber="+this.data.order_number;
   },
   methods:{
     back(){

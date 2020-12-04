@@ -27,12 +27,14 @@
         <img src="../../components/img1/dianhua.png" alt="">
         <p><a :href="'tel:'+dataInfo.service_phone">{{ dataInfo.service_phone }}</a></p>
     </div>
-    <h4>预约码</h4>
-    <div class="center">
-        <vue-qr :text="dataInfo.oa_order_number"></vue-qr>
-    </div>
-    <div class="date">
-        <p>有效期：{{ dataInfo.oa_addtime }} 至 {{ dataInfo.out_time }}</p>
+    <div v-if="dataInfo.oa_state == 1">
+      <h4>预约码</h4>
+      <div class="center">
+          <vue-qr :text="dataInfo.oa_order_number"></vue-qr>
+      </div>
+      <div class="date">
+          <p>有效期：{{ dataInfo.oa_addtime }} 至 {{ dataInfo.out_time }}</p>
+      </div>
     </div>
 
   </div>
@@ -63,6 +65,7 @@ export default {
         AppointmentOrderDetail(data.oaid)
         .then((res) => {
             this.dataInfo = res.data;
+            this.dataInfo.oa_order_number = "http://wechat.lejiagx.cn/merchant/#/Cancellation?orderNumber=" + this.dataInfo.oa_order_number;
             Toast.loading({
                 duration: 1
             });
