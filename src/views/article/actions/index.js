@@ -100,3 +100,17 @@ export const memberLike = (mem_like_id, mem_like_class, state) => {
 export const changeFouce = (query) => {
     return request('/api/memberAttention', 'post', query)
 }
+
+/**
+ * 获取商品
+ */
+export const getProductSet = () => {
+    return request('/api/myProductSet', 'get')
+}
+
+/**
+ * 获取推荐的商品
+ */
+export const getProductSetList = (id=0) => {
+    return request('/api/getProductSet?id='+id, 'get')
+}

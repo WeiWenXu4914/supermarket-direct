@@ -15,6 +15,21 @@
         />
       </div>
     </div>
+    <div class="select-pro" @click="selectProShowFun" v-if="productListed == ''">选择商品</div>
+    <div class="select-proed" @click="selectProShowFun" v-else>
+      <van-card
+          :num="productListed.pro_inventory"
+          :price="priceTransform(productListed.pro_price)"
+          :desc="productListed.pro_introduction"
+          :title="productListed.pro_name"
+          :thumb="productListed.pro_thumbnail"
+        >
+          <template #footer>
+            <van-button size="mini" color="#D04443">重新选择</van-button>
+          </template>
+        </van-card>
+    </div>
+
     <!-- <editor-bar v-model="articleForm.graphic_details" :color="color" @click="onFocus"  :isClear="isClear" @change="change" @imgPush="imgPush"></editor-bar> -->
     <!-- bidirectional data binding（双向数据绑定） -->
     <!-- @blur="onEditorBlur($event)"
@@ -38,6 +53,34 @@
         />
       </div>
     </van-overlay>
+
+    <van-popup
+      v-model="selectProShow"
+      closeable
+      round
+      position="bottom"
+      :style="{ height: 'auto' }">
+
+      <div class="pro-list" v-if="productList.length > 0">
+        <van-card
+          v-for="(items, index) in productList"
+          :key="index"
+          :num="items.pro_inventory"
+          :price="priceTransform(items.pro_price)"
+          :desc="items.pro_introduction"
+          :title="items.pro_name"
+          :thumb="items.pro_thumbnail"
+          @click="selectProductSet(items)"
+        >
+          <template #footer>
+            <van-button size="mini" color="#D04443">选择该商品</van-button>
+          </template>
+        </van-card>
+      </div>
+      <div v-else>
+        <van-empty description="数据为空,请先上传产品" />
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -51,7 +94,7 @@ import "quill/dist/quill.bubble.css";
 
 // Quill.register('modules/ImageExtend', ImageExtend)
 
-import { articleCreate } from "./actions";
+import { articleCreate, getProductSet } from "./actions";
 import { uploadVideo } from "@/api/index";
 
 import { wxJssdkChooseImage } from "@/utils/wxshare.js";
@@ -258,6 +301,9 @@ export default {
         "0%": "#3fecff",
         "100%": "#6149f6",
       },
+      selectProShow: false,
+      productList: [],
+      productListed: ''
     };
   },
   computed: {
@@ -286,6 +332,21 @@ export default {
   //   wxJssdkChooseImage();
   // },
   methods: {
+    selectProShowFun() {
+      this.selectProShow = true;
+      getProductSet().then(res=>{
+        this.productList = res.data;
+      })
+    },
+    priceTransform(val) {
+      return parseFloat(val).toFixed(2);
+    },
+    selectProductSet(val) {
+      this.articleForm.proid = val.proid;
+      this.productListed = val;
+      this.selectProShow = false;
+      Toast('选择成功');
+    },
     onEditorChange(editor) {
       // 删除数组中的图片
       for (var i = 0; i < this.articleForm.img_path.length; i++) {
@@ -573,5 +634,21 @@ export default {
   width: 30px;
   margin-left: 10px;
   margin-bottom: 5px;
+}
+.select-pro {
+  width: 92%;
+  min-height: 30px;
+  margin: 0 auto;
+  line-height: 30px;
+  color: #707070;
+}
+.select-proed {
+  width: 92%;
+  min-height: 50px;
+  margin: 0 auto;
+}
+.pro-list {
+  margin-top: 50px;
+  padding-bottom: 10px;
 }
 </style>
