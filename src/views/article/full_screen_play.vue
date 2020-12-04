@@ -8,13 +8,15 @@
       @change="change_event"
     >
       <van-swipe-item>
-        <div class="video-class">
+        <div class="video-class" :style="'backgroundImage:url(\''+ article.graphic_surface_plot + '\')'">
           <div class="back" @click="$router.go(-1)">
             <van-icon name="arrow-left" size="30px" color="#fff" />
             <span>{{ article.graphic_name | strSub(15) | emoji_decode }}</span>
           </div>
 
-          <div class="video-top"></div>
+          <div class="video-top" :style="'backgroundImage:url(\''+ article.graphic_surface_plot + '\')'">
+            <div class="bg"></div>
+          </div>
           <video
             ref="detailVideo0"
             class="video-item"
@@ -47,7 +49,9 @@
             />
           </div>
 
-          <div class="video-bottom"></div>
+          <div class="video-bottom" :style="'backgroundImage:url(\''+ article.graphic_surface_plot + '\')'">
+            <div class="bg"></div>
+          </div>
 
           <div class="video-detail">
             <div
@@ -1250,7 +1254,7 @@ export default {
     justify-content: center;
     flex-direction: column;
     position: relative;
-    background-image: url("http://api.lejiagx.cn/static/adv2/img/6.jpg");
+    // background-image: url("http://api.lejiagx.cn/static/adv2/img/6.jpg");
     background-size: cover;
     background-repeat: "no-repeat";
     background-position: center;
@@ -1264,6 +1268,7 @@ export default {
       padding-left: 10px;
       top: 0;
       left: 0;
+      z-index: 1;
       span {
         flex: 1;
         text-align: center;
@@ -1420,11 +1425,18 @@ export default {
     }
     .video-bottom {
       flex: 1;
+      position: relative;
       width: 100%;
+      background-size: cover;
+      background-position: bottom;
+      filter: blur(2px);
     }
     .video-top {
       flex: 1;
       width: 100%;
+      background-size: cover;
+      background-position: top;
+      filter: blur(2px);
     }
   }
 }
