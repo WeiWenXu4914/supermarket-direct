@@ -383,7 +383,7 @@ export default {
       }
     },
     goDetail(val) {
-      if((val.graphic_width/val.graphic_height) < 1){
+      if((val.graphic_width/val.graphic_height) < 1 && val.graphic_height > 700){
 
         if(this.$route.path == `/article/full_screen_play/${val.gid}`) return;
         

@@ -284,6 +284,7 @@ export default {
       forwardMark: false, //分享弹窗
       videoKey: 1, // 更新视频组件
       tabbarShow: 0, //底部导航
+      scrollWrapper: 0
     };
   },
   // 组件开启缓存生效，激活组件(初始化和激活都执行)
@@ -379,7 +380,7 @@ export default {
       this.$parent.TabBar(0);
 
       if(this.activeNav[this.activeIndex].scrollWrapper == 0 && this.activeIndex != 1){
-        this.activeNav[this.activeIndex].scrollWrapper++;
+        this.activeNav[this.activeIndex].scrollWrapper = this.scrollWrapper ++;
       }
       
       Toast.loading({
