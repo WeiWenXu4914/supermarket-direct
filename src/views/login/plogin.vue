@@ -494,11 +494,12 @@ export default {
     }
   }
   .bottom-msg {
-    position: fixed;
-    padding: 30px 0 40px 0;
+    position: relative;
+    padding: 30px 0 0 0;
     bottom: 0;
     width: calc(100vw - 20%);
     margin: 0 auto;
+    margin-top: 100px;
     border-top: 1px solid #F2F2F2;
     .other {
       position: absolute;

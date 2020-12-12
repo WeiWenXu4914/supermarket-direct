@@ -104,6 +104,7 @@ export default {
                 token: res?.token,
               };
               this.setUser(user);
+              
               this.$router.push("/");
               Notify({ type: "success", message: "登陆成功", duration: 1000 });
           }else{
@@ -198,11 +199,12 @@ export default {
     // box-shadow: 0px 1px 3px 1px #F2450B;
   }
   .bottom-msg {
-    position: fixed;
-    padding: 30px 0 40px 0;
+    position: relative;
+    padding: 40px 0 0 0;
     bottom: 0;
     width: calc(100vw - 10%);
     margin: 0 auto;
+    margin-top: 100px;
     border-top: 1px solid #F2F2F2;
     .other {
       position: absolute;

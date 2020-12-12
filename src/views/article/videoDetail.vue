@@ -258,6 +258,13 @@ export default {
     this.userIndex();
     this.getCommList();
   },
+   watch: {
+    $route(to, from) {
+      if (to.query) {
+        this.$router.go(0);
+      }
+    },
+  },
   methods: {
     goProductDetail(val) {
       var obj = {

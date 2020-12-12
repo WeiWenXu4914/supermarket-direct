@@ -116,6 +116,7 @@ import area from "./actions/area";
 import { isvalidPhone } from "@/utils/validate";
 import { getCode, bindingPhoneVerif } from "@/api/login";
 import { Notify, Toast } from "vant";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "shop",
   data() {
@@ -150,10 +151,15 @@ export default {
       onething: "",
     };
   },
+  computed: {
+    ...mapState(["user"]),
+  },
   created() {
+    this.formData.mobile = this.user.phone;
     this.getentClass();
   },
   methods: {
+    ...mapMutations(["upUser"]),
     PhoneVerif(){
   		if (isvalidPhone(this.formData.mobile)) {
         bindingPhoneVerif(this.formData);
@@ -258,12 +264,22 @@ export default {
         district: this.county_list,
         site: this.address,
       };
-      console.log(ent)
 
       checkinPost(ent).then((res) => {
         if (res.code == 100) {
+            var obj = {
+              key: "mmtid",
+              val: 3,
+            };
+            this.upUser(obj);
+
+            var obj = {
+              key: "name",
+              val: this.text,
+            };
+            this.upUser(obj);
+          this.$router.go(-1)
           Notify({ type: "success", message: "入驻成功" });
-          this.$route.go(-1)
         } else {
           this.$toast.fail(res.msg);
         }

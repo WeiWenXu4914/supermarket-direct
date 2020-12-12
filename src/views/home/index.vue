@@ -344,6 +344,14 @@ export default {
         } else {
           this.activePreNav = res.data;
         }
+
+        if(this.activePreNav.length <= 0 && type == 1) {
+          
+          if(id == 0) {
+            this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
+            this.getHomeData(this.activeNav[this.activeIndex].nid);
+          }
+        }
       });
     },
     // 首页数据
@@ -354,7 +362,7 @@ export default {
         num: this.activeNav[this.activeIndex].num,
         nid: id,
       };
-
+      
       getHome(obj).then((res) => {
         Toast.clear();
         if (res.data.length > 0) {

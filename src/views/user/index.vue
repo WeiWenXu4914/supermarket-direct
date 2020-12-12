@@ -250,7 +250,7 @@
         </div>
       </div>
       <div class="footer">
-        <van-cell title="绑定微信号" v-if="bindingWx" is-link @click="$router.push('/wlogin')" />
+        <!-- <van-cell title="绑定微信号" v-if="bindingWx" is-link @click="$router.push('/wlogin')" /> -->
         <van-cell
           title="商家注册"
           is-link
@@ -432,6 +432,8 @@ export default {
     removeToken() {
       localStorage.removeItem("LoginToken");
       localStorage.removeItem("Token");
+      localStorage.removeItem("selectives");
+      localStorage.removeItem("Authorization");
       this.delUser();
       Toast("成功退出账号，即将跳转首页");
       let timer = setTimeout(() => {

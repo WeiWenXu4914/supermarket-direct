@@ -6,6 +6,7 @@
         v-for="item in tabbarData"
         :key="item.tab_link"
         @click="getVal(item)"
+        :style="[{ display: item.tab_link == 'add' && !addshow ? 'none' : '' }]"
       >
         <!-- :style="[{ display: item.tab_link == 'add' && !addshow ? 'none' : '' }]" -->
         <template v-if="item.tab_link !== 'add'">
@@ -23,13 +24,13 @@
             </div>
           </div>
         </template>
-        <template v-else-if="item.tab_link == 'add' && addshow == false">
+        <!-- <template v-else-if="item.tab_link == 'add' && addshow == false">
           <div class="add-class">
             <div class="add-icon" @click="recommend">
               <img :src="item.tab_icon" alt="" />
             </div>
           </div>
-        </template>
+        </template> -->
         <span
           v-if="item.tab_name"
           class="tab-text"
@@ -120,7 +121,8 @@ export default {
       if (this.user.mmtid == 3) {
         this.show = true;
       } else {
-        this.$router.replace("/inviteBusinessmen");
+        this.show = false;
+        // this.$router.replace("/inviteBusinessmen");
       }
     },
     async getTabbat(type = 2) {
@@ -171,7 +173,8 @@ export default {
       if (this.user.mmtid == 3) {
         this.show = true;
       } else {
-        this.$router.replace("/inviteBusinessmen");
+        this.show = false;
+        // this.$router.replace("/inviteBusinessmen");
       }
     },
   },

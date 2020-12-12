@@ -56,6 +56,8 @@ export default {
   height: 50px;
   width: 100%;
   border-bottom: 1px #eee solid;
+  z-index: 999;
+  background: #fff;
 }
 .LoginTop_left {
   float: left;

@@ -31,7 +31,7 @@
         </div> -->
         <div
           style="margin-left: 10px"
-          v-if="article.mmt_id == 3"
+          v-if="article.mmt_id == 3 && article.memid != 1"
           @click="userHandle"
         >
           <van-button color="#D04443" size="mini"
@@ -254,6 +254,10 @@ export default {
       });
     },
     getpreview(val) {
+
+      this.goDetail(this.article.gid);
+      return false;
+
       let ua = window.navigator.userAgent.toLowerCase();
       if (ua.match(/MicroMessenger/i) != "micromessenger") {
         this.goDetail(this.article.gid);
@@ -305,6 +309,11 @@ export default {
       //  }
     },
     userHandle() {
+
+      if(this.article.memid == 1) {
+        return;
+      }
+
       if (this.article.mmt_id === 3) {
         if (this.$route.path == "/merchants/produce") {
           Toast("您已经在店铺内了");
@@ -578,7 +587,7 @@ export default {
       background: rgba(0, 0, 0, 0.3);
       line-height: 83px;
       font-size: 26px;
-      text-align: right;
+      text-align: center;
       z-index: 15;
       bottom: 0px;
       right: 0px;
