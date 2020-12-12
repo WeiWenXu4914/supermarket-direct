@@ -1,20 +1,20 @@
 <template>
     <div class="groupPurchaseClass">
-        <div class="card" @click="goGroupBookingDetail">
+        <div class="card" @click="goGroupBookingDetail(item)" v-for="(item,index) in dataList" :key="index">
             <div class="thumbnail">
-                <van-image src="https://img.yzcdn.cn/vant/cat.jpeg" width="100%" height="100" lazy-load fit="cover">
+                <van-image :src="item.pro_thumbnail" width="100%" height="100" lazy-load fit="cover">
                     <template v-slot:loading>
                         <van-loading type="spinner" size="20" />
                     </template>
                 </van-image>
             </div>
             <div class="detail">
-                <div class="title">{{ '标题女顾客的就是你肯定女款就是v看v你的杀人噶人噶发噶地方v但是v真实的尬舞' | strSub(30) }}</div>
+                <div class="title">{{ item.pro_name }}</div>
                 
                 <div class="monery_num">
                     <div class="monery">
                         <div class="icon">￥</div>
-                        <div class="text">60</div>
+                        <div class="text">{{ item.group_price }}</div>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
     </div>
 </template>
 <script>
-import { GroupBuyList } from './actions/index';
+import { activityGroupBuyList } from './actions/index';
 export default {
     props: ['groupPurchase'],
     name: 'group-purchase',
@@ -32,17 +32,23 @@ export default {
         }
     },
     mounted() {
-        console.log("aaa")
+
         let id = this.groupPurchase.entid;
-        GroupBuyList(id)
+        activityGroupBuyList(55)
         .then((res) => {
-            console.log(res)
+            this.dataList = res.data;
         })
 
     },
     methods: {
-        goGroupBookingDetail() {
-            this.$router.push('/groupPurchaseDetail')
+        goGroupBookingDetail(item) {
+            let data = JSON.stringify(item);
+            this.$router.push({
+                path:'/groupPurchaseDetail',
+                query: {
+                    data
+                }
+            })
         }
     }
 }

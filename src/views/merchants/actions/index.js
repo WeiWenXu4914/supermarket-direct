@@ -56,6 +56,7 @@ export function groupBuyingList(id) {
 /**
  * 优惠大礼包(团购)
 */
-export function GroupBuyList(id) {
-  return request('/api/GroupBuyList', 'post', { entid: id });
+export function activityGroupBuyList(id) {
+  return request('/api/activityGroupBuyList', 'post', { entid: id });
 }
+

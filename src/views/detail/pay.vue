@@ -150,6 +150,7 @@ export default {
   },
   watch: {},
   async created() {
+    
     //商品数量
     if (this.$route.query.pro_id == undefined)
       return Toast("请返回选择购的商品");
@@ -281,7 +282,6 @@ export default {
       //   Toast("请在微信中支付");
       //   return;
       // }
-      
       if(this.$refs.myAddress.addressStoreList.length == 0  && this.active == 0) {
         Toast("该商家未设置店铺地址，无法下单")
         return;

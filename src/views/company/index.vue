@@ -8,7 +8,7 @@
         <div class="return">
           <van-icon color="#204051" name="arrow-left" class="title-icon" @click="$router.go(-1)" />
           <div>
-            <span style="background:#204051" v-for="(val, inx) in 3" :key="inx"></span>
+            <!-- <span style="background:#204051" v-for="(val, inx) in 3" :key="inx"></span> -->
           </div>
         </div>
         <div class="introduce">

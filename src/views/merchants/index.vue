@@ -231,7 +231,6 @@ export default {
       }
 
       this.$store.commit('setStoreTab',obj);
-      console.log(this.$store.state.watchStoreTab.active)
 
     }
   },
@@ -359,6 +358,7 @@ export default {
     getPageData() {
       var id = JSON.parse(this.$Utils.demoResponse(this.$route.query.res));
       getEnterpriseHomepage(id.entid).then((res) => {
+
         setTimeout(function () {
           Toast.clear();
         }, 200);
@@ -366,6 +366,14 @@ export default {
           this.merchantInfo = res.data;
           this.flag = true;
           this.tabbarList = res.data.ent_features;
+ 
+
+          const obj = {
+            class_name: "团购",
+            entfid: 4
+          }
+          this.tabbarList.push(obj);
+
 
           if (res.data.mem_attention != "未关注") {
             this.showImBtn = true;

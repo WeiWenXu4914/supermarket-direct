@@ -57,10 +57,10 @@
           <div class="rec-desc">粉丝</div>
           <div class="rec-num">{{ merchantInfo.attention_my_num }}</div>
         </div>
-        <div class="numbers-rec">
+        <!-- <div class="numbers-rec">
           <div class="rec-desc">员工</div>
           <div class="rec-num">{{ merchantInfo.my_employee }}</div>
-        </div>
+        </div> -->
       </div>
       <div class="myIdcard" @click="showIdcard">
         <span>我的名片</span>
@@ -102,7 +102,7 @@
             <span class="time_title">店铺地址：</span>
             <span class="time_con">{{ merchantInfo.ent_detailed_site }}</span>
           </div>
-          <img src="../img/site.svg" alt="" @click="openMap">
+          <!-- <img src="../img/site.svg" alt="" @click="openMap"> -->
         </div>
       </div>
       <div class="phone" @click="callPhone(merchantInfo.service_phone)">
@@ -259,7 +259,7 @@ export default {
         
           wx.ready(() => {
                   wx.getLocation({
-                      type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                      type: 'wgs84', 
                       success: (res) => { 
                           resovle(res);
                       }
@@ -463,56 +463,56 @@ export default {
       URL = window.location.href.split('#')[0] || window.location.href
     }
 
-    wexinConfig(URL)
-    .then((res) => {
+    // wexinConfig(URL)
+    // .then((res) => {
       
-      wx.config({
-        debug: false, 
-        appId: res.data.appId,
-        timestamp: res.data.timestamp,
-        nonceStr: res.data.nonceStr,
-        signature: res.data.signature,
-        jsApiList: [
-          'checkJsApi',
-          'onMenuShareTimeline',
-          'onMenuShareAppMessage',
-          'onMenuShareQQ',
-          'onMenuShareWeibo',
-          'onMenuShareQZone',
-          'hideMenuItems',
-          'showMenuItems',
-          'hideAllNonBaseMenuItem',
-          'showAllNonBaseMenuItem',
-          'translateVoice',
-          'startRecord',
-          'stopRecord',
-          'onVoiceRecordEnd',
-          'playVoice',
-          'onVoicePlayEnd',
-          'pauseVoice',
-          'stopVoice',
-          'uploadVoice',
-          'downloadVoice',
-          'chooseImage',
-          'previewImage',
-          'uploadImage',
-          'downloadImage',
-          'getNetworkType',
-          'openLocation',
-          'getLocation',
-          'hideOptionMenu',
-          'showOptionMenu',
-          'closeWindow',
-          'scanQRCode',
-          'chooseWXPay',
-          'openProductSpecificView',
-          'addCard',
-          'chooseCard',
-          'openCard'
-      ] // 必填，需要使用的JS接口列表
-      });
-    })
-    wx.error(function(res){});
+    //   wx.config({
+    //     debug: false, 
+    //     appId: res.data.appId,
+    //     timestamp: res.data.timestamp,
+    //     nonceStr: res.data.nonceStr,
+    //     signature: res.data.signature,
+    //     jsApiList: [
+    //       'checkJsApi',
+    //       'onMenuShareTimeline',
+    //       'onMenuShareAppMessage',
+    //       'onMenuShareQQ',
+    //       'onMenuShareWeibo',
+    //       'onMenuShareQZone',
+    //       'hideMenuItems',
+    //       'showMenuItems',
+    //       'hideAllNonBaseMenuItem',
+    //       'showAllNonBaseMenuItem',
+    //       'translateVoice',
+    //       'startRecord',
+    //       'stopRecord',
+    //       'onVoiceRecordEnd',
+    //       'playVoice',
+    //       'onVoicePlayEnd',
+    //       'pauseVoice',
+    //       'stopVoice',
+    //       'uploadVoice',
+    //       'downloadVoice',
+    //       'chooseImage',
+    //       'previewImage',
+    //       'uploadImage',
+    //       'downloadImage',
+    //       'getNetworkType',
+    //       'openLocation',
+    //       'getLocation',
+    //       'hideOptionMenu',
+    //       'showOptionMenu',
+    //       'closeWindow',
+    //       'scanQRCode',
+    //       'chooseWXPay',
+    //       'openProductSpecificView',
+    //       'addCard',
+    //       'chooseCard',
+    //       'openCard'
+    //   ] // 必填，需要使用的JS接口列表
+    //   });
+    // })
+    // wx.error(function(res){});
   
   },
 };
@@ -543,6 +543,7 @@ export default {
       .head-info {
         margin-left: 11px;
         .head-title {
+          width: 50vw;
           font-family: ArialMT;
           font-weight: 400;
           color: #212121;
