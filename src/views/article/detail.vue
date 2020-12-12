@@ -89,7 +89,7 @@
       </div>
 
       <div
-        v-else-if="articleContent == '' && article.gc_id != 2"
+        v-else-if="article.gc_id != 2"
         class="article-content"
       >
         <!-- :style="[{marginTop:(atyicleTitle.length < 9?'60px':'')}]"  -->
@@ -104,6 +104,11 @@
             </template>
           </van-image>
         </div>
+        <div
+          v-html="articleContent"
+          @click="showImg($event)"
+          class="html-class"
+        ></div>
       </div>
 
       <div v-else class="article-content">
@@ -1856,7 +1861,6 @@ a:hover {
   /deep/ p {
     img {
       width: 100%;
-      margin-bottom: 3px;
       object-fit: cover;
     }
   }

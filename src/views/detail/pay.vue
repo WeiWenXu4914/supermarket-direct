@@ -8,7 +8,7 @@
     <div class="navigator-address">
       <div class="navigator">
         <button
-         v-for="(item, index) in menuList"
+         v-for="(item,index) in menuList"
          :key="index"
          :class="active === index ? 'active' : ''"
          @click="changeWay(index)"
