@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="group-buy-desc" v-if="data.num - data.group_num != 0">
-                <p>已参加团购人数:<span> {{data.group_num}} </span>人，还需 <span>{{ data.num - data.group_num }}</span> 人即可团购成功！</p>
+                <p>已参加团购人数:<span> {{data.group_num - 1 }} </span>人，还需 <span>{{ data.num - data.group_num + 1 }}</span> 人即可团购成功！</p>
             </div>
             <div class="group-buy-desc" v-else>
                 <p>
@@ -95,10 +95,10 @@
                 </div>
             </div> -->
             <div class="right">
-                <button class="b2">
+                <button class="b2" @click="confirmPay">
                     <div class="icon">￥</div>
                     <div class="monery_text">{{  computePrice(data.group_price, countChoose) }}</div>
-                    <div class="text" @click="confirmPay">立即抢购</div>
+                    <div class="text">立即抢购</div>
                 </button>
             </div>
         </div>
@@ -199,11 +199,11 @@ export default {
     computePrice(price, num) {
 
         let total = 0;
-        if(this.data.pro_price) {
+        if(this.data != {}) {
           total = (parseFloat(price) * 100 * num ) / 100;
         }
-
-        return total <= 0 ? 0.01 : total.toFixed(2);
+ 
+        return isNaN(total) ? 0 : total.toFixed(2);
       
     },
     //支付
