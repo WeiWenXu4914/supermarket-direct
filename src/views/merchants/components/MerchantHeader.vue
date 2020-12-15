@@ -327,7 +327,7 @@ export default {
       }
     },
     str(value) {
-      return value.toFixed(2);
+      return value.toFixed(1);
     },
     async changeFocus(type) {
       if (type == "已关注") {

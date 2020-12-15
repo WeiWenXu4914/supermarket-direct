@@ -125,8 +125,8 @@ export default {
 
 <style scoped lang='less'>
 .head {
-  width: 375px;
-  height: auto;
+  width: 100%;
+  height: 200px;
   position: fixed;
   top: 0;
   left: 0;
@@ -161,7 +161,7 @@ export default {
     }
   }
   .introduce {
-    min-height: 90vh;
+    // min-height: 90vh;
     img {
       max-height: 100%;
       width: 100%;

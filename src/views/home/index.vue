@@ -795,7 +795,7 @@ export default {
   // }
   /deep/ .van-tab--active {
     font-size: 17px;
-    font-weight: 700;
+    font-weight: 600;
   }
   /deep/ .van-tabs__line {
     display: none;

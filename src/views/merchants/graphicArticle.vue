@@ -208,6 +208,9 @@ export default {
 
 <style scoped lang='less'>
 .user-page {
+  width: 96%;
+  background: #eee;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   //   padding-top: 50px;
