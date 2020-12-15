@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="group-buy-desc" v-if="data.num - data.group_num != 0">
-                <p>已参加团购人数:<span> {{data.group_num}} </span>人，还需 <span>{{ data.num - data.group_num }}</span> 人即可团购成功！</p>
+                <p>已参加团购人数:<span> {{data.group_num - 1 }} </span>人，还需 <span>{{ data.num - data.group_num + 1 }}</span> 人即可团购成功！</p>
             </div>
             <div class="group-buy-desc" v-else>
                 <p>
