@@ -9,28 +9,37 @@
             :class="[!barClass ? '' : 'navClassTrue']"
         />
         <div class="lunbo">
-            <img :src="data.pro_thumbnail" alt="">
+            <van-image
+              width="100vw"
+              height="10rem"
+              fit="cover"
+              :src="data.pro_thumbnail"
+            />
         </div>
         <div class="center">
             <p class="product_desc">{{ data.pro_name }}</p>
             <div class="product_list">
                 <div class="pro_name">{{ data.name }}</div>
-                <div class="right">
-                    <div class="pro_num">已参加团购人数:{{data.group_num}}人</div>
-                </div>
-                <p>剩余{{ data.num - data.group_num }}人即可团购成功！</p>
             </div>
             <div class="price_all">
                 <div class="title">原价</div>
                 <div class="monery">
-                    {{ data.pro_price * countChoose }}元
+                    {{ computePrice(data.pro_price, countChoose) }}元
                 </div>
             </div>
             <div class="price_group">
                 <div class="title">团购价</div>
                 <div class="monery">
-                    {{ data.group_price * countChoose }}元
+                    {{ computePrice(data.group_price, countChoose) }}元
                 </div>
+            </div>
+            <div class="group-buy-desc" v-if="data.num - data.group_num != 0">
+                <p>已参加团购人数:<span> {{data.group_num}} </span>人，还需 <span>{{ data.num - data.group_num }}</span> 人即可团购成功！</p>
+            </div>
+            <div class="group-buy-desc" v-else>
+                <p>
+                  <span>立即下单即可成团！</span>
+                </p>
             </div>
         </div>
         <!--已选数量-->
@@ -48,10 +57,10 @@
         </div>
         <div class="eva">
             <div class="e1">
-                <p class="p1">评价100</p>
-                <p class="p2">查看全部 <van-icon name="arrow" /></p>
+                <p class="p1">评价0</p>
+                <p class="p2" @click="forward">查看全部 <van-icon name="arrow" /></p>
             </div>
-            <div class="e2">
+            <!-- <div class="e2">
                 <img src="./img/01987a5d837c0fa8012060bef252eb@2x.png" alt class="i1" />
                 <p>希金斯</p>
                 <van-rate 
@@ -70,25 +79,25 @@
                 <img src="./img/1593611640(1)@2x(1).png" alt />
                 <img src="./img/1593611640(1)@2x(1).png" alt />
                 <img src="./img/1593611640(1)@2x(1).png" alt />
-            </div>
+            </div> -->
         </div>
         <div class="kong"></div>
         <div class="xia">
-            <div class="left">
+            <!-- <div class="left">
                 <div class="x1">
                     <van-icon name="shop-o" size="26" color="#646464" />
                     <p>店铺</p>
                 </div>
-                <!-- <div class="x2" @click="collect">
+                <div class="x2" @click="collect">
                     <van-icon name="like-o" size="26" color="#646464" v-show="!isCollection"/>
                     <van-icon name="like" size="26" color="#f50" v-show="isCollection"/>
                     <p>收藏</p>
-                </div> -->
-            </div>
+                </div>
+            </div> -->
             <div class="right">
                 <button class="b2">
                     <div class="icon">￥</div>
-                    <div class="monery_text">70</div>
+                    <div class="monery_text">{{  computePrice(data.group_price, countChoose) }}</div>
                     <div class="text" @click="confirmPay">立即抢购</div>
                 </button>
             </div>
@@ -97,7 +106,7 @@
         v-model="numShow"
         :round="true"
         duration="0.2"
-        @closed="closeChoose"
+        @click-close-icon="closeChoose"
         title="请选择数量"
         >
         <div class="contentNum">
@@ -109,7 +118,7 @@
                 </h4>
             </template>
             <template #desc>
-                <span style="color: #d04445; font-size: 18px">￥{{ data.group_price }}</span>
+                <span style="color: #d04445; font-size: 18px">￥{{ computePrice(data.group_price, countChoose) }}</span>
             </template>
             <template #price>
                 <span style="color: #686868; font-size: 17px"
@@ -137,6 +146,9 @@
             <button class="confirmNum" @click="confirmNum">确定</button>
         </div>
         </van-action-sheet>
+        <van-overlay :show="isPaying">
+          <span class="overlay-text">正在为您进入支付环境</span>
+        </van-overlay>
   </div>
 </template>
 
@@ -148,7 +160,7 @@ import {
   orderDel,
   orderState,
 } from "./actions/index.js";
-import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon, ImagePreview } from "vant";
+import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon, ImagePreview, Image as VanImage } from "vant";
 export default {
   name: "group-gurchase-detail",
   data() {
@@ -161,19 +173,47 @@ export default {
       address: [],
       numShow: false,
       countChoose: 1,
+      countChooseTransition: 0, 
       data: {},
       wxMsg: {},
+      firstChooseCount: 0, 
+      isPaying: false,
     };
   },
+  watch: {
+    countChoose: function(newVal,oldVal) {
+
+      if(newVal > this.data.num - this.firstChooseCount) {
+        this.countChoose = this.data.num - this.firstChooseCount;
+      } else if(newVal < 0) {
+        this.countChoose = 1;
+      }
+      this.data.group_num = this.firstChooseCount + this.countChoose;
+    }
+  },
   methods: {
+    forward() {
+      Toast("暂无评价，赶快下单评价吧")
+    },
+    //计算金额
+    computePrice(price, num) {
+
+        let total = 0;
+        if(this.data.pro_price) {
+          total = (parseFloat(price) * 100 * num ) / 100;
+        }
+
+        return total <= 0 ? 0.01 : total.toFixed(2);
+      
+    },
     //支付
     async confirmPay() {
       // 判断支付环境
-      // let ua = window.navigator.userAgent.toLowerCase();
-      // if (!(ua.match(/MicroMessenger/i) == 'micromessenger')) { 
-      //   Toast("请在微信中支付");
-      //   return;
-      // }
+      let ua = window.navigator.userAgent.toLowerCase();
+      if (!(ua.match(/MicroMessenger/i) == 'micromessenger')) { 
+        Toast("请在微信中支付");
+        return;
+      }
       if(this.address.length == 0) {
         Toast("请先设置收货地址");
         return;
@@ -189,6 +229,7 @@ export default {
           way: 3,
       }
       let order_number = "";
+      this.isPaying = true;
      await pay(order)
       .then((res) => {
           console.log(res)
@@ -199,14 +240,16 @@ export default {
                 order_no: order_number
             }  
             wxpay(obj).then((res) => {
-                    this.wxMsg = res.data;
-                    this.callpay(1, obj, this);
+                this.wxMsg = res.data;
+                this.callpay(1, obj, this);
             });
           } else {
               Toast(res.msg);
+              this.isPaying = false;
           }
       })
       .catch((err) => {
+          this.isPaying = false;
           console.log(err);
           Toast("请求错误");
       })
@@ -268,7 +311,9 @@ export default {
     //获取详情数据
     getData() {
         this.data = JSON.parse(this.$route.query.data);
-        console.log(this.data)
+        this.firstChooseCount = this.data.group_num;
+        this.countAll = this.data.num;
+        this.data.group_num ++;
     },
     //限制输入数量
     countNum() {
@@ -276,50 +321,27 @@ export default {
         this.countChoose = 1;
       }
     },
-    // 立即下单
+    // 确定数量
     confirmNum() {
-      //判断是否有库存
-      if (this.canNotPay) {
-        Toast("该商品已无库存，请您挑选其他商品");
-        setTimeout(() => {
-          this.$router.go(-1);
-        }, 2000);
-        return;
-      }
-
-      // 普通下单
-      var queryVal = {
-        pro_id: this.proDetail.proid,
-        pay_num: parseInt(this.countChoose),
-      };
-
-      this.$router.push({
-        path: "/pay",
-        query: queryVal,
-      });
+      this.numShow = false;
     },
     // 下单商品数量增加
     addNum() {
-      if (this.proDetail.pro_inventory <= 0) {
-        Toast("没有库存了");
+      if ((this.data.num - this.firstChooseCount) == this.countChoose) {
+        Toast("名额不足");
         return;
       }
-      this.countChoose++;
-      this.proDetail.pro_inventory--;
+      this.countChoose ++;
     },
     // 下单商品数量减少
     decreaseNum() {
       if (this.countChoose > 1) {
-        this.countChoose--;
-        this.countChoose = parseInt(this.countChoose);
-        this.proDetail.pro_inventory++;
-        // this.price = total < 0 ? 0 : total.toFixed(2);
+        this.countChoose --;
       }
     },
     // 关闭面板
     closeChoose() {
       this.numShow = false;
-      this.couponApply = false;
       this.countChoose = 1;
     },
     getAddress() {
@@ -338,7 +360,7 @@ export default {
       });
     },
     toEditAddress() {
-        if(this.setBydefault == true){
+        if(this.address.length !== 0){
           this.$router.push({path:'/myaddress',query: { add: 1 } })
         }else{
           this.$router.push({path:'/add',query: { add: 1 } })
@@ -372,6 +394,7 @@ export default {
 <style scoped lang="less">
 .detail {
     width: 100%;
+    height: 100%;
     background-color: rgb(247, 247, 247);
     .contentNum {
         background: #fafafa;
@@ -523,16 +546,24 @@ export default {
             font-size: 0.45rem;
             font-weight: bold;
             margin-left: 0.5rem;
-            margin-top: 0.2rem;
             padding-top: 0.3rem;
-            padding-bottom: 0.2rem;
+        }
+        .group-buy-desc {
+          width: 90%;
+          padding-top: 5px;
+          margin: 0 auto;
+          p {
+              margin-top: 10px;
+              text-align: center;
+          }
+          span {
+              font-size: 20px;
+              color: red;
+          }
         }
         .product_list {
             width: 90%;
-            margin: 0.2rem auto;
-            // display: flex;
-            // justify-content: space-between;
-            // align-items: center;
+            margin: 0 auto;
             .pro_name {
                 font-size: 17px;
                 color: #232323;
@@ -547,7 +578,6 @@ export default {
                 .pro_num {
                     // width: 60%;
                 }
-                
             }
         }
     }
@@ -556,6 +586,10 @@ export default {
         margin-top: 0.2rem;
         margin-bottom: 57px;
         .e1 {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 1rem;
         .p1 {
             color: #212121;
             font-weight: bold;
@@ -567,7 +601,8 @@ export default {
         .p2 {
             color: #606060;
             display: inline-block;
-            margin: 0.5rem 0rem 0rem 5.8rem;
+            margin-right: 10px;
+            // margin: 0.5rem 0rem 0rem 5.8rem;
         }
         }
         .e2 {
@@ -635,7 +670,7 @@ export default {
             }
         }
         .right {
-            width: 80%;
+            width: 100%;
             display: flex;
             flex-direction: row;
             .b1 {

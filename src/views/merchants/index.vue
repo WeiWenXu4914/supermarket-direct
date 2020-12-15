@@ -372,7 +372,7 @@ export default {
             class_name: "团购",
             entfid: 4
           }
-          this.tabbarList.push(obj);
+          // this.tabbarList.push(obj);
 
 
           if (res.data.mem_attention != "未关注") {
