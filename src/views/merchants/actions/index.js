@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 // 企业信息
 export const getEnterpriseHomepage = (id) => {
-  return request('api/EnterpriseHome', 'post', { 'id': id });
+  return request('api/EnterpriseHome?id='+id, 'get');
 };
 
 /**

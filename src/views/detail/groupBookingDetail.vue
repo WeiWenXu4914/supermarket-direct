@@ -79,11 +79,7 @@
         <div class="shop">
             <p class="p1">商品详情</p>
             <p class="pro_desc" v-if="proDataList.pro_desc != null">
-              <van-image :src="proDataList.pro_desc" lazy-load width="100%" height="auto">
-                <template v-slot:loading>
-                  <van-loading type="spinner" size="20" />
-                </template>
-              </van-image>
+              <div v-html="proDataList.pro_desc" class="html-class" @click="showImg($event)"></div>
             </p>
         </div>
         <!-- <div class="eva">
@@ -148,7 +144,7 @@
 
 <script>
 import { groupBuyingDetails, OpenJoinGroupBuying, editGroupBuying, wxpay, memberCollect } from './actions/index.js';
-import { Toast } from 'vant';
+import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon, ImagePreview } from "vant";
 export default {
   name: "group-booking-detail",
   data() {
@@ -156,8 +152,8 @@ export default {
       current: 0,
       value:4,
       barClass:false,
-      proDataList:'',
-      groupList:'',
+      proDataList: [],
+      groupList:[],
       proDataListL:0,
       collectionState: false
     };
@@ -166,10 +162,21 @@ export default {
     this.groupBuyingDetailsFun()
   },
   methods: {
+    showImg(e) {
+      if (e.target.tagName == "IMG") {
+        ImagePreview({
+          images: [e.target.src],
+          showIndex: false,
+          closeOnPopstate: true, //页面回退关闭预览
+          closeable: true,
+        });
+      }
+    },
     groupBuyingDetailsFun() {
       var id = this.$route.query.id;
       groupBuyingDetails(id).then(res=>{
         this.proDataList = res.data.productList[0];
+        console.log(res)
         this.proDataListL = res.data.productList[0].pro_carousel.length;
         this.groupList = res.data;
       })
@@ -703,6 +710,19 @@ export default {
   }
   .navClassTrue {
     background:rgba(255,255,255,0);
+  }
+  .html-class {
+    width: 100%;
+    /deep/ p {
+      font-size: 17px;
+      font {
+        text-indent: 2em;
+      }
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
   }
 }
 </style>
