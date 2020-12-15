@@ -19,10 +19,13 @@
                 </div>
             </div>
         </div>
+        <van-empty description="无团购信息" v-if="dataList.length === 0"/>
+
     </div>
 </template>
 <script>
 import { activityGroupBuyList } from './actions/index';
+import { Empty } from 'vant';
 export default {
     props: ['groupPurchase'],
     name: 'group-purchase',
@@ -34,9 +37,10 @@ export default {
     mounted() {
 
         let id = this.groupPurchase.entid;
-        activityGroupBuyList(55)
+        activityGroupBuyList(id)
         .then((res) => {
             this.dataList = res.data;
+            console.log(res)
         })
 
     },

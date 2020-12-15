@@ -249,30 +249,33 @@ export default {
 
     },
     changeChannel (val) {
-
-      if (val != this.activeChannel.index) {
+      this.query.num = 0;
+      this.query.pjid = this.activeIndex + 1;
+      this.activeChannel.index = this.activeIndex;
+      this.get();
+      // if (val != this.activeChannel.index) {
  
-        this.query = {
-          num: 1,
-          size: 10,
-          pjid: this.activeIndex + 1
-        }
+      //   this.query = {
+      //     num: 1,
+      //     size: 10,
+      //     pjid: this.activeIndex + 1
+      //   }
 
-        // 加载状态结束
-        this.loading = false
-        // 数据全部加载完成
-        this.finished = true
+      //   // 加载状态结束
+      //   this.loading = false
+      //   // 数据全部加载完成
+      //   this.finished = true
 
-        this.activeChannel.index = this.activeIndex
-        this.get()
+      //   this.activeChannel.index = this.activeIndex
+      //   this.get()
 
-      }else{
-        // 下一帧：延时一会执行，定位到以往阅读位置
-        this.$nextTick(() => {
-          const dom = this.$refs['scroll-wrapper'][this.activeIndex]
-          dom.scrollTop = this.activeChannel.scrollTop
-        })
-      }
+      // }else{
+      //   // 下一帧：延时一会执行，定位到以往阅读位置
+      //   this.$nextTick(() => {
+      //     const dom = this.$refs['scroll-wrapper'][this.activeIndex]
+      //     dom.scrollTop = this.activeChannel.scrollTop
+      //   })
+      // }
     },
     // 监听滚动事件
     remember (e) {
