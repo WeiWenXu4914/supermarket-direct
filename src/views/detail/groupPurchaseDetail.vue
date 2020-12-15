@@ -274,7 +274,7 @@ export default {
             //修改支付状态接口  订单号
             orderState(obj.order_no).then((res) => {
               if (res.code == 100) {
-                This.$route.go(-1);
+                This.$router.go(-1);
               }
             });
           } else {
