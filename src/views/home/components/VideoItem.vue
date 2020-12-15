@@ -593,11 +593,16 @@ export default {
       max-height: 200px;
     }
     .imgPlayer {
+      display: flex;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
       width: 100%;
+      height: 100%;
       text-align: center;
-      display: block;
+      line-height: 100%;
       position: absolute;
-      top: 62.25px;
+      top: 0px;
       left: 0px;
       z-index: 2;
     }

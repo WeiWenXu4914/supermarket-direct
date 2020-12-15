@@ -556,7 +556,7 @@ export default {
       img {
         border-radius: 3px;
         width: 49.5%;
-        height: 160px;
+        height: 100px;
         object-fit: cover;
       }
     }

@@ -128,14 +128,14 @@
         <van-empty v-else description="该企业很懒，未发布任何内容" />
         <!-- <bottomTabr v-show="SkShow"/> -->
 
-        <div class="ImClass" v-show="showImBtn" @click="getImInfo">客户群</div>
-        <van-share-sheet
+        <!-- <div class="ImClass" v-show="showImBtn" @click="getImInfo">客户群</div> -->
+        <!-- <van-share-sheet
           v-if="group != ''"
           v-model="showGroup"
           title="商家的群聊"
           :options="group"
           @select="imRouter"
-        />
+        /> -->
       </div>
     </van-pull-refresh>
     <!-- 分享 -->
@@ -277,7 +277,7 @@ export default {
       }
     },
     changeFun() {
-      this.activeKey = Date.parse(new Date());
+      // this.activeKey = Date.parse(new Date());
     },
     onSearchFun() {
       this.$refs.product[0].productSearch(this.searchValue);
