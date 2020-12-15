@@ -95,10 +95,10 @@
                 </div>
             </div> -->
             <div class="right">
-                <button class="b2">
+                <button class="b2" @click="confirmPay">
                     <div class="icon">￥</div>
                     <div class="monery_text">{{  computePrice(data.group_price, countChoose) }}</div>
-                    <div class="text" @click="confirmPay">立即抢购</div>
+                    <div class="text">立即抢购</div>
                 </button>
             </div>
         </div>
@@ -199,11 +199,11 @@ export default {
     computePrice(price, num) {
 
         let total = 0;
-        if(this.data.pro_price) {
+        if(this.data != {}) {
           total = (parseFloat(price) * 100 * num ) / 100;
         }
-
-        return total <= 0 ? 0.01 : total.toFixed(2);
+ 
+        return isNaN(total) ? 0 : total.toFixed(2);
       
     },
     //支付
