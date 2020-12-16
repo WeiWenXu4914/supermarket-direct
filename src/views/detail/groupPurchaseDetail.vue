@@ -575,9 +575,7 @@ export default {
                 align-items: center;
                 color: #474747;
                 font-size: 12px;
-                .pro_num {
-                    // width: 60%;
-                }
+                
             }
         }
     }

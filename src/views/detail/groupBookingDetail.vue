@@ -17,7 +17,7 @@
                 width="100%"
                 height="400px"
                 lazy-load
-                fit="scale-down">
+                fit="cover">
                 <template v-slot:loading>
                   <van-loading type="spinner" size="20" />
                 </template>
@@ -62,10 +62,10 @@
             </div>
         </div> -->
         <div class="booking" v-if="groupList != ''">
-            <div class="title">{{ groupList.GroupBuyingList.length }}人在拼单，可直接参与</div>
-            <div class="user" v-for="(item, index) in groupList.GroupBuyingList" v-if="groupList.GroupBuyingList.length > 0">
+            <div class="title">{{ groupList.pro_gb_num }}人团，{{ groupList.GroupBuyingList.length }}人在拼单，下单即可享受活动优惠</div>
+            <div class="user" v-for="(item, index) in groupList.GroupBuyingList" :key="index">
                 <div class="left">
-                  <img :src="itm.mem_head_portrait" alt="" v-for="(itm, inx) in item.JoinGroupBuying">
+                  <img :src="itm.mem_head_portrait" alt="" v-for="(itm, inx) in item.JoinGroupBuying" :key="inx">
                 </div>
                 <div class="right">
                     <div class="detail">
@@ -76,10 +76,21 @@
                 </div>
             </div>
         </div>
+        <!--地址-->
+        <div class="address" @click="toEditAddress">
+            <span>送至</span>
+            <span v-if="address.length != 0">{{ address.province }} {{ address.city }} {{ address.district }} {{ address.detailed_site }}</span>
+            <span v-else>您还没有添加默认地址</span>
+            <van-icon class="icon" name="arrow" />
+        </div>
         <div class="shop">
             <p class="p1">商品详情</p>
             <p class="pro_desc" v-if="proDataList.pro_desc != null">
-              <div v-html="proDataList.pro_desc" class="html-class" @click="showImg($event)"></div>
+              <van-image :src="proDataList.pro_desc" lazy-load width="100%" height="auto">
+                <template v-slot:loading>
+                  <van-loading type="spinner" size="20" />
+                </template>
+              </van-image>
             </p>
         </div>
         <!-- <div class="eva">
@@ -143,8 +154,8 @@
 </template>
 
 <script>
-import { groupBuyingDetails, OpenJoinGroupBuying, editGroupBuying, wxpay, memberCollect } from './actions/index.js';
-import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon, ImagePreview } from "vant";
+import { groupBuyingDetails, OpenJoinGroupBuying, editGroupBuying, wxpay, memberCollect,shippingAddress } from './actions/index.js';
+import { Toast } from 'vant';
 export default {
   name: "group-booking-detail",
   data() {
@@ -152,37 +163,54 @@ export default {
       current: 0,
       value:4,
       barClass:false,
-      proDataList: [],
-      groupList:[],
+      proDataList:'',
+      groupList:'',
       proDataListL:0,
-      collectionState: false
+      collectionState: false,
+      address: [],
     };
   },
   created() {
-    this.groupBuyingDetailsFun()
+    this.groupBuyingDetailsFun();
+    this.getAddress();
   },
   methods: {
-    showImg(e) {
-      if (e.target.tagName == "IMG") {
-        ImagePreview({
-          images: [e.target.src],
-          showIndex: false,
-          closeOnPopstate: true, //页面回退关闭预览
-          closeable: true,
-        });
-      }
+    getAddress() {
+      shippingAddress()
+      .then((res) => {
+        let addressList = res.data;
+        for(let i = 0; i < addressList.length; i++) {
+          if(addressList[i].by_default == 1) {
+            this.address = addressList[i];
+            break;
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+    },
+    toEditAddress() {
+        if(this.address.length !== 0){
+          this.$router.push({path:'/myaddress',query: { add: 1 } })
+        }else{
+          this.$router.push({path:'/add',query: { add: 1 } })
+        }
     },
     groupBuyingDetailsFun() {
       var id = this.$route.query.id;
       groupBuyingDetails(id).then(res=>{
         this.proDataList = res.data.productList[0];
-        console.log(res)
         this.proDataListL = res.data.productList[0].pro_carousel.length;
         this.groupList = res.data;
       })
     },
     // 开团
     OpenGroupBuying() {
+      if(this.address.length == 0) {
+        Toast("请先设置收货地址");
+        return;
+      }
       if(this.isWechat()){
         var obj = {
           pgbid:this.groupList.pgbid,
@@ -369,6 +397,27 @@ export default {
             padding: 2px 5px;
             font-size: 12px;
             background: rgba(0, 0, 0, 0.1);
+        }
+    }
+    .address {
+        display: flex;
+        position: relative;
+        width: 100%;
+        margin-top: 0.2rem;
+        align-items: center;
+        background-color: #fff;
+        border-bottom: 1px solid #E1E6E0;
+        border-top: 1px solid #E1E6E0;
+        span {
+            margin: 0 10px;
+            color: #656565;
+            font-size: 13px;
+            padding: 10px 0;
+        }
+        .icon {
+            position: absolute;
+            right: 10px;
+            margin: 0;
         }
     }
   .center {
@@ -710,19 +759,6 @@ export default {
   }
   .navClassTrue {
     background:rgba(255,255,255,0);
-  }
-  .html-class {
-    width: 100%;
-    /deep/ p {
-      font-size: 17px;
-      font {
-        text-indent: 2em;
-      }
-      img {
-        width: 100%;
-        height: auto;
-      }
-    }
   }
 }
 </style>
