@@ -86,11 +86,7 @@
         <div class="shop">
             <p class="p1">商品详情</p>
             <p class="pro_desc" v-if="proDataList.pro_desc != null">
-              <van-image :src="proDataList.pro_desc" lazy-load width="100%" height="auto">
-                <template v-slot:loading>
-                  <van-loading type="spinner" size="20" />
-                </template>
-              </van-image>
+              <div v-html="proDataList.pro_desc" class="html-class" @click="showImg($event)"></div>
             </p>
         </div>
         <!-- <div class="eva">
@@ -155,7 +151,7 @@
 
 <script>
 import { groupBuyingDetails, OpenJoinGroupBuying, editGroupBuying, wxpay, memberCollect,shippingAddress } from './actions/index.js';
-import { Toast } from 'vant';
+import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon, ImagePreview } from "vant";
 export default {
   name: "group-booking-detail",
   data() {
@@ -175,6 +171,16 @@ export default {
     this.getAddress();
   },
   methods: {
+    showImg(e) {
+      if (e.target.tagName == "IMG") {
+        ImagePreview({
+          images: [e.target.src],
+          showIndex: false,
+          closeOnPopstate: true, //页面回退关闭预览
+          closeable: true,
+        });
+      }
+    },
     getAddress() {
       shippingAddress()
       .then((res) => {
@@ -759,6 +765,19 @@ export default {
   }
   .navClassTrue {
     background:rgba(255,255,255,0);
+  }
+  .html-class {
+    width: 100%;
+    /deep/ p {
+      font-size: 17px;
+      font {
+        text-indent: 2em;
+      }
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
   }
 }
 </style>
