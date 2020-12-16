@@ -188,14 +188,14 @@
             <div class="img">
               <img src="./img/团购.png" alt="" />
             </div>
-            <div class="text">我的拼团</div>
+            <div class="text">我的拼单</div>
           </div>
-          <div class="con_item" @click="userHandle('/user/myGroupPurchase')">
+          <!-- <div class="con_item" @click="userHandle('/user/myGroupPurchase')">
             <div class="img">
               <img src="./img/团购.png" alt="" />
             </div>
             <div class="text">我的团购</div>
-          </div>
+          </div> -->
           <!-- <div class="con_item">
           <div class="img">
             <img src="./img/投资明细.png" alt="">
