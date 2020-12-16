@@ -74,6 +74,7 @@ export default {
     },
     async getDataList() {
       const res = await groupBuyingList(this.groupBooking.entid);
+      console.log(res)
       this.dataList = res.data;
     },
   },
