@@ -776,6 +776,7 @@ export default {
       this.inputShow = !this.inputShow;
     },
     userHandle(article) {
+      
       if (article.mmt_id === 3) {
         var obj = {
           entid: article.rel_id,

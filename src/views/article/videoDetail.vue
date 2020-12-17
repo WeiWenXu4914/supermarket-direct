@@ -37,6 +37,7 @@
         <img :src="dataAll.mem_head_portrait" />
         <h4>{{ dataAll.mem_name }}</h4>
       </div>
+      <button @click="toStore">进店</button>
       <button
         @click="focus"
         v-show="!isLoading"
@@ -266,6 +267,20 @@ export default {
     },
   },
   methods: {
+    toStore() {
+
+      console.log(this.dataAll)
+      let obj = {
+        entid: this.dataAll.rel_id,
+        entfid: 0
+      };
+      
+      var res = this.$Utils.demoRequest(JSON.stringify(obj));
+      this.$router.push({
+        path: '/merchants/produce',
+        query: {res: res}
+      })
+    },
     goProductDetail(val) {
       var obj = {
         proid: val.proid,
@@ -641,6 +656,12 @@ export default {
         color: #1e1e1e;
         margin-left: 10px;
       }
+    }
+    button:nth-of-type(1) {
+      background-color: #fff;
+      color: #f04043;
+      border: 1px solid #f04043;
+      transform: translateX(40px);
     }
     button {
       width: 60px;
