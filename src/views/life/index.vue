@@ -76,9 +76,8 @@
                         </span> -->
                       </div>
                       <div class="msg">
-                        {{ val.ent_detailed_site }}
-                        <span>|</span>
-                        {{ val.ent_introduction }}
+                        <span v-if="val.ent_detailed_site != '无'">{{ val.ent_detailed_site }} </span>
+                        <span v-if="val.ent_introduction != '无'">| {{ val.ent_introduction }}</span>
                       </div>
                       <div class="star">
                         <div class="star-rate">
@@ -416,7 +415,7 @@ export default {
         opacity: 1;
         margin-top:5px;
         span {
-          margin: 0 5px;
+          margin: 0px;
         }
       }
       .star {

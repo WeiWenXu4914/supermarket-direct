@@ -175,7 +175,7 @@
               <div class="time_site">
                 <span class="time_title">店铺地址：</span>
                 <span class="time_con">
-                  {{ merchantInfo.ent_city+ merchantInfo.ent_district + merchantInfo.ent_detailed_site }}</span
+                  {{ merchantInfo.ent_city + merchantInfo.ent_district + merchantInfo.ent_detailed_site }}</span
                 >
               </div>
               <div
