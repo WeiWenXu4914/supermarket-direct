@@ -9,7 +9,7 @@
       <!--头像-->
       <div class="left" @click="userHandle(item.mem_attention_item.entid)">
         <!-- <img :src="item.mem_attention_item.ent_logo" alt /> -->
-        <van-image :src="item.mem_attention_item.ent_logo">
+        <van-image :src="item.mem_attention_item.ent_logo" class="image">
           <template v-slot:loading>
             <van-loading type="spinner" size="20" />
           </template>
@@ -31,7 +31,7 @@
         <p class="grade">{{ item.mem_attention_item.ent_grade }}</p>
       </div>
       <!-- 取消关注 -->
-      <van-icon name="ellipsis" size="30" color="#BFBFBF" class="more" @click="isShow(index)" />
+      <van-icon name="ellipsis" size=".8rem" color="#BFBFBF" class="more" @click="isShow(index)" />
       <div class="cancel">
         <div class="content">
           <div class="triangle" v-show="show === index ? true : false"></div>
@@ -156,6 +156,10 @@ export default {
   padding: 0;
 }
 .store {
+  .image {
+    width: 75px;
+    height: 75px;
+  }
   .top {
     display: flex;
     margin-top: 0.5rem;
@@ -204,6 +208,8 @@ export default {
         }
       }
       .left{
+        display: flex;
+        align-items: center;
           /deep/ img{
             width: 2rem;
           }
@@ -221,6 +227,7 @@ export default {
               color: #212121;
           }
           .p2{
+              width: 220px;
               color:#3D3D3D;
               font-size: 0.35rem;
           }
@@ -241,7 +248,9 @@ export default {
           right: 1px;
           width: 0.9rem;
           height: 0.8rem;
-          margin: 0.5rem 0;
+          top: 50%;
+          transform: translateY(-50%);
+          margin-top: -5px;
       }
   }
 }
