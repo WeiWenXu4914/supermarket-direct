@@ -118,7 +118,7 @@ export default {
     //下单
     reserve(data) {
       let obj = {
-        proid: data.pro_id
+        proid: data.pro_id || data.proid
       };
       let res = this.$Utils.demoRequest(JSON.stringify(obj));
       this.$router.push({
