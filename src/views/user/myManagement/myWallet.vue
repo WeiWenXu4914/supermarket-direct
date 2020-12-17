@@ -119,6 +119,7 @@ export default {
             }
             .recharge {
                 // border: 1px solid #D04443;
+                display: none;
                 border: none;
                 background-color: #fff;
                 font-size: 13px;

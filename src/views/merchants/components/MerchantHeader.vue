@@ -100,7 +100,7 @@
         <div class="time_site">
           <div>
             <span class="time_title">店铺地址：</span>
-            <span class="time_con">{{ merchantInfo.ent_detailed_site }}</span>
+            <span class="time_con">{{ merchantInfo.ent_city+ merchantInfo.ent_district + merchantInfo.ent_detailed_site }}</span>
           </div>
           <!-- <img src="../img/site.svg" alt="" @click="openMap"> -->
         </div>
@@ -175,7 +175,7 @@
               <div class="time_site">
                 <span class="time_title">店铺地址：</span>
                 <span class="time_con">
-                  {{ merchantInfo.ent_detailed_site }}</span
+                  {{ merchantInfo.ent_city+ merchantInfo.ent_district + merchantInfo.ent_detailed_site }}</span
                 >
               </div>
               <div
@@ -462,7 +462,7 @@ export default {
     if (window.__wxjs_is_wkwebview === true) {
       URL = window.location.href.split('#')[0] || window.location.href
     }
-
+    console.log(this.merchantInfo)
     // wexinConfig(URL)
     // .then((res) => {
       
