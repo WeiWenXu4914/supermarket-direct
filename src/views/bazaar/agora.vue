@@ -104,7 +104,7 @@ export default {
     },
     getLejiaProductListFun() {
       let obj = {
-        size: 10,
+        size: 100,
         num: 1,
       };
       getLejiaProductList(obj)

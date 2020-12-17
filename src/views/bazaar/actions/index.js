@@ -3,7 +3,7 @@ import request from '@/utils/request'
  * 产品列表
  */
 export const getLejiaProductList = (num,val) => {
-  return request(`/api/LejiaProductList?class=${num}`, 'get', val)
+  return request(`/api/LejiaProductListNew?class=${num}`, 'get', val)
 }
 /**
  * 生活服务
