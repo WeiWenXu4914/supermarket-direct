@@ -53,20 +53,20 @@ Vue.use(Empty);
 export default {
   name: "meat",
   props: ["cindex"],
-  beforeCreate() {
-    Toast.loading({
-      message: '加载中...',
-      forbidClick: true,
-      loadingType: 'spinner',
-      overlay: true,
-      duration: 0
-    });
-  },
+  // beforeCreate() {
+  //   Toast.loading({
+  //     message: '加载中...',
+  //     forbidClick: true,
+  //     loadingType: 'spinner',
+  //     overlay: true,
+  //     duration: 0
+  //   });
+  // },
   mounted() {
-     let obj = {
-      size:10,
-      num:1
-    },
+    let obj = {
+        page: 1,
+        pagesize: 100,
+    };
     index = 0;
     getLejiaProductList(this.cindex,obj)
       .then((res) => {

@@ -1,18 +1,9 @@
 <template>
   <div class="agora-all-commdity">
-    <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
     <page-header ref="pageHeader" :local="local" />
 
     <div :class="navBarFixed == true ? 'navBarWrap' : 'body'">
       <div class="bodyClass">
-        <!-- <van-search
-          v-model="value"
-          shape="round"
-          background="#fff"
-          placeholder="精品海鲜"
-          @click="$router.push('/search')"
-          style="border-radius: 5px 5px 0px 0px;"
-        /> -->
         <van-tabs
           v-model="active"
           :border="true"
@@ -43,7 +34,6 @@
         </van-tabs>
       </div>
     </div>
-    <!-- </van-pull-refresh> -->
   </div>
 </template>
 
@@ -95,27 +85,18 @@ export default {
     this.getLejiaProductListFun();
   },
   methods: {
-    onRefresh() {
-      this.getLejiaProductListFun();
-      setTimeout(() => {
-        Toast("刷新成功");
-        this.isLoading = false;
-      }, 1000);
-    },
     getLejiaProductListFun() {
       let obj = {
-        size: 100,
-        num: 1,
+        page: 1,
+        pagesize: 100,
       };
       getLejiaProductList(obj)
         .then((res) => {
           this.items = res.data.class;
           this.dataList = res.data.list;
-
+          console.log(res)
           if (res) {
-            Toast.loading({
-              duration: 1,
-            });
+            Toast.clear()
           }
         })
         .catch((res) => {

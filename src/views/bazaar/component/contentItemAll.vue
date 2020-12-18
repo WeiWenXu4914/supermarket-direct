@@ -53,10 +53,10 @@ import { getLejiaProductList, phoneList } from '../actions/index'
 import { List, Icon, Toast } from 'vant';
 export default {
   mounted() {
-     let obj = {
-      size: 10,
-      num: 1
-    }
+    let obj = {
+        page: 1,
+        pagesize: 100,
+    };
     
     getLejiaProductList(obj)
       .then((res) => {
