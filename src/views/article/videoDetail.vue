@@ -262,7 +262,9 @@ export default {
    watch: {
     $route(to, from) {
       if (to.query) {
-        this.$router.go(0);
+        this.getData();
+        this.userIndex();
+        this.getCommList();
       }
     },
   },
@@ -647,6 +649,7 @@ export default {
     .user {
       display: flex;
       align-items: center;
+      width: 200px;
       img {
         width: 40px;
         height: 40px;
@@ -661,7 +664,7 @@ export default {
       background-color: #fff;
       color: #f04043;
       border: 1px solid #f04043;
-      transform: translateX(40px);
+      // transform: translateX(40px);
     }
     button {
       width: 60px;

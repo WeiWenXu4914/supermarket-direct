@@ -520,17 +520,11 @@ export default {
   watch: {
     $route(to, from) {
       if (to.query) {
-        this.$router.go(0);
+        this.isComm();
+        this.getDetail();
+        this.goTop();
       }
-    },
-    article: function () {
-      this.$nextTick(function () {
-        // 页面渲染完延时关闭
-        setTimeout(function () {
-          Toast.clear();
-        }, 200);
-      });
-    },
+    }
   },
   created() {
     this.isComm();
@@ -1042,6 +1036,10 @@ export default {
       };
 
       const res = await articleDetail(obj);
+
+      setTimeout(function () {
+        Toast.clear();
+      }, 200);
 
       if (res.code === 100) {
         this.atyicleTitle = res.data.graphic_name;

@@ -466,7 +466,8 @@ export default {
   watch: {
     $route(to, from) {
       if (to.query) {
-        this.$router.go(0);
+        this.isComm();
+        this.getDetail();
       }
     },
   },
