@@ -116,7 +116,11 @@ export default {
       const res = await messagePost("class");
 
       this.messageData = res.data;
-
+      this.messageData.forEach((element,index) => {
+          if(element.mct_name == '福利活动') {
+            this.messageData.splice(index,1);
+          }
+      });
       setTimeout(() => {
         this.loading = false;
       }, 500);

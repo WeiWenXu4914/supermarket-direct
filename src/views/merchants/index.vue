@@ -366,14 +366,14 @@ export default {
           this.merchantInfo = res.data;
           this.flag = true;
           this.tabbarList = res.data.ent_features;
- 
 
-          const obj = {
-            class_name: "团购",
-            entfid: 4
+          //删除全部标签
+          for(let i = 0; i < this.tabbarList.length; i++) {
+            if(this.tabbarList[i].class_name == '全部') {
+              this.tabbarList.splice(i,1);
+              break;
+            }
           }
-          // this.tabbarList.push(obj);
-
 
           if (res.data.mem_attention != "未关注") {
             this.showImBtn = true;
