@@ -121,7 +121,7 @@ export default {
             this.imgList = [...new Set(this.imgList)];
 
             console.log(this.imgList)
-            return;
+
             let obj = {
                 id: this.data.proid,
                 text: this.description,
