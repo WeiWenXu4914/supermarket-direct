@@ -1,12 +1,5 @@
 <template>
   <div class="content-container-all">
-    <!-- <van-list
-     v-model="loading"
-     :finished="finished"
-     finished-text="没有更多订单了"
-     @load="onLoad"
-     :immediate-check="false"
-     > -->
       <div class="shoptitle" v-for="(item,index) in items" :key="index">
         <div class="title1" @click="intoStore(item.entid)">
           <div class="right">
@@ -44,7 +37,6 @@
         >收起 <van-icon name="arrow-up"/>
         </p>
       </div>
-    <!-- </van-list> -->
   </div>
 </template>
 
@@ -55,7 +47,7 @@ export default {
   mounted() {
     let obj = {
         page: 1,
-        pagesize: 100,
+        pagesize: 200,
     };
     
     getLejiaProductList(obj)
@@ -127,29 +119,6 @@ export default {
           res: res
         }
       });
-    },
-    onLoad() {
-      this.page ++;
-      if(this.page >= 2) {
-
-        let obj = {
-          size: 10,
-          num: this.page
-        }
-        getLejiaProductList(0,obj)
-        .then((res) => {
-          // this.items = res.data.list.data;
-          console.log(obj)
-          console.log(res.data.list.data)
-          // console.log(this.items)
-        })
-        .catch((res) => {
-              console.log(res);
-              Toast.fail('获取数据失败，请重试');
-        })
-
-      }
-
     },
     seeMore(index) {
       this.items[index].product_list = JSON.parse(JSON.stringify(this.itemsAll[index].product_list));
