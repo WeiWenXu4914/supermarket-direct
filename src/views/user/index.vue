@@ -250,7 +250,7 @@
         </div>
       </div>
       <div class="footer">
-        <!-- <van-cell title="绑定微信号" v-if="bindingWx" is-link @click="$router.push('/wlogin')" /> -->
+        <van-cell title="绑定微信号" v-if="bindingWx" is-link @click="$router.push('/wlogin')" />
         <van-cell
           title="商家注册"
           is-link
