@@ -342,20 +342,23 @@ export default {
         if (type == 1) {
           this.activeNav = res.data;
         } else {
-          this.activePreNav = res.data;
+
+          if(res.data.length > 0) {
+            this.activePreNav = res.data;
+          }
         }
 
         if(this.activePreNav.length <= 0 && type == 1) {
           
           if(id == 0) {
             this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
-            this.getHomeData(this.activeNav[this.activeIndex].nid);
+            this.getHomeData(1, this.activeNav[this.activeIndex].nid);
           }
         }
       });
     },
     // 首页数据
-    getHomeData(id) {
+    getHomeData(type, id) {
 
       var obj = {
         size: this.activeNav[this.activeIndex].size,
@@ -365,6 +368,17 @@ export default {
       
       getHome(obj).then((res) => {
         Toast.clear();
+
+        if(type == 2) {
+          if (res.data.length > 0) {
+            
+            this.activeNav[this.activeIndex].pageData = [];
+          }else{
+            Toast('数据为空');
+            return false;
+          }
+        }
+
         if (res.data.length > 0) {
           // 页面渲染完延时关闭
           this.activeNav[this.activeIndex].num > 1
@@ -378,8 +392,8 @@ export default {
       });
     },
     preNav(id) {
-      this.activeNav[this.activeIndex].pageData = [];
-      this.getHomeData(id);
+    
+      this.getHomeData(2, id);
       this.getHomeNav(2, id);
     },
     // 切换频道
@@ -416,7 +430,7 @@ export default {
     onLoad() {
       this.activeNav[this.activeIndex].num++;
 
-      this.getHomeData(this.activeNav[this.activeIndex].nid);
+      this.getHomeData(1, this.activeNav[this.activeIndex].nid);
       setTimeout(() => {
         this.activeNav[this.activeIndex].upLoading = false;
       }, 1000);
@@ -424,7 +438,7 @@ export default {
     // 下拉刷新
     async onRefresh() {
       this.$parent.TabBar(0);
-      this.getHomeData(this.activeNav[this.activeIndex].nid);
+      this.getHomeData(1, this.activeNav[this.activeIndex].nid);
       this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
       setTimeout(() => {
         this.activeNav[this.activeIndex].finished = true;
@@ -713,7 +727,7 @@ export default {
         var imgUrl = "http://api.lejiagx.cn/static/logo/logo.png";
 
         var title = "城事乐家";
-        var desc = "城事乐家,助力实体企业线上发展";
+        var desc = "助力实体企业线上发展";
         if (val != "") {
           title = val.nav_name;
           desc = "生活圈,你身边的事";
