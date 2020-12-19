@@ -322,8 +322,9 @@ export default {
         phone: this.$refs.myAddress.addressStore.phone,
       };
       if(this.$refs.myAddress.addressStoreList.length !== 0  && this.active == 0) {
-        pinv_id: this.$refs.myAddress.addressStoreList[this.$refs.myAddress.addressListResult].pinv_id
+        orderAdd.pinv_id = this.$refs.myAddress.addressStoreList[this.$refs.myAddress.addressListResult].pinv_id;
       }
+      
       //使用了优惠券
       if (this.cou_id != "" && this.couMoney != "") {
         orderAdd.cou_id = this.cou_id;

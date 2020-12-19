@@ -111,7 +111,7 @@ export default {
         entSelfPickupSite(this.proid)
         .then((res) => {
           if(res.code == 100) {
-
+            console.log(res)
             this.addressStoreList = res.data;
             //拼接地址
             this.addressStoreList.map((item,index) => {
