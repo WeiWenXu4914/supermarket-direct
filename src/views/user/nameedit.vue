@@ -3,7 +3,7 @@
     <page-title title="用户名" :titleSize="20" titleFontWeight="500"></page-title>
     <div class="title" >当前用户名</div>
     <div class="inputed">
-      <input type="text" v-model="val" v-bind="descNum" placeholder="请输入用户名(最多支持10个字符)">
+      <input type="text" v-model="val" v-bind="descNum" placeholder="请输入用户名(最多支持30个字符)">
     </div>
     <div class="buttons">
       <van-button color="#D04443" block  @click="pushIntors">完成</van-button>
@@ -32,8 +32,8 @@ export default {
   },
   computed: {
     descNum() {
-      if(this.val.length > 10){
-        this.val = this.val.substr(0,10);
+      if(this.val.length > 30){
+        this.val = this.val.substr(0,30);
 
         Notify('无法在输入了');
         

@@ -341,11 +341,13 @@ export default {
 
         if (type == 1) {
           this.activeNav = res.data;
-        } else {
+        } else if(type == 2) {
 
           if(res.data.length > 0) {
             this.activePreNav = res.data;
           }
+        }else {
+          this.activePreNav = res.data;
         }
 
         if(this.activePreNav.length <= 0 && type == 1) {
@@ -412,7 +414,7 @@ export default {
         overlay: true,
       });
       
-      this.getHomeNav(2, this.activeNav[val].nid);
+      this.getHomeNav(3, this.activeNav[val].nid);
       if (this.activeNav[val].pageData.length > 0) {
 
       //   this.getHomeData(this.activeNav[val].nid);
@@ -441,7 +443,7 @@ export default {
       this.getHomeData(1, this.activeNav[this.activeIndex].nid);
       this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
       setTimeout(() => {
-        this.activeNav[this.activeIndex].finished = true;
+        // this.activeNav[this.activeIndex].finished = true;
         this.activeNav[this.activeIndex].downLoading = false;
       }, 1000);
     },
