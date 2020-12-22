@@ -88,12 +88,12 @@
         ></div>
       </div>
 
-      <div
+      <!-- <div
         v-else-if="article.gc_id != 2"
         class="article-content"
-      >
+      > -->
         <!-- :style="[{marginTop:(atyicleTitle.length < 9?'60px':'')}]"  -->
-        <div v-for="(gi, gk) in article.graphic_thumbnail" :key="gk">
+        <!-- <div v-for="(gi, gk) in article.graphic_thumbnail" :key="gk">
           <van-image
             :src="gi.graphic_thumbnail_path"
             lazy-load
@@ -109,7 +109,7 @@
           @click="showImg($event)"
           class="html-class"
         ></div>
-      </div>
+      </div> -->
 
       <div v-else class="article-content">
         <!-- :style="[{marginTop:(atyicleTitle.length < 9?'60px':'')}]"  -->

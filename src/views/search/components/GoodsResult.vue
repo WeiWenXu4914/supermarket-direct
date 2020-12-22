@@ -85,7 +85,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .item {
   padding: 20px 0;
   margin: 0 10px;

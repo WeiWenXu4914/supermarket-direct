@@ -109,7 +109,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .article-result-item {
     width: 92%;
     margin: 0 auto;
