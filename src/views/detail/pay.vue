@@ -304,7 +304,7 @@ export default {
       //校验手机号
       let regPhone = /^1[3456789]\d{9}$/;
       let resReg = !regPhone.test(this.$refs.myAddress.addressStore.phone);
-      console.log(resReg)
+
       if(resReg && this.active == 0) {
         Toast("请添写正确的手机号码");
         return;

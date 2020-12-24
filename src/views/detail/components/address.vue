@@ -111,7 +111,7 @@ export default {
         entSelfPickupSite(this.proid)
         .then((res) => {
           if(res.code == 100) {
-            console.log(res)
+
             this.addressStoreList = res.data;
             //拼接地址
             this.addressStoreList.map((item,index) => {
@@ -153,7 +153,6 @@ export default {
               let phone = res.data[0].contact_number;
               this.addressStore.name = name;
               this.addressStore.phone = phone;
-              console.log(this.addressStore)
               this.setBydefault = true;
               var addressIsorNo = 0;
               var addressIsorNoIndex = '';
