@@ -60,3 +60,9 @@ export function activityGroupBuyList(id) {
   return request('/api/activityGroupBuyList', 'post', { entid: id });
 }
 
+/**
+ * 图片转base64
+*/
+export function getImgToBase(val) {
+  return request('/api/imgToBase', 'post', { url: val });
+}
