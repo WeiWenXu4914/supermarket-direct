@@ -368,14 +368,17 @@ export default {
         nid: id,
       };
       
+      if(type == 2) {
+        obj.size = 10;
+        obj.num = 1;
+      }
+
       getHome(obj).then((res) => {
         Toast.clear();
 
         if(type == 2) {
-          if (res.data.length > 0) {
-            
-            this.activeNav[this.activeIndex].pageData = [];
-          }else{
+          if (res.data.length < 0) {
+
             Toast('数据为空');
             return false;
           }
@@ -394,7 +397,9 @@ export default {
       });
     },
     preNav(id) {
-    
+
+      this.activeNav[this.activeIndex].pageData = [];
+
       this.getHomeData(2, id);
       this.getHomeNav(2, id);
     },
@@ -440,7 +445,7 @@ export default {
     // 下拉刷新
     async onRefresh() {
       this.$parent.TabBar(0);
-      this.getHomeData(1, this.activeNav[this.activeIndex].nid);
+      this.getHomeData(2, this.activeNav[this.activeIndex].nid);
       this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
       setTimeout(() => {
         // this.activeNav[this.activeIndex].finished = true;
