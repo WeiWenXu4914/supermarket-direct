@@ -24,9 +24,9 @@
                     <p>{{ item.mem_comment_text }}</p>
                 </div>
                 <div class="e4">
-                    <img src="./img/1593611640(1)@2x(1).png" alt />
-                    <img src="./img/1593611640(1)@2x(1).png" alt />
-                    <img src="./img/1593611640(1)@2x(1).png" alt />
+                    <template v-for="img in item.mem_comment_imgs">
+                      <img :src="img" :key="img">
+                    </template>
                 </div>
             </div>
     </div>
@@ -119,7 +119,7 @@ export default {
       img {
         width: 2.5rem;
         height: 2.5rem;
-        margin-top: 1rem;
+        margin-top: 0.5rem;
         margin-left: 0.3rem;
       }
     }

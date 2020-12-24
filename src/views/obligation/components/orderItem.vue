@@ -74,7 +74,7 @@
                 </div>
                 <div class="allBtn"  v-else-if="item.status == 1 && item.dw_id == 3">
                     <button type="default" @click="toRefund(item)">申请退款</button>
-                    <button type="default" class="red">提醒发货</button>
+                    <!-- <button type="default" class="red">提醒发货</button> -->
                 </div>
                 <div class="allBtn" v-else-if="item.status == 1 && item.dw_id == 1">
                     <button type="default" @click="toRefund(item)">申请退款</button>
@@ -83,7 +83,8 @@
                 <div class="allBtn" v-else-if="item.status == 3">
                     <!--目前交易成功订单无法删除-->
                     <!-- <van-button type="default" @click="dellOrder(item)">删除订单</van-button> -->
-                    <button type="default" @click="toChooseType(item)">申请售后</button>
+                    <!-- <button type="default" @click="toChooseType(item)">申请售后</button> -->
+                    <button type="default" @click="toRefund(item)">申请退款</button>
                     <button type="default" @click="toBuy(item)">再次购买</button>
                     <button type="default" class="appraise" @click="appraise(item)" v-if="item.is_mark == 0">评价</button>
                 </div>
@@ -187,9 +188,7 @@ export default {
             }
             orderList(obj)
             .then((res) => {
-                Toast.loading({
-                    duration: 1
-                });
+                Toast.clear();
 
                 this.loading = false;
                 
@@ -288,8 +287,6 @@ export default {
         },
         //退款
         toRefund(val) {
-            Toast("请您到线下店铺协调");
-            return;
             let orderInfo = JSON.stringify(val)
             this.$router.push({
                 path: '/afterSale',
@@ -404,7 +401,7 @@ export default {
                         this.finished = true;
                     }
                     if(res.data.length === 0 && this.dataListItem.length !== 0) {
-                        Toast("没有更多订单了");
+                        // Toast("没有更多订单了");
                     }
                 })
                 .catch((e) => {
@@ -416,7 +413,7 @@ export default {
             let timer = setTimeout(()=>{
                 this.loading = false
                 clearTimeout(timer)
-            },2000);
+            },1000);
             
         },
     }

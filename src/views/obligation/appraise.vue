@@ -122,32 +122,39 @@ export default {
 
             console.log(this.imgList)
 
-            let obj = {
-                id: this.data.proid,
-                text: this.description,
-                state: 1
-            }
+            // let obj = {
+            //     id: this.data.proid,
+            //     text: this.description,
+            //     state: 1
+            // }
             //内容
-            GoodsComments(obj)
-            .then((res) => {
-                Toast.success("评论成功");
-                this.$router.go(-1);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+            // GoodsComments(obj)
+            // .then((res) => {
+            //     Toast.success("评论成功");
+            //     this.$router.go(-1);
+            // })
+            // .catch((err) => {
+            //     console.log(err);
+            // })
             //评分
             let result = {
                 order_number: this.data.order_number,
                 order_mark: this.value1,
                 logistics_num: this.value2,
+                text: this.description,
+                imgs: this.imgList
             }
             overMarkadd(result)
             .then((res) => {
                 console.log(res);
+                Toast.success("评论成功");
+                setTimeout(() => {
+                    this.$router.go(-1);
+                },1000)
             })
             .catch((err) => {
                 console.log(err)
+                Toast("请求出错");
             })
         }
     }
