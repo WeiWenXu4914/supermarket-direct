@@ -13,14 +13,14 @@
             
         </div>
 
-        <div class="title-info" v-else-if="data.status == 1">
+        <div class="title-info" v-else-if="data.status == 2">
             <span>
                 <van-icon name="send-gift-o" />
                 待收货
             </span>
             <span>剩余：<van-count-down :time="time" format="DD 天 HH 时 mm 分 ss 秒" /></span>
         </div>
-        <div class="title-info" v-else-if="data.status == 2">
+        <div class="title-info" v-else-if="data.status == 1">
             <span>
                 <van-icon name="send-gift-o" />
                 待发货
