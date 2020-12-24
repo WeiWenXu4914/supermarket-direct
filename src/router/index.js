@@ -896,6 +896,12 @@ const routes = [
                         import ('@/views/login/wxlogin')
                 },
                 {
+                    path: '/bindWechat',
+                    name: 'bindWechat',
+                    component: () =>
+                        import ('@/views/login/bindWechat')
+                },
+                {
                     path: '/plogin',
                     name: 'plogin',
                     component: () =>

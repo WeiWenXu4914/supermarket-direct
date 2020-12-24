@@ -1,7 +1,7 @@
 import request from '@/utils/request'
-// 登录
-export const wxLogin = (url, callBackUrl) => {
-    return request(url, 'post', { callBackUrl: callBackUrl })
+// 绑定微信登录
+export const wxLogin = () => {
+    return request('api/wechatLogin', 'post')
 }
 // 登录
 export const passLogin = (data) => {
