@@ -189,7 +189,7 @@
           查看全部 <van-icon class="icon" name="arrow" />
         </p>
       </div>
-      <div v-for="(item, index) in memberCommentList.slice(2)" :key="index">
+      <div v-for="(item, index) in memberCommentList" :key="index">
         <div class="e2">
           <img :src="item.mem_head_portrait" alt class="i1" @click="goHandle(item)" />
           <p @click="goHandle(item)">{{ item.mem_name }}</p>
@@ -207,9 +207,9 @@
           <p>{{ item.mem_comment_text }}</p>
         </div>
         <div class="e4">
-          <img src="./img/1593611640(1)@2x(1).png" alt />
-          <img src="./img/1593611640(1)@2x(1).png" alt />
-          <img src="./img/1593611640(1)@2x(1).png" alt />
+          <template v-for="img in item.mem_comment_imgs">
+            <img :src="img" alt="" :key="img">
+          </template>
         </div>
       </div>
     </div>
@@ -388,6 +388,7 @@ export default {
       memberCommentList(2, this.proDetail.proid).then((res) => {
         if (res.code == 100) {
           this.memberCommentList = res.data;
+          console.log(this.memberCommentList)
         }
       });
     },
@@ -1002,7 +1003,7 @@ export default {
       img {
         width: 2.5rem;
         height: 2.5rem;
-        margin-top: 1rem;
+        margin-top: 0.5rem;
         margin-left: 0.3rem;
       }
     }

@@ -133,7 +133,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .all-search {
   .tags {
     position: relative;

@@ -33,7 +33,7 @@
                 :maxlength="100"
 				autosize
 				type="textarea"
-				placeholder="说说你的使用心得哦~"
+				placeholder="在此填写退款原因"
                 class="input-item"
 			/>
             <van-uploader 
