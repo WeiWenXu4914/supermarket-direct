@@ -62,7 +62,7 @@
           <div class="rec-num">{{ merchantInfo.my_employee }}</div>
         </div> -->
       </div>
-      <div class="myIdcard" @click="showIdcard">
+      <div class="myIdcard" @click="showIdcard(merchantInfo)">
         <span>我的名片</span>
         <van-icon name="qr" size="15" />
       </div>
@@ -145,8 +145,8 @@
             <vue-qr
               :margin="0"
               :text="href"
-              :size="200"
               :logoSrc="merchantInfo.ent_logo_base64"
+              :size="200"
             />
           </div>
           <div class="qrcode-time">
@@ -223,6 +223,7 @@
 import StarCard from "./star";
 import { ImagePreview, Toast } from "vant";
 import { changeFouce as focus, forwardArticles } from "../../home/actions";
+import { getImgToBase } from "../actions";
 import { wxJSSDK } from "@/utils/wxshare.js";
 import VueQr from "vue-qr";
 import { mapState, mapMutations } from 'vuex'
@@ -380,8 +381,21 @@ export default {
         query: { type: "u" },
       });
     },
-    showIdcard() {
-      this.idCardShow = true;
+    showIdcard(val) {
+      Toast.loading({
+      message: "加载中...",
+      forbidClick: true,
+      loadingType: "spinner",
+      overlay: true,
+      duration: 0,
+    });
+      getImgToBase(val.ent_logo).then(res=>{
+        if(res.code == 100) {
+          this.merchantInfo.ent_logo_base64 = res.data
+          this.idCardShow = true;
+          Toast.clear();
+        }
+      })
     },
     // 显示分享
     showForward() {
@@ -781,7 +795,7 @@ export default {
             font-size: 30pt;
           }
           .time_title {
-            width: 112px;
+            max-width: 112px;
             height: 28px;
             font-size: 15px;
             font-family: Source Han Sans CN;
@@ -889,7 +903,7 @@ export default {
       font-size: 30pt;
     }
     .time_title {
-      width: 112px;
+      max-width: 112px;
       height: 28px;
       font-size: 15px;
       font-family: Source Han Sans CN;
