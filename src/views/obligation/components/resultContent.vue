@@ -1,8 +1,8 @@
 <template>
     <div class="after-sale-result-content">
         <p>申请原因：{{ data.reason }}</p>
-        <p>申请说明：{{ data.description }}</p>
-        <p>订单编号：{{ data.order_sn }}</p>
+        <p>申请说明：{{ data.descriptionReason }}</p>
+        <p>订单编号：{{ data.order_number }}</p>
         <p>申请时间：{{ data.create_time }}</p>
     </div>
 </template>

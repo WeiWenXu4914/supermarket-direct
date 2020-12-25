@@ -4,7 +4,7 @@
         <div class="title-type">
             <span>申请类型</span>
             <span>我要{{ functionType }}</span>
-            <van-icon name="arrow" class="right-icon"/>
+            <!-- <van-icon name="arrow" class="right-icon"/> -->
         </div>
 
         <div class="reason" @click="chooseType">
@@ -15,10 +15,10 @@
             <van-icon name="arrow" class="right-icon"/>
         </div>
 
-        <div class="title-type" v-if="functionType == '退款' ? true : false">
+        <!-- <div class="title-type" v-if="functionType == '退款' ? true : false">
             <span>收货状态</span>
             <span>已收到货</span>
-        </div>
+        </div> -->
 
         <div class="money" v-if="functionType == '换货' ? false : true">
             <span>退款金额</span>
@@ -39,7 +39,6 @@
             <van-uploader 
             v-model="fileList" 
             multiple
-            @delete="deleteImg"
             :after-read="afterRead"
             :max-count="4"
             class="upload" />
@@ -65,7 +64,7 @@
 <script>
 import titleView from '../../../components/public_views/titleView';
 import { Popup,Icon,Picker,Uploader, Toast } from 'vant';
-import { afterSalesService } from '../actions/index';
+import { afterSalesService, orderRefund } from '../actions/index';
 import { uploadImg } from '../../../api/index';
 export default {
     components: {
@@ -76,7 +75,7 @@ export default {
             functionType:'',
             chooseShow: false,  //选择组件
             reason: '',
-            columns: ['拍错/多拍/效果不好/不喜欢', '和预期不符', '质量问题', '材质与商品描述不符', '尺寸不符', '卖家发错货', '收到商品有问题', '其他'],
+            columns: ['收到商品有问题', '和预期不符', '质量问题', '材质与商品描述不符', '卖家发错货', '收到商品有问题', '其他'],
             description: '',
             fileList: [],
             imgList:[],
@@ -115,8 +114,8 @@ export default {
                     if(res.code == 100) {
                         file.status = 'done';
                         file.message = '上传成功';
-                        console.log(res)
-                        this.imgList.push(res.data.src)
+
+                        this.fileList[this.fileList.length - 1].url = res.data.src;
                     } else {
                         file.status == 'failed'
                         file.message = '上传失败';
@@ -124,73 +123,101 @@ export default {
                 })
 
         },
-        deleteImg(file) {//无法获取组件对应的URL，目前仅能删除最后一项    需封装图片上传组件
-            this.imgList.pop();
-        },
         submit() {
+
             if(this.reason == '') {
                 Toast.fail("请选择申请原因");
+                return;
             } else if(this.description == '') {
                 Toast.fail("请填写申请说明");
-            } else if(this.fileList.length == 0) {
-                Toast.fail("请填上传至少一张图片");
-            } else {
-
-                //上传的数据
-                let obj = {
-                        oid: this.orderData.oid,
-                        reason: this.reason,
-                        amount: this.money,
-                        description: this.description,
-                        pics: this.imgList
-                    };
-
-                if(this.functionType == '退款') {
-                    obj.class = 1;
-                    afterSalesService(obj)
-                    .then((res) => {//提示消息不出现？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？---------------------------------
-                        if(res.msg == '订单不存在') {
-                            Toast("订单不存在,请核对订单信息");
-                        } else {
-                            Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
-                            this.$router.go(-2);
-                        }
-                    })
-                    .catch((err) => {
-                        Toast.fail("请求失败，请重试")
-                    })
-                } else if(this.functionType == '退货退款') {
-                    obj.class = 1;
-                    afterSalesService(obj)
-                    .then((res) => {
-                        if(res.msg == '订单不存在') {
-                            Toast("订单不存在,请核对订单信息");
-                        } else {
-                            Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
-                            this.$router.go(-2);
-                        }
-                    })
-                    .catch((err) => {
-                        Toast.fail("请求失败，请重试");
-                    })
-                } else {
-                    obj.class = 2;
-                    afterSalesService(obj)
-                    .then((res) => {
-                        if(res.msg == '订单不存在') {
-                            Toast("订单不存在,请核对订单信息");
-                        } else {
-                            Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
-                            this.$router.go(-2);
-                        }
-                    })
-                    .catch((err) => {
-                        Toast.fail("请求失败，请重试");
-                    })
-                }
-
+                return;
             }
-        },
+
+            //处理图片
+            this.fileList.forEach((element) => {
+                this.imgList.push(element.url);
+            });
+            this.imgList = [...new Set(this.imgList)];
+            
+            const obj = {
+                order_number: this.orderData.order_number,
+                reason: this.reason + "&&&" + this.description,
+                proof_pics:  this.imgList
+            }
+
+            orderRefund(obj)
+            .then((res) => {
+                Toast(res.msg);
+                setTimeout(() => {
+                    this.$router.go(-1);
+                },1500)
+            })
+            .catch((err) => {
+                Toast("请求出错");
+            })
+        }
+        // submit() {
+        //     if(this.reason == '') {
+        //         Toast.fail("请选择申请原因");
+        //     } else if(this.description == '') {
+        //         Toast.fail("请填写申请说明");
+        //     } else {
+
+        //         //上传的数据
+        //         let obj = {
+        //                 oid: this.orderData.oid,
+        //                 reason: this.reason,
+        //                 amount: this.money,
+        //                 description: this.description,
+        //                 pics: this.imgList
+        //             };
+
+        //         if(this.functionType == '退款') {
+        //             obj.class = 1;
+        //             afterSalesService(obj)
+        //             .then((res) => {//提示消息不出现？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？---------------------------------
+        //                 if(res.msg == '订单不存在') {
+        //                     Toast("订单不存在,请核对订单信息");
+        //                 } else {
+        //                     Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
+        //                     this.$router.go(-2);
+        //                 }
+        //             })
+        //             .catch((err) => {
+        //                 Toast.fail("请求失败，请重试")
+        //             })
+        //         } else if(this.functionType == '退货退款') {
+        //             obj.class = 1;
+        //             afterSalesService(obj)
+        //             .then((res) => {
+        //                 if(res.msg == '订单不存在') {
+        //                     Toast("订单不存在,请核对订单信息");
+        //                 } else {
+        //                     Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
+        //                     this.$router.go(-2);
+        //                 }
+        //             })
+        //             .catch((err) => {
+        //                 Toast.fail("请求失败，请重试");
+        //             })
+        //         } else {
+        //             obj.class = 2;
+        //             afterSalesService(obj)
+        //             .then((res) => {
+        //                 if(res.msg == '订单不存在') {
+        //                     Toast("订单不存在,请核对订单信息");
+        //                 } else {
+        //                     Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
+        //                     this.$router.go(-2);
+        //                 }
+        //             })
+        //             .catch((err) => {
+        //                 Toast.fail("请求失败，请重试");
+        //             })
+        //         }
+
+        //     }
+        // },
 
 
     }

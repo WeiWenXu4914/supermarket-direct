@@ -228,20 +228,37 @@ export default {
         },
         //状态
         titleInfo(val) {
-            if(val == 0) {
-                return "待付款";
-            } else if(val == 1) {
-                return "待发货";
-            } else if(val == 2) {
-                return "已发货";
-            } else if(val == 3) {
-                return "已完成";
-            } else if(val == 4) {
-                return "交易关闭";
-            } else if(val == 5) {
-                return "无效订单";
-            } else if(val == 6) {
-                return "过期";
+            switch (val) {
+                case 0:
+                    return "待付款";
+                    break;
+                case 1:
+                    return "待发货";
+                    break;
+                case 2:
+                    return "已发货";
+                    break;
+                case 3:
+                    return "已完成";
+                    break;
+                case 4:
+                    return "交易关闭";
+                    break;
+                case 5:
+                    return "无效订单";
+                    break;
+                case 6:
+                    return "过期";
+                    break;
+                case 7:
+                    return "退款中";
+                    break;
+                case 8:
+                    return "退款成功";
+                    break;
+                case 9:
+                    return "拒绝退款";
+                    break;
             }
         },
         toDetail(val) {
@@ -253,7 +270,22 @@ export default {
                         data
                     }
                 });
-            } else {
+            } else if(val.status == 7) {
+                this.$router.push({
+                    path: "/afterSaleRefundOnly",
+                    query: {
+                        order_number: val.order_number
+                    }
+                });
+            } else if(val.status == 8 || val.status == 9) {
+                this.$router.push({
+                    path: "/afterSaleRefund",
+                    query: {
+                        state: val.status == 8 ? 2 : 3,
+                        order_number: val.order_number
+                    }
+                })
+            }else {
                 this.$router.push({
                     path: '/orderDetail',
                     query: {

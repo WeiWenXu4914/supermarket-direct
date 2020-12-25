@@ -4,7 +4,7 @@
             <title-view title="退款详情" :border="false"></title-view>
             <div class="wait">
                 <p class="p1">请等待商家处理</p>
-                <p class="p2">剩余:{{ timer.Hours }}小时{{ timer.Minutes }}分钟</p>
+                <!-- <p class="p2">剩余:{{ timer.Hours }}小时{{ timer.Minutes }}分钟</p> -->
             </div>
             <div class="adress">
                 <div class="a1">
@@ -16,7 +16,7 @@
                             <p></p>
                         </div>
                         <div class="right">
-                            <p>商家同意或者超时未处理，系统将退款给您。</p>
+                            <p>商家同意或者超时未处理，请联系商家协调处理。</p>
                         </div>
                     </div>
                     <div class="list">
@@ -33,26 +33,25 @@
         <div class="time">
         <div class="tem">
             <p class="p1">售后类型：仅退款</p>
-            <p>退款金额：￥{{ dataList.return_amount }}</p>
+            <p>退款金额：￥{{ dataList.order_paynum }}</p>
             <p class="line"></p>
         </div>
         <div class="tem">
             <p class="p1">申请原因：{{ dataList.reason }}</p>
-            <p>申请说明：{{ dataList.description }}</p>
-            <p>订单编号：{{ dataList.order_sn }}</p>
+            <p>申请说明：{{ dataList.descriptionReason }}</p>
+            <p>订单编号：{{ dataList.order_number }}</p>
             <p>申请时间：{{ dataList.create_time }}</p>
         </div>
         </div>
-            <div class="history" @click="toHistory">
-            <p class="p1">协商历史</p>
-            <p class="p2">></p>
-        </div>
-        <div class="history2">
-        <p class="p1">图片凭证:</p>
-        <div class="photo">
-            <img :src="item" alt v-for="(item,index) in dataList.proof_pics" :key="index"/>
-            
-        </div>
+            <div class="history">
+                <p class="p1">商家联系方式：<a :href="'tel:'+dataList.mem_phone">{{ dataList.mem_phone }}</a></p>
+            </div>
+        <div class="history2" v-if="dataList.proof_pics.length !== 0">
+          <p class="p1">图片凭证:</p>
+          <div class="photo">
+              <img :src="item" alt v-for="(item,index) in dataList.proof_pics" :key="index"/>
+              
+          </div>
         </div>
         <div class="bottom">
             <p class="biao">退款商品</p>
@@ -62,25 +61,25 @@
                 </div>
                 <div class="center">
                     <p class="p1">{{ dataList.pro_name }}</p>
-                    <p class="p3">￥{{ dataList.pro_price }}</p>
+                    <p class="p3">￥{{ dataList.order_paynum }}</p>
                 </div>
                     <div class="right">
                     <button>物流配送</button>
-                    <p class="p2">x{{ dataList.product_count }}</p>
+                    <p class="p2">x{{ dataList.pro_num }}</p>
                 </div>
             </div>
         </div>
-        <div class="btn">
+        <!-- <div class="btn">
             <van-button type="primary" class="b1">申请客服介入</van-button>
             <van-button type="primary" class="b2" @click="revoke">撤销申请</van-button>
             <van-button type="primary" class="b3">修改申请</van-button>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 import titleView from '../../../../components/public_views/titleView';
-import { myAfterSalesServiceDetail,withdrawApplication } from '../../actions/index';
+import { orderRefundInfo} from '../../actions/index';
 import { Toast,Button } from 'vant';
 export default {
     components: {
@@ -88,7 +87,9 @@ export default {
     },
     data() {
         return {
-            dataList: [],
+            dataList: {
+              proof_pics: []
+            },
             timer: {}
         }
     },
@@ -99,42 +100,33 @@ export default {
             loadingType: 'spinner',
             overlay: true,
             duration: 0,
-
         });
     },
     created() {
-        //获取详情数据
-        myAfterSalesServiceDetail(this.$route.query.ora_id,this.$route.query.type)
-        .then((res) => {
-            this.dataList = res.data;
-            //获取剩余时间
-            let dateNow =  this.getDate()
-            this.timer = this.compareTime(dateNow,this.dataList.end_time);
+      const Order_number = this.$route.query.order_number;
+      const obj = {
+        order_number: Order_number
+      }
+      orderRefundInfo(obj)
+      .then((res) => {
+        if(res.code == 200) {
+          Toast.clear()
+          this.dataList = res.data;
+          let reason = this.dataList.reason;
 
-            Toast.loading({
-                duration: 1
-            });
-        })
+          this.dataList.reason = reason.split("&&&")[0];
+          this.dataList.descriptionReason = reason.split("&&&")[1];
 
+        } else {
+          Toast(res.msg);
+        }
+      })
+      .catch((err) => {
+        Toast("请求出错");
+      })
     },
     methods: {
-        revoke() {
-            withdrawApplication(this.dataList.ora_id)
-            .then((res) => {
-                if(res.code == 100) {
-                    Toast.success("撤销成功");
-                    this.$router.push('/');
-                }
-            })
-        },
-        toHistory() {//协商历史
-            this.$router.push({
-                path: '/conmunicationHistory',
-                query: {
-                    o_id: this.dataList.o_id
-                }
-            })
-        },
+        
         compareTime (start,end) {
             let startTime = start;
             let endTime = end;
@@ -406,21 +398,21 @@ export default {
     display: flex;
     background-color: #ffffff;
     margin-top: 0.3rem;
+    font-size: 16px;
     padding-bottom: 0.6rem;
+    
     .p1 {
       color: #212121;
-      font-size: 0.45rem;
       margin: 0.5rem 0rem 0rem 0.5rem;
+      a {
+        color: royalblue;
+      }
     }
-    .p2 {
-      color: #717171;
-      margin: 0.5rem 0rem 0rem 7rem;
-      font-size: 0.45rem;
-    }
+    
   }
   .history2{
     background-color: #ffffff;
-    margin-top: 0.3rem;
+    margin-top: 0.1rem;
     padding-bottom: 0.6rem;
     .p1 {
       color: #212121;

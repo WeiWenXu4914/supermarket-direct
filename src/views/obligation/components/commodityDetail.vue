@@ -3,10 +3,10 @@
         <p>退款商品</p>
         <van-card
          class="commodity"
-         :num="commodity.product_count"
-         :price="commodity.pro_price"
+         :num="commodity.pro_num"
+         :price="commodity.order_paynum"
          :title="commodity.pro_name"
-         :thumb="commodity.product_pic"
+         :thumb="commodity.pro_thumbnail"
         />
         <div class="logistics">物流配送</div>
     </div>

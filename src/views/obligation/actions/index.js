@@ -132,3 +132,11 @@ export const wexinConfig = (val) => {
 export const getLogistic = (val) => {
     return request('/api/getLogistic', 'GET', { id: val })
 }
+//退款
+export const orderRefund = (obj) => {
+    return request('/api/orderRefund',"post", obj )
+}
+//退款详情
+export const orderRefundInfo = (obj) => {
+    return request('/api/orderRefundInfo',"post", obj )
+}

@@ -146,12 +146,12 @@
               </div>
               <div class="item-con">评价</div>
             </div>
-            <div class="item" @click="toAllAfterSale">
+            <!-- <div class="item" @click="toAllAfterSale">
             <div class="item-img">
               <img src="./img/售后.png" alt="" />
             </div>
             <div class="item-con">退款/售后</div>
-          </div>
+          </div> -->
           </div>
         </div>
       </div>
