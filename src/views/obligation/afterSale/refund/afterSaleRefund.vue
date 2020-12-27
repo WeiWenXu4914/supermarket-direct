@@ -2,7 +2,7 @@
     <div class="after-sale-refund">
         <title-view title="申请退款" :border="false"></title-view>
         <wait-result v-if="titleState" :state="$route.query.state"></wait-result>
-        <result-title v-else :type="$route.query.type" :state="$route.query.state" :title="type" :money="dataList.order_paynum"></result-title>
+        <result-title v-else :type="$route.query.type" :state="$route.query.state" :title="type" :money="dataList.pro_price"></result-title>
 
         <div class="response" v-if="$route.query.state === 3 ? true : false">
             <p>商家回复：{{ dataList.description }}</p>
@@ -11,7 +11,7 @@
         </div>
         <div class="response-success" v-else>
             <p>售后类型：仅退款</p>
-            <p>退款金额：{{ dataList.order_paynum }}</p>
+            <p>退款金额：{{ dataList.pro_price }}</p>
             <!-- <span class="toWechat" @click="toWechat">回到微信</span> -->
             <hr style="height:0;border: none;margin:15px 0 0 24%;border-top:1px solid #E5E5E5;">
         </div>
