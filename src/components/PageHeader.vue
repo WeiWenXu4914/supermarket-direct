@@ -12,7 +12,8 @@
         </div>
       </div>
 
-      <div class="page-right">
+      <div class="page-right" :style="[{ justifyContent: addshow ? '' : 'flex-end' }]">
+        <van-icon name="edit" @click="addArticle" color="#fff" size=".8rem" v-if="addshow" />
         <!-- <van-icon name="chat" :badge="NmessageNumCount" @click.stop="goMessage" v-if="messageShow" color="#fff" size=".8rem" /> -->
         <!-- <van-icon name="chat" @click.stop="goMessage" v-else color="#fff" size=".8rem" /> -->
         <div v-if="user.avator" class="head">
@@ -65,6 +66,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isAddShow: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -73,6 +78,7 @@ export default {
       local: {},
       messageShow: false,
       NmessageNumCount: 1,
+      addshow: false
     };
   },
   watch: {},
@@ -83,6 +89,9 @@ export default {
     },
   },
   created() {
+    if (this.user.mmtid == 3 && this.isAddShow) {
+      this.addshow = true;
+    }
     this.initLocal();
     this.getMessage();
   },
@@ -156,6 +165,9 @@ export default {
 
       return style;
     },
+    addArticle() {
+      this.$emit("addArticle");
+    }
   },
 };
 </script>
@@ -225,7 +237,7 @@ export default {
       height: 28px;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       .van-image {
         border-radius: 100%;
         min-width: 28px;

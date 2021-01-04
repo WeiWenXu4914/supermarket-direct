@@ -6,7 +6,6 @@
         v-for="item in tabbarData"
         :key="item.tab_link"
         @click="getVal(item)"
-        :style="[{ display: item.tab_link == 'add' && !addshow ? 'none' : '' }]"
       >
         <!-- :style="[{ display: item.tab_link == 'add' && !addshow ? 'none' : '' }]" -->
         <template v-if="item.tab_link !== 'add'">
@@ -17,10 +16,15 @@
             <img :src="item.tab_icon" alt="" />
           </p>
         </template>
-        <template v-else-if="item.tab_link == 'add' && addshow == true">
+        <template v-else-if="item.tab_link == 'add'">
           <div class="add-class">
             <div class="add-icon" @click="addArticle">
-              <img :src="item.tab_icon" alt="" />
+              <img
+                src="http://api.lejiagx.cn/static/icon/购物车.png"
+                alt=""
+                v-if="activeImged === item.tab_link || item.tab_link == 'add'"
+              />
+              <img :src="item.tab_icon" alt="" v-else />
             </div>
           </div>
         </template>
@@ -32,7 +36,6 @@
           </div>
         </template> -->
         <span
-          v-if="item.tab_name"
           class="tab-text"
           :class="[item.tab_link === activeImged ? 'active-text' : '']"
           >{{ item.tab_name }}</span
@@ -117,7 +120,7 @@ export default {
   methods: {
     recommend() {
       this.getTabbat();
-      localStorage.removeItem('selective');
+      localStorage.removeItem("selective");
       if (this.user.mmtid == 3) {
         this.show = true;
       } else {
@@ -142,7 +145,7 @@ export default {
     },
     // tabbar用户点击操作
     handle(val) {
-      localStorage.removeItem('selective');
+      localStorage.removeItem("selective");
       this.show = false;
       var href = val.href || val.nav_link;
       var id = val.id || val.nid;
@@ -168,14 +171,15 @@ export default {
     },
     // 是否显示添加面板
     addArticle() {
-      localStorage.removeItem('selective');
-      this.getTabbat();
-      if (this.user.mmtid == 3) {
-        this.show = true;
-      } else {
-        this.show = false;
-        // this.$router.replace("/inviteBusinessmen");
-      }
+      this.$router.push("/agora").catch(() => {});
+      // localStorage.removeItem('selective');
+      // this.getTabbat();
+      // if (this.user.mmtid == 3) {
+      //   this.show = true;
+      // } else {
+      //   this.show = false;
+      //   // this.$router.replace("/inviteBusinessmen");
+      // }
     },
   },
 };
@@ -217,16 +221,16 @@ export default {
       }
       .add-class {
         position: relative;
-        width: 35px;
-        height: 35px;
+        width: 40px;
+        height: 40px;
+        // margin-top: -20px;
         .add-icon {
-          width: 35px;
-          height: 35px;
+          width: 40px;
+          height: 40px;
           border-radius: 100%;
           padding: 0;
           margin: 0;
           position: absolute;
-          margin-bottom: 0px;
           background: linear-gradient(
             180deg,
             rgba(7, 193, 96, 1) 0%,
@@ -239,10 +243,9 @@ export default {
           align-items: center;
           justify-content: center;
           align-content: center;
-          margin-bottom: 10px;
           img {
-            width: 57%;
-            height: 57%;
+            width: 60%;
+            height: 60%;
           }
         }
       }
