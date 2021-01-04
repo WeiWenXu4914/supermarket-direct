@@ -1,6 +1,6 @@
 <template>
   <div class="agora-all-commdity">
-    <page-header ref="pageHeader" :local="local" :isAddShow="false" />
+    <page-header ref="pageHeader"/>
 
     <div :class="navBarFixed == true ? 'navBarWrap' : 'body'">
       <div class="bodyClass">
@@ -17,7 +17,7 @@
           line-width="0"
         >
           <van-tab title="全部">
-            <div v-show="dataList.data.length === 0 ? false : true">
+            <div v-show="dataList.data.length === 0 ? false : true" class="content-item-all" ref="content-item-all" @scroll="handleScroll($event)">
               <content-item-all :key="new Date()"></content-item-all>
             </div>
             <div v-show="dataList.data.length === 0 ? true : false">
@@ -25,11 +25,13 @@
             </div>
           </van-tab>
           <van-tab
-            v-for="item in items"
+            v-for="(item,index) in items"
             :key="item.pbcid"
             :title="item.pbc_name"
           >
-            <content-item :cindex="item.pbcid" :key="new Date()"></content-item>
+            <div class="content-item-all" ref="content-item" @scroll="handleScroll($event,index)">
+              <content-item :cindex="item.pbcid" :key="new Date()"></content-item>
+            </div>
           </van-tab>
         </van-tabs>
       </div>
@@ -64,6 +66,8 @@ export default {
       //切换
       indexItem: 0,
       isLoading: false,
+      scrollTop: '',
+      index: 0
     };
   },
   // 注册组件
@@ -84,7 +88,26 @@ export default {
   created() {
     this.getLejiaProductListFun();
   },
+  activated () {
+    try {
+      if (this.$refs['content-item-all']) {
+        const dom = this.$refs['content-item-all']
+        dom.scrollTop = this.scrollTop
+      }
+      if (this.$refs['content-item']) {
+        const dom1 = this.$refs['content-item']
+        dom1[this.index].scrollTop = this.scrollTop
+      }
+    } catch(e) {
+
+    }
+  },
   methods: {
+    handleScroll(e, index) {
+      // console.log(e.target.scrollTop)
+      this.scrollTop = e.target.scrollTop;
+      this.index = index;
+    },
     getLejiaProductListFun() {
       let obj = {
         page: 1,
@@ -104,15 +127,7 @@ export default {
           Toast.fail("获取数据失败，请重试");
         });
     },
-    watchScroll(e) {
-      var scrollTop = e.target.scrollTop;
-      //  当滚动超过 50 时，实现吸顶效果
-      if (scrollTop > 60) {
-        this.navBarFixed = true;
-      } else {
-        this.navBarFixed = false;
-      }
-    },
+    
   },
 };
 </script>
@@ -123,6 +138,10 @@ export default {
   height: 100vh;
   margin: 0 auto;
   background: #fff;
+  .content-item-all {
+    height: 700px;
+    overflow: scroll;
+  }
   .body {
     width: 100%;
     background: #fff;

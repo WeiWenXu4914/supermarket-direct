@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container-all">
+  <div class="content-container-all" ref="viewBox">
       <div class="shoptitle" v-for="(item,index) in items" :key="index">
         <div class="title1" @click="intoStore(item.entid)">
           <div class="right">
@@ -45,7 +45,34 @@ import { getLejiaProductList, phoneList } from '../actions/index'
 import { List, Icon, Toast } from 'vant';
 export default {
   mounted() {
-    let obj = {
+    this.getData();
+
+  },
+  data(){
+    return {
+      items: [],
+      itemsAll: [],
+      prvUrl: {},
+      query: {
+        num: 1,
+        size: 100,
+      },
+      looading: false,
+      finished: false,
+      page: 1,
+      scroll: '',
+      box: {}
+    }
+  },
+  methods: {
+    handleScroll() {
+     // 这是一个示例代码，打印出监听滚动的组件滚动距离
+     var scrollTop = this.$refs.viewBox.scrollTop;
+     console.log(scrollTop);
+     
+    },
+    getData() {
+      let obj = {
         page: 1,
         pagesize: 200,
     };
@@ -78,22 +105,7 @@ export default {
             console.log(res);
             Toast.fail('获取数据失败，请重试');
       })
-  },
-  data(){
-    return {
-      items: [],
-      itemsAll: [],
-      prvUrl: {},
-      query: {
-        num: 1,
-        size: 100,
-      },
-      looading: false,
-      finished: false,
-      page: 1,
-    }
-  },
-  methods: {
+    },
     //进店
     intoStore(id) {
       let obj = {
