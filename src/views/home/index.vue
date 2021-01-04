@@ -1,7 +1,7 @@
 <template>
-  <div
-    :class="[!btnShow ? 'home-page' : 'home-pages']">
-    <page-header ref="pageHeader" />
+  <!-- :class="[!btnShow ? 'home-page' : 'home-pages']" -->
+  <div class="home-page">
+    <page-header ref="pageHeader" @addArticle="addArticle" />
 
     <span class="bar_btn" @click="showChannel" v-if="activeNav.length > 20">
       <van-icon name="wap-nav" size="20" color="#909090" />
@@ -23,43 +23,48 @@
         v-for="(item, index) in activeNav"
         :key="index"
       >
-        <div ref="scroll-wrapper" class="scroll-wrapper" @scroll="remember($event)">
-          <!-- <van-cell-group> -->
-          <div class="pre-nav-class" v-if="activePreNav.length > 0">
-            <div class="pre-nav-item" @click="onRefresh">全部</div>
-            <div
-              v-for="(preitems, preindex) in activePreNav"
-              :key="preindex"
-              class="pre-nav-item"
-              @click="preNav(preitems.nid, preitems.nav_name)"
-              v-if="showAllPrenav"
-            >
-              {{ preitems.nav_name }}
-            </div>
-            <div
-              v-for="(preitems, preindex) in activePreNav"
-              :key="preindex"
-              class="pre-nav-item"
-              @click="preNav(preitems.nid, preitems.nav_name)"
-              v-if="preindex <= 2 && !showAllPrenav"
-            >
-              {{ preitems.nav_name }}
-            </div>
-            <div
-              class="pre-nav-item"
-              @click="showAllPrenav = true"
-              v-if="activePreNav.length > 3 && !showAllPrenav"
-            >
-              <van-icon name="arrow-down" />
-            </div>
-            <div
-              class="pre-nav-item"
-              @click="showAllPrenav = false"
-              v-if="activePreNav.length > 3 && showAllPrenav"
-            >
-              <van-icon name="arrow-up" />
-            </div>
+        <div class="pre-nav-class" v-if="activePreNav.length > 0">
+          <div class="pre-nav-item" @click="onRefresh">全部</div>
+          <div
+            v-for="(preitems, preindex) in activePreNav"
+            :key="preindex"
+            class="pre-nav-item"
+            @click="preNav(preitems.nid, preitems.nav_name)"
+            v-if="showAllPrenav"
+          >
+            {{ preitems.nav_name }}
           </div>
+          <div
+            v-for="(preitems, preindex) in activePreNav"
+            :key="preindex"
+            class="pre-nav-item"
+            @click="preNav(preitems.nid, preitems.nav_name)"
+            v-if="preindex <= 2 && !showAllPrenav"
+          >
+            {{ preitems.nav_name }}
+          </div>
+          <div
+            class="pre-nav-item"
+            @click="showAllPrenav = true"
+            v-if="activePreNav.length > 3 && !showAllPrenav"
+          >
+            <van-icon name="arrow-down" />
+          </div>
+          <div
+            class="pre-nav-item"
+            @click="showAllPrenav = false"
+            v-if="activePreNav.length > 3 && showAllPrenav"
+          >
+            <van-icon name="arrow-up" />
+          </div>
+        </div>
+        <div
+          ref="scroll-wrapper"
+          class="scroll-wrapper"
+          @scroll="remember($event)"
+        >
+          <!-- <van-cell-group> -->
+
           <van-pull-refresh v-model="item.downLoading" @refresh="onRefresh">
             <van-list
               v-model="item.upLoading"
@@ -67,7 +72,10 @@
               @load="onLoad"
               finished-text="没有更多了"
             >
-              <div v-if="item.pageData.length > 0" :class="[item.nid == 77 ? 'pageData-item-father' : '']">
+              <div
+                v-if="item.pageData.length > 0"
+                :class="[item.nid == 77 ? 'pageData-item-father' : '']"
+              >
                 <div
                   v-for="(items, index) in item.pageData"
                   :key="items.gid"
@@ -158,9 +166,10 @@
                     </template>
 
                     <template v-else-if="item.nid === 77">
-                      <small-video 
+                      <small-video
                         :smallItem="items"
-                        :key="items.entid + '-' + item.nid" />
+                        :key="items.entid + '-' + item.nid"
+                      />
                     </template>
 
                     <template v-else-if="item.nid === 75">
@@ -181,7 +190,7 @@
                 </div>
               </div>
               <div v-else>
-                <van-empty description="数据为空" />
+                <van-empty description="" />
               </div>
             </van-list>
           </van-pull-refresh>
@@ -215,6 +224,43 @@
         </div>
       </div>
     </transition>
+
+    <van-popup
+      v-model="show"
+      round
+      position="bottom"
+      class="van-pops"
+      :style="{ height: 'auto;' }"
+    >
+      <div class="operationClass">
+        <div class="popup-close" @click="show = false">
+          <van-icon name="cross" size="25px" />
+        </div>
+        <!-- <div class="CutPanelClass" @click="CutPanel">
+          <div>
+            <span>切换</span>
+            <van-icon name="exchange" size="25px" />
+          </div>
+        </div> -->
+      </div>
+
+      <p>城事乐家助力实体企业</p>
+      <p>线上发展</p>
+      <!-- <div class="tittle">快捷发布</div> -->
+      <div class="type_class" v-if="publishData.length > 0">
+        <div
+          class="type_item"
+          v-for="(item, index) in publishData"
+          :key="index"
+          @click="handle(item)"
+        >
+          <div class="icon">
+            <img :src="item.icon || item.nav_icon" alt="" />
+          </div>
+          <div class="type_item_text">{{ item.title || item.nav_name }}</div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -237,7 +283,7 @@ import {
   forwardArticles,
   getHomeNav,
 } from "./actions";
-import { login } from "@/api";
+import { login, getTabbat } from "@/api";
 import { mapState, mapMutations } from "vuex";
 import axios from "axios";
 import wx from "weixin-js-sdk";
@@ -284,43 +330,82 @@ export default {
       forwardMark: false, //分享弹窗
       videoKey: 1, // 更新视频组件
       tabbarShow: 0, //底部导航
-      scrollWrapper: 0
+      scrollWrapper: 0,
+      show: false,
+      tabbarData: "",
+      publish: 0,
+      publishData: [],
     };
   },
   // 组件开启缓存生效，激活组件(初始化和激活都执行)
   activated() {
     if (this.$refs["scroll-wrapper"]) {
-      const dom = this.$refs["scroll-wrapper"][this.activeNav[this.activeIndex].scrollWrapper];
+      const dom = this.$refs["scroll-wrapper"][
+        this.activeNav[this.activeIndex].scrollWrapper
+      ];
       dom.scrollTop = this.activeNav[this.activeIndex].scrollTop;
     }
   },
   created() {
     this.initLogin();
     this.getHomeNav();
+    this.getTabbat();
   },
   watch: {
-    $route(to, from) {
-      if (to.query) {
-        this.$parent.TabBar(0);
-      }
-    },
+    // $route(to, from) {
+    //   if (to.query) {
+    //     this.$parent.TabBar(0);
+    //   }
+    // },
   },
   computed: {
     ...mapState(["user"]),
   },
   methods: {
+    async getTabbat(type = 2) {
+      const res = await getTabbat(type);
+      this.tabbarData = res.data.tabbar;
+      if (type == 2) {
+        var sel = localStorage.getItem("selectives");
+        if (sel) {
+          res.data.publish = JSON.parse(sel);
+          this.publishData[0] = res.data.publish;
+        } else {
+          this.publishData = res.data.publish;
+        }
+      } else {
+        this.publishData = res.data.publish;
+      }
+    },
+    addArticle() {
+      localStorage.removeItem("selective");
+      this.getTabbat();
+      if (this.user.mmtid == 3) {
+        this.show = true;
+      } else {
+        this.show = false;
+        // this.$router.replace("/inviteBusinessmen");
+      }
+    },
+    // tabbar用户点击操作
+    handle(val) {
+      localStorage.removeItem("selective");
+      this.show = false;
+      var href = val.href || val.nav_link;
+      var id = val.id || val.nid;
+      this.$router.push(href + "?id=" + id);
+    },
     goProductDetail(val) {
-
       var obj = {
-        proid: val.proid
+        proid: val.proid,
       };
 
       var res = this.$Utils.demoRequest(JSON.stringify(obj));
       this.$router.push({
-        path:'/commdityPay',
-        query:{
-          res:res
-        }
+        path: "/commdityPay",
+        query: {
+          res: res,
+        },
       });
     },
     priceTransform(val) {
@@ -328,31 +413,28 @@ export default {
     },
     getHomeNav(type = 1, id = 0) {
       getHomeNav(type, id).then((res) => {
-
-        res.data.forEach((item,index) => {
-          item['downLoading'] = false;
-          item['upLoading'] = false;
-          item['finished'] = false; 
-          item['pageData'] = [];
-          item['num'] = 0;
-          item['size'] = 10;
-          item['scrollWrapper'] = 0;
+        res.data.forEach((item, index) => {
+          item["downLoading"] = false;
+          item["upLoading"] = false;
+          item["finished"] = false;
+          item["pageData"] = [];
+          item["num"] = 0;
+          item["size"] = 10;
+          item["scrollWrapper"] = 0;
         });
 
         if (type == 1) {
           this.activeNav = res.data;
-        } else if(type == 2) {
-
-          if(res.data.length > 0) {
+        } else if (type == 2) {
+          if (res.data.length > 0) {
             this.activePreNav = res.data;
           }
-        }else {
+        } else {
           this.activePreNav = res.data;
         }
 
-        if(this.activePreNav.length <= 0 && type == 1) {
-          
-          if(id == 0) {
+        if (this.activePreNav.length <= 0 && type == 1) {
+          if (id == 0) {
             this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
             this.getHomeData(1, this.activeNav[this.activeIndex].nid);
           }
@@ -361,14 +443,13 @@ export default {
     },
     // 首页数据
     getHomeData(type, id) {
-
       var obj = {
         size: this.activeNav[this.activeIndex].size,
         num: this.activeNav[this.activeIndex].num,
         nid: id,
       };
-      
-      if(type == 2) {
+
+      if (type == 2) {
         obj.size = 10;
         obj.num = 1;
       }
@@ -376,10 +457,9 @@ export default {
       getHome(obj).then((res) => {
         Toast.clear();
 
-        if(type == 2) {
+        if (type == 2) {
           if (res.data.length < 0) {
-
-            Toast('数据为空');
+            Toast("数据为空");
             return false;
           }
         }
@@ -388,16 +468,14 @@ export default {
           // 页面渲染完延时关闭
           this.activeNav[this.activeIndex].num > 1
             ? this.activeNav[this.activeIndex].pageData.push(...res.data)
-            : this.activeNav[this.activeIndex].pageData = res.data;
-
-        }else{
+            : (this.activeNav[this.activeIndex].pageData = res.data);
+        } else {
           this.activeNav[this.activeIndex].finished = true;
           this.activeNav[this.activeIndex].downLoading = false;
         }
       });
     },
     preNav(id) {
-
       this.activeNav[this.activeIndex].pageData = [];
 
       this.getHomeData(2, id);
@@ -405,32 +483,35 @@ export default {
     },
     // 切换频道
     changeChannel(val) {
-      
-      this.$parent.TabBar(0);
+      // this.$parent.TabBar(0);
 
-      if(this.activeNav[this.activeIndex].scrollWrapper == 0 && this.activeIndex != 1){
-        this.activeNav[this.activeIndex].scrollWrapper = this.scrollWrapper ++;
+      if (
+        this.activeNav[this.activeIndex].scrollWrapper == 0 &&
+        this.activeIndex != 1
+      ) {
+        this.activeNav[this.activeIndex].scrollWrapper = this.scrollWrapper++;
       }
-      
+
       Toast.loading({
         message: "加载中...",
         forbidClick: true,
         loadingType: "spinner",
         overlay: true,
       });
-      
+
       this.getHomeNav(3, this.activeNav[val].nid);
       if (this.activeNav[val].pageData.length > 0) {
+        //   this.getHomeData(this.activeNav[val].nid);
+        // }else{
 
-      //   this.getHomeData(this.activeNav[val].nid);
-      // }else{
-        
         Toast.clear();
         // 下一帧：延时一会执行，定位到以往阅读位置
         this.$nextTick(() => {
-          const dom = this.$refs['scroll-wrapper'][this.activeNav[this.activeIndex].scrollWrapper]
-          dom.scrollTop = this.activeNav[this.activeIndex].scrollTop
-        })
+          const dom = this.$refs["scroll-wrapper"][
+            this.activeNav[this.activeIndex].scrollWrapper
+          ];
+          dom.scrollTop = this.activeNav[this.activeIndex].scrollTop;
+        });
       }
     },
     // 触底加载数据
@@ -444,7 +525,7 @@ export default {
     },
     // 下拉刷新
     async onRefresh() {
-      this.$parent.TabBar(0);
+      // this.$parent.TabBar(0);
       this.getHomeData(2, this.activeNav[this.activeIndex].nid);
       this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
       setTimeout(() => {
@@ -547,21 +628,21 @@ export default {
       this.showEditChannel = true;
     },
     // 监听滚动事件
-    remember (e) {
+    remember(e) {
       // tabbarS大于0向下滑动,小于0向上滑动
       var tabbarS = e.target.scrollTop - this.tabbarShow;
       this.tabbarShow = e.target.scrollTop;
-      this.activeNav[this.activeIndex].scrollTop = e.target.scrollTop
+      this.activeNav[this.activeIndex].scrollTop = e.target.scrollTop;
 
       if (tabbarS < 0) {
-        this.$parent.TabBar(0);
+        // this.$parent.TabBar(0);
 
         if (e.target.scrollTop <= 150) {
           this.btnShow = false;
         }
       } else {
         if (this.btnShow == true) {
-          this.$parent.TabBar(1);
+          // this.$parent.TabBar(1);
         }
 
         if (e.target.scrollTop > 150) {
@@ -573,9 +654,10 @@ export default {
     },
     // 回到顶部
     goTop() {
-
       if (this.$refs["scroll-wrapper"]) {
-        const dom = this.$refs["scroll-wrapper"][this.activeNav[this.activeIndex].scrollWrapper];
+        const dom = this.$refs["scroll-wrapper"][
+          this.activeNav[this.activeIndex].scrollWrapper
+        ];
         let i = 0;
         const timeTop = setInterval(() => {
           dom.scrollTop = this.easeInOutQuad(
@@ -753,7 +835,7 @@ export default {
 
         wxJSSDK(form);
       }
-    }
+    },
   },
   mounted: function () {
     this.initSocketIO();
@@ -770,7 +852,7 @@ export default {
 }
 .home-pages {
   transition: all 0.5s ease;
-  height: calc(100vh);
+  height: calc(100vh - 50px);
 }
 .homepage {
   padding: 10px 0 0 0;
@@ -999,12 +1081,16 @@ export default {
 .pre-nav-class {
   width: 96%;
   height: auto;
+  min-height: 40px;
   margin-left: 2%;
   margin-top: 5px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   overflow: auto;
+  // padding-top: 5px;
+  z-index: 20;
+  background: #ffffff;
   .pre-nav-item {
     display: flex;
     align-items: center;
@@ -1023,6 +1109,10 @@ export default {
     opacity: 0.1;
   }
 }
+.pre-nav-class-sticky {
+  position: sticky;
+  top: 0px;
+}
 .pageData-item-father {
   width: 100%;
   display: flex;
@@ -1030,6 +1120,103 @@ export default {
   flex-wrap: wrap;
   .pageData-item {
     width: 50%;
+  }
+}
+.van-popup {
+  // max-height: 50% !important;
+  .operationClass {
+    width: 100%;
+    // height: 100px;
+    overflow: auto;
+    .CutPanelClass {
+      width: 50%;
+      float: right;
+      height: 66px;
+      line-height: 66px;
+      font-size: 16px;
+      text-align: right;
+      padding-right: 10px;
+      span {
+        float: right;
+        display: block;
+        height: 66px;
+        line-height: 50px;
+        margin-left: 10px;
+      }
+    }
+    .popup-close {
+      float: left;
+      width: 50%;
+      height: 66px;
+      line-height: 66px;
+      font-size: 16px;
+      padding-left: 20px;
+    }
+  }
+
+  p {
+    color: #d04443;
+    margin-left: 20px;
+    font-size: 24px;
+  }
+  .tittle {
+    height: 78px;
+    line-height: 78px;
+    font-size: 18px;
+    margin-left: 20px;
+    font-weight: 500px;
+  }
+  .type_class {
+    margin-top: 10px;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    .type_item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      width: 25%;
+      .icon {
+        width: 38px;
+        height: 39px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .type_item_text {
+        display: flex;
+        justify-content: center;
+        padding-top: 10px;
+        text-align: center;
+      }
+      img {
+        width: 50px;
+        height: 45px;
+      }
+    }
+    .type_item:nth-child(1) {
+      .icon {
+        width: 49px;
+        height: 44.5px;
+        margin-top: -7px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .type_item_text {
+        width: 100%;
+        text-align: center;
+        padding-right: 3px;
+      }
+    }
   }
 }
 </style>

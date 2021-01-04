@@ -1073,6 +1073,12 @@ const routes = [
         component: () => 
             import('@/views/inter_city_sale/inviteBusinessmen')
     },
+    {
+        path: '/invitation/invitation_register',
+        name: 'invitation_register',
+        component: () => 
+            import('@/views/invitation/invitation_register')
+    },
 ]
 
 const router = new VueRouter({

@@ -1,6 +1,6 @@
 <template>
   <div class="agora-all-commdity">
-    <page-header ref="pageHeader" :local="local" />
+    <page-header ref="pageHeader" :local="local" :isAddShow="false" />
 
     <div :class="navBarFixed == true ? 'navBarWrap' : 'body'">
       <div class="bodyClass">

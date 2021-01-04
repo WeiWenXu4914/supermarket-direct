@@ -1,6 +1,6 @@
 <template>
   <div class='life-home-page'>
-    <page-header></page-header>
+    <page-header :isAddShow="false"></page-header>
 
     <transition name="van-fade">
 			<div class="go-top" v-show="btnShow" @click="goTop">
