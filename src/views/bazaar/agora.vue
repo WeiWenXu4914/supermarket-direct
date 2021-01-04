@@ -148,7 +148,7 @@ export default {
     z-index: 500000000;
     background: #fff;
     .van-tab__pane-wrapper {
-      background: #fff;
+      background: #F0F0F0;
       min-height: calc(100vh - 159px);
     }
     .van-tab--active {
