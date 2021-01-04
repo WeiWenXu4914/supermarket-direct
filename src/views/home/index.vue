@@ -911,6 +911,7 @@ export default {
     height: 100%;
     .scroll-wrapper {
       height: 100%;
+      padding-bottom: 150px;
       overflow-y: auto;
     }
   }
