@@ -12,14 +12,15 @@
           <span class="into">进店</span>
         </div>
         <div class="prod">
-          <div class="circle" v-for="word in item.product_list" v-bind:key="word.id">
-            <!-- 循环内容 -->
+          <div 
+           class="circle" 
+           v-for="word in item.product_list" 
+           v-bind:key="word.id" 
+           > 
             <div class="product" @click="reserve(word)">
               <img :src='word.pro_thumbnail' alt="" class="pic">
-              <p class="title">{{ word.pro_name | strSub(7) }}</p>
-              <p class="price"><span>￥</span>{{word.pro_price }}</p>
+              <p class="price"><span class="icon">￥</span>{{ word.pro_price }}</p>
             </div>
-            <button class="btn"  @click="reserve(word)">立即购买</button>
           </div>
         </div>
         <p 
@@ -144,17 +145,23 @@ export default {
 
 <style lang="less">
 .content-container-item {
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
+  background-color: #F0F0F0;
   .shoptitle{
     width: 94%;
     margin: 0px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding-bottom: 10px;
     .title1{
       display: flex;
       align-items: center;
-      margin: 15px 0 15px 0;
+      margin: 10px 10px 0px 10px;
+      padding-top: 10px;
       font-size: 16px;
+      justify-content: space-between;
       .right{
-        width: 88%;
+        width: 80%;
         display: flex;
         align-items: center;
         .scrip{
@@ -178,19 +185,25 @@ export default {
           margin-left: 8px;
           font-weight: bolder !important;
           background-color: white;
-          line-height:30px
+          line-height:30px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow:ellipsis;
         }
       }
       .into{
-        width: 12%;
-        text-align: right;
-        color: #D04443;
+        padding: 4px 8px;
+        border-radius: 20px;
+        text-align: center;
+        color: #F50;
         opacity: 1;
+        font-size: 13px;
         font-weight: 500;
+        border: 1px solid #F50;
       }
     }
     .see-more {
-        padding: 10px 0 5px 0;
+        padding: 12px 0 0px 0;
         text-align: center;
         font-size: 14px;
         color: #D04443;
@@ -200,7 +213,7 @@ export default {
         }
     }
     .see-more-close {
-        padding: 10px 0 5px 0;
+        padding: 10px 0 0px 0;
         text-align: center;
         font-size: 14px;
         color: #ccc;
@@ -215,7 +228,7 @@ export default {
       flex-wrap: wrap;
       .circle{
         width: 30%;
-        text-align: center;
+        // text-align: center;
         margin: 8px 0px 0px 8px;
         //border: 1px solid #E0E0E0;
         -moz-box-shadow:0px 0px 5px #E0E0E0;
@@ -223,10 +236,12 @@ export default {
         box-shadow:0px 0px 5px #E0E0E0;
         border-radius: 5px;
         .product{
+          position: relative;
+          height: 100px;
           .pic{
-            border-radius: 5px 5px 0px 0px;
+            border-radius: 3px;
             width: 100%;
-            height: 70px;
+            height: 100%;
             object-fit:cover;
           } 
           .title{
@@ -239,13 +254,18 @@ export default {
             text-overflow:ellipsis;
           }
           .price{
-            width: 85%;
-            margin: 8px auto;
-            color:#DB1043;
-            font-size: 16px;
+            position: absolute;
+            bottom: 0;
+            padding: 1px 5px;
+            // margin: 8px auto;
+            color:#fff;
+            font-size: 12px;
             text-align: left;
-            span {
-              padding: 2px 0 0 2px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-top-right-radius: 5px;
+            .icon {
+              font-size: 12px;
+              transform: scale(0.7);
             }
           }
         }
