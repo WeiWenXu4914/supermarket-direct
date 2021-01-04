@@ -19,6 +19,7 @@
         <template v-else-if="item.tab_link == 'add'">
           <div class="add-class">
             <div class="add-icon" @click="addArticle">
+              <!-- <span v-if="activeImged === item.tab_link || item.tab_link == 'add'">购</span> -->
               <img
                 src="http://api.lejiagx.cn/static/icon/购物车.png"
                 alt=""
@@ -160,7 +161,18 @@ export default {
       ) {
         if (val.tab_link == this.$route.path) {
           this.getTabbat();
-          this.$router.go(0);
+          
+          this.$parent.$children.forEach(item => {
+            if(item.$route.path == this.$route.path) {
+              if(item.$route.path == '/agora' && item.$el.className == 'agora-all-commdity') {
+                item.getLejiaProductListFun()
+              }else if(item.$route.path == '/' && item.$el.className == 'home-page'){
+                item.onRefresh()
+              }else if(item.$route.path == '/life' && item.$el.className == 'life-home-page'){
+                item.onRefresh()
+              }
+            }
+          })
         }
         this.$router.push(val.tab_link).catch(() => {});
       } else if (val.tab_link == "/no") {
@@ -193,6 +205,7 @@ export default {
   width: 100%;
   background: #fff;
   z-index: 999;
+  border-top: #F6F6F6 1px solid;
   .page-tabbar {
     display: flex;
     align-items: center;
@@ -223,21 +236,23 @@ export default {
         position: relative;
         width: 40px;
         height: 40px;
-        // margin-top: -20px;
+        margin-top: -15px;
+        margin-bottom: 0px;
         .add-icon {
           width: 40px;
           height: 40px;
-          border-radius: 100%;
+          border-radius: 40px;
+          border: 2px #ffffff solid;
           padding: 0;
           margin: 0;
           position: absolute;
           background: linear-gradient(
             180deg,
-            rgba(7, 193, 96, 1) 0%,
-            rgba(7, 193, 96, 1) 100%
+            rgba(0, 155, 255, 0.9) 0%,
+            rgba(0, 155, 255, 0.9) 100%
           );
           font-size: 40px;
-          box-shadow: 0px 0px 5px rgba(67, 208, 98, 0.274);
+          -moz-box-shadow:0px 0px 3px #0073FF; -webkit-box-shadow:0px 0px 3px #0073FF; box-shadow:0px 0px 3px #0073FF;
           color: #fff;
           display: flex;
           align-items: center;
@@ -246,6 +261,9 @@ export default {
           img {
             width: 60%;
             height: 60%;
+          }
+          span {
+            font-size: 20px;
           }
         }
       }
