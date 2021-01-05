@@ -1,5 +1,6 @@
 <template>
     <div class="getAddress">
+      <!--快递-->
         <div class="adress" @click="toEditAddress" v-show="!way">
             <img src="../../../components/img1/dingwei.png" alt />
             <div v-show="isNull">
@@ -13,10 +14,15 @@
                 <p class="left"><van-icon name="arrow" size=".4rem" color="#ccc"/></p>
             </div>
         </div>
-
+        <!--自取-->
         <div class="adress2" v-show="way">
             <div class="store-address" @click="showPicker = true">
-              <h3>{{ value }}</h3>
+              <img :src="pickResult.pickup_photos" alt="" v-if="pickResult.pickup_photos">
+              <div class="store-site">
+                <h3>{{ pickResult.contact_name }}</h3>
+                <p>{{ pickResult.city + pickResult.district + pickResult.detailed_site }}</p>
+              </div>
+              <span>切换</span>
               <van-icon class="icon" name="arrow" color="#ccc" size=".4rem"/>
             </div>
             <div class="recieve-msg">
@@ -27,8 +33,9 @@
                  placeholder="请输入姓名" 
                  maxlength="7" 
                  v-model="addressStore.name"
+                 ref="name"
                 >
-                <img src="../img/edit.svg" alt="">
+                <img src="../img/edit.svg" @click="nameFocus">
               </div>
               <div class="number">
                 <p>手机号码</p>
@@ -38,8 +45,9 @@
                  placeholder="请输入手机号码" 
                  onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
                  v-model="addressStore.phone"
+                 ref="phone"
                 >
-                <img src="../img/edit.svg" alt="">
+                <img src="../img/edit.svg" @click="phoneFocus">
               </div>
             </div>
         </div>
@@ -57,7 +65,7 @@
 </template>
 
 <script>
-import { shippingAddress,entAddress, entSelfPickupSite } from '../actions/index';
+import { shippingAddress,entAddress, entSelfPickupSite, SuperMarketList } from '../actions/index';
 import { mapState, mapMutations } from 'vuex'
 import { Toast, DropdownMenu, DropdownItem, Icon, Picker, Popup } from 'vant';
 export default {
@@ -70,7 +78,7 @@ export default {
             addressListResult: 0,
             isNull: false,
             setBydefault:false,
-            value: '',
+            pickResult: {},
             showPicker: false,
             columns: [],
         }
@@ -97,7 +105,12 @@ export default {
     },
     methods: {
       ...mapState(['user']),
-
+      nameFocus() {
+        this.$refs.name.focus();
+      },
+      phoneFocus() {
+        this.$refs.phone.focus();
+      },
       //编辑地址
       toEditAddress() {
 
@@ -108,41 +121,57 @@ export default {
         }
       },
       getEntSiteReal() {
-        entSelfPickupSite(this.proid)
+        SuperMarketList()
         .then((res) => {
+ 
           if(res.code == 100) {
-
             this.addressStoreList = res.data;
-            //拼接地址
             this.addressStoreList.map((item,index) => {
-
-              item.text = item.pinv_district + item.pinv_addres;
-
+                item.text = item.city + item.district + item.detailed_site + item.contact_name;
             })
             //存入选择器列表
             this.addressStoreList.forEach(item => {
-              this.columns.push(item.text)
-            })
-            if(this.columns.length == 0) {
-              this.value = "商家未设置自取地址，请切换收货方式";
-            } else {
-              this.value = this.columns[0];
+                this.columns.push(item.text)
+              })
+              if(this.columns.length == 0) {
+                this.pickResult.contact_name = "商家未设置自取地址，请切换收货方式";
+              } else {
+                this.pickResult = this.addressStoreList[0];
             }
-
           } else {
-            Toast(res.msg);
+            Toast(res.msg)
           }
         })
-        .catch((err) => {
-          Toast("请求出错");
-        });
+        // entSelfPickupSite(this.proid)
+        // .then((res) => {
+        //   if(res.code == 100) {
+
+        //     this.addressStoreList = res.data;
+        //     //拼接地址
+        //     this.addressStoreList.map((item,index) => {
+
+        //       item.text = item.pinv_district + item.pinv_addres;
+
+        //     })
+        //     console.log(this.addressStoreList)
+        //     //存入选择器列表
+        //     this.addressStoreList.forEach(item => {
+        //       this.columns.push(item.text)
+        //     })
+        //     if(this.columns.length == 0) {
+        //       this.value = "商家未设置自取地址，请切换收货方式";
+        //     } else {
+        //       this.value = this.columns[0];
+        //     }
+
+        //   } else {
+        //     Toast(res.msg);
+        //   }
+        // })
+        // .catch((err) => {
+        //   Toast("请求出错");
+        // });
       },
-      //获取提货人信息
-      // getEntSite(name,phone) {
-      //   this.addressStore.mem_name = name;
-      //   this.addressStore.service_phone = phone;
-      //   console.log(this.addressStore)
-      // },
       getUserSite() {
         //获取收货地址
         shippingAddress()
@@ -199,17 +228,16 @@ export default {
             }
           }
 
-          // this.address.forEach(element => {
-          //   if (element.checkbox === true) {
-          //     this.address = element;
-          //     return;
-          //   }
-          // });
         })
       },
       //选择商家地址
       onConfirm(value) {
-        this.value = value;
+        for(let i = 0; i < this.addressStoreList.length; i++) {
+          if(this.addressStoreList[i].text == value) {
+            this.pickResult = this.addressStoreList[i];
+            break;
+          }
+        }
         this.showPicker = false;
       },
     },
@@ -279,17 +307,47 @@ export default {
       padding: 20px 0;
       .store-address {
         display: flex;
-      }
-      h3 {
-        color: #232426;
-        font-size: 18px;
-        flex: 1;
-      }
-      .icon {
-        display: flex;
         align-items: center;
-        margin-left: 15px;
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 1px;
+        }
+        span {
+          font-size: 12px;
+          color: #ccc;
+          line-height: 50px;
+          padding-left: 7px;
+          
+        }
+        .store-site {
+          flex: 1;
+          padding-left: 10px;
+          h3 {
+            color: #232426;
+            font-size: 16px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          p {
+            text-overflow: -o-ellipsis-lastline;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+        }
+        
+        .icon {
+          display: flex;
+          align-items: center;
+          // margin-left: 15px;
+        }
       }
+      
       .recieve-msg {
         display: flex;
         margin-top: 25px;
