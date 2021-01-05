@@ -159,7 +159,7 @@ export default {
     this.count = this.$route.query.pay_num;
 
     //配送状态
-    if (this.$store.state.commodityState) {
+    if (this.$store.state.commodityState) { 
       this.active = 1;
     }
 

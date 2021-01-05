@@ -7,11 +7,21 @@
         <div class="submit" @click="submit">发布</div>
       </div>
       <div class="tittle">
-        <input
+        <!-- <input
           type="text"
           placeholder="请输入标题（3-150个字）"
           v-model="articleForm.graphic_name"
           v-bind="descNum"
+          maxlength="150"
+        /> -->
+        <van-field
+          v-model="articleForm.graphic_name"
+          rows="1"
+          :maxlength="150"
+          autosize
+          type="textarea"
+          placeholder="请输入标题（3-150个字）"
+          class="input-item"
         />
       </div>
     </div>
@@ -561,15 +571,13 @@ export default {
     }
   }
   .tittle {
-    input {
-      width: 100%;
-      border: none;
-      border-radius: 0;
+    width: 100%;
+    padding-bottom: 10px;
+    .input-item {
+      padding: 0;
       border-bottom: 2px solid #eee;
-      height: 30px;
-      line-height: 20px;
-      padding-bottom: 5px;
     }
+    
   }
   .content {
     display: flex;
