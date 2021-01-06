@@ -107,7 +107,7 @@ export function memberCommentList(t,i) {
 export function entSelfPickupSite(id) {
     return request('/api/entSelfPickupSite', 'get', { id});
 }
-//评论列表
+//自提地址
 export function SuperMarketList() {
     return request('/api/SuperMarketList', 'post');
 }

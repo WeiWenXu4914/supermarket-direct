@@ -19,3 +19,7 @@ export const myAllSearch =(val,type) => {
     return request('/api/myAllSearch','post',{ name: val, type: type })
 }
 
+//自提地址
+export function SuperMarketList(val) {
+    return request('/api/SuperMarketList', 'post', { detailed_site: val });
+}

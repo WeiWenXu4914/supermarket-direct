@@ -27,6 +27,9 @@
       <van-tab title="商企">
         <StoreResult :searchValue="resultValue" :active3="active" />
       </van-tab>
+      <van-tab title="取货地址">
+        <SiteResult :searchValue="resultValue" :active4="active" />
+      </van-tab>
       <!-- <van-tab title="关注">
         <AttentionResult :searchValue="resultValue" :active4="active" />
       </van-tab> -->
@@ -52,12 +55,14 @@ import ArticleResult from "./components/ArticleResult";
 import GoodsResult from "./components/GoodsResult";
 import StoreResult from "./components/StoreResult";
 import AttentionResult from "./components/AttentionResult";
+import SiteResult from "./components/SiteResult";
 export default {
   components: {
     ArticleResult,
     GoodsResult,
     StoreResult,
     AttentionResult,
+    SiteResult
   },
   data() {
     return {
