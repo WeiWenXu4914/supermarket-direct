@@ -1,3 +1,8 @@
+
+const path = require('path');
+const webpack = require('webpack')
+const isProduction = process.env.NODE_ENV === 'production'
+
 const CompressionPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
 const Timestamp = new Date().getTime();
@@ -17,6 +22,10 @@ module.exports = {
         test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
         threshold: 10240,
         minRatio: 0.8
+      }),
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 5, 
+        minChunkSize: 100
       })
     ],
     externals: {
