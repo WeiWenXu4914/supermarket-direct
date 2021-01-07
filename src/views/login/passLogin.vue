@@ -15,7 +15,7 @@
          ref="password"
          v-model="form.pass"
         >
-        <button class="forget-password" @click="$router.push('/editPass')">忘记密码</button>
+        <button class="forget-password" @click="$router.push('/editPass')">设置密码</button>
         <img src="./img/not_see.svg" v-show="isShow" @click="changePasswor">
         <img src="./img/can_see.svg" v-show="!isShow" @click="changePasswor">
       </div>
