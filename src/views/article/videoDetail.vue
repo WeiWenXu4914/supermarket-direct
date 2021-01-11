@@ -663,6 +663,16 @@ export default {
 
 <style lang="less">
 .video-detail-small {
+   .goindex {
+    width: 15%;
+    height: 50px;
+    position: fixed;
+    top: 0px;
+    z-index: 5000;
+    right: 0px;
+    text-align: center;
+    line-height: 60px;
+  }
   .icon-arrow-left {
     position: absolute;
     left: 13px;
