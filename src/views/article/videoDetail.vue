@@ -7,6 +7,9 @@
       @click="$router.back()"
       class="icon-arrow-left"
     />
+    <div class="goindex" v-if="goindex == true" @click="goHome">
+      <van-icon name="wap-home-o" size="25px" color="#FFFFFF" />
+    </div>
     <div class="video-area">
       <video
         ref="video"
@@ -243,6 +246,7 @@ export default {
       commType: 1,
       ProductSetList: "",
       recProShow: false,
+      goindex: false
     };
   },
   beforeCreate() {
@@ -255,6 +259,9 @@ export default {
     });
   },
   created() {
+    if (this.$route.query.goindex == "true") {
+      this.goindex = true;
+    }
     this.getData();
     this.userIndex();
     this.getCommList();
@@ -516,6 +523,8 @@ export default {
         this.dataAll.graphic_width,
         this.dataAll.graphic_height
       );
+
+      this.autoForward();
     },
     computeVideoStyle(width, height) {
       let layoutWay = width / height > 5 / 3;
@@ -544,6 +553,46 @@ export default {
         .catch((err) => {
           Toast("请求出错");
         });
+    },
+    goHome() {
+      this.$router.push("/");
+    },
+    autoForward() {
+      // 注册微信分享
+      let ua = window.navigator.userAgent.toLowerCase();
+      if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        if (this.dataAll.gc_id == 2) {
+          var form = {
+            title: this.dataAll.graphic_name,
+            link: window.location.href + "?goindex=true",
+            imgUrl:
+              this.dataAll.graphic_surface_plot ||
+              "http://api.lejiagx.cn/static/icon/lejia_logo.png",
+            desc:
+              this.dataAll.graphic_intro ||
+              "来自" + this.dataAll.mem_name + "的分享",
+            type: "video",
+            dataUrl: this.dataAll.graphic_video_path,
+          };
+        } else {
+          var imgUrl = "http://api.lejiagx.cn/static/icon/lejia_logo.png";
+
+          if (this.dataAll.graphic_thumbnail.length > 0) {
+            imgUrl = this.dataAll.graphic_thumbnail[0].graphic_thumbnail_path;
+          }
+
+          var form = {
+            title: this.dataAll.graphic_name,
+            link: window.location.href + "?goindex=true",
+            imgUrl: imgUrl,
+            desc:
+              this.dataAll.graphic_intro ||
+              "来自" + this.dataAll.mem_name + "的分享",
+          };
+        }
+
+        wxJSSDK(form);
+      }
     },
     // 分享转发
     forward() {

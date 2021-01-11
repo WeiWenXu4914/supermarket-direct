@@ -12,6 +12,9 @@
           <div class="back" @click="$router.go(-1)">
             <van-icon name="arrow-left" size="30px" color="#fff" />
             <span>{{ article.graphic_name | strSub(15) | emoji_decode }}</span>
+            <div class="goindex" v-if="goindex == true" @click="goHome">
+              <van-icon name="wap-home-o" size="25px" color="#FFFFFF" />
+            </div>
           </div>
           <div class="rec-pro" v-if="ProductSetList != '' && recProShow">
             <div class="pro-img" @click="recProShow = false">
