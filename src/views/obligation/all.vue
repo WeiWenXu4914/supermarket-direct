@@ -2,62 +2,71 @@
   <div class="all">
     <div class="header">
       <div class="top">
-        <img src="../../components/img1/返回.png" class="i1"  @click="back()"/>
+        <img src="../../components/img1/返回.png" class="i1" @click="back()" />
         <p class="p1">全部订单</p>
-        <img src="../../components/img1/搜索.png" alt class="i2" @click="search"/>
+        <img
+          src="../../components/img1/搜索.png"
+          alt
+          class="i2"
+          @click="search"
+        />
       </div>
-      <van-tabs type="none" title-active-color="#D04443" v-model="active" @click="onClick">
-          <van-tab title="全部">
-              <order-item :state="active"></order-item>
-          </van-tab>
-          <van-tab title="待付款">
-              <order-item :state="active"></order-item>
-          </van-tab>
-          <van-tab title="待发货">
-              <order-item :state="active"></order-item>
-          </van-tab>
-          <van-tab title="待收货">
-              <order-item :state="active"></order-item>
-          </van-tab>
-          <van-tab title="待评价">
-              <order-item :state="active"></order-item>
-          </van-tab>
+      <van-tabs
+        type="none"
+        title-active-color="#D04443"
+        v-model="active"
+        @click="onClick"
+      >
+        <van-tab title="全部">
+          <order-item :state="active"></order-item>
+        </van-tab>
+        <van-tab title="待付款">
+          <order-item :state="active"></order-item>
+        </van-tab>
+        <van-tab title="待发货">
+          <order-item :state="active"></order-item>
+        </van-tab>
+        <van-tab title="待收货">
+          <order-item :state="active"></order-item>
+        </van-tab>
+        <van-tab title="待评价">
+          <order-item :state="active"></order-item>
+        </van-tab>
       </van-tabs>
     </div>
   </div>
 </template>
 
 <script>
-import { Toast,Tab, Tabs } from 'vant';
-import  orderItem  from './components/orderItem';
+import { Toast, Tab, Tabs } from "vant";
+import orderItem from "./components/orderItem";
 export default {
   name: "all",
   components: {
-      orderItem
+    orderItem,
   },
   created() {
-      this.active = this.$route.query.state;
+    this.active = this.$route.query.state;
   },
   data() {
-      return {
-          dataList: [],
-          active: 0
-      };
+    return {
+      dataList: [],
+      active: 0,
+    };
   },
-  methods:{
-    back(){
-      console.log(this.$route.query.route)
-      if(this.$route.query.route) {
-          this.$router.replace('/');
-      }else {
-          this.$router.go(-1);
+  methods: {
+    back() {
+      console.log(this.$route.query.route);
+      if (this.$route.query.route) {
+        this.$router.replace("/");
+      } else {
+        this.$router.go(-1);
       }
-
     },
     search() {
-        this.$router.push('/order')
-    }
-  }
+      this.$router.push("/order");
+    },
+  },
 };
 </script>
 
@@ -68,35 +77,36 @@ export default {
 }
 .all {
   background-color: #f6f6f6;
-  .top {
-    display: flex;
-    margin-top: 0.5rem;
-    padding-bottom: 0.3rem;
-    background-color: #ffffff;
-    .i1 {
-      width: 0.5rem;
-      height: 0.5rem;
-      margin: 0.1rem 0rem 0rem 0.3rem;
-    }
-    .p1 {
-      margin-left: 3rem;
-      color: #2f2f2f;
-      font-size: 0.5rem;
-      font-weight: 500;
-      font-family: Source Han Sans CN;
-    }
-    .i2 {
-      width: 0.6rem;
-      height: 0.6rem;
-      margin: 0.1rem 0rem 0rem 3rem;
+  > .header {
+    > .top {
+      display: flex;
+      margin-top: 0.3rem;
+      padding-bottom: 0.3rem;
+      background-color: #ffffff;
+      .i1 {
+        width: 0.5rem;
+        height: 0.5rem;
+        margin: 0.1rem 0rem 0rem 0.3rem;
+      }
+      .p1 {
+        margin-left: 3rem;
+        color: #2f2f2f;
+        font-size: 0.5rem;
+        font-weight: 500;
+        font-family: Source Han Sans CN;
+      }
+      .i2 {
+        width: 0.6rem;
+        height: 0.6rem;
+        margin: 0.1rem 0rem 0rem 3rem;
+      }
     }
   }
-  
   /deep/.van-tabs__wrap {
-     padding: 10px 0;
-     background-color: #fff;
-     border-top: 1px solid rgb(233, 232, 232);
-     border-bottom: 1px solid rgb(233, 232, 232);
+    padding: 10px 0;
+    background-color: #fff;
+    border-top: 1px solid rgb(233, 232, 232);
+    border-bottom: 1px solid rgb(233, 232, 232);
   }
   .zong1 {
     background-color: #ffffff;

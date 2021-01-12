@@ -12,14 +12,27 @@
         </div>
         <div class="name" @click.stop="userHandle">
           <p>
-            {{ article.mem_name }}
-            <van-icon name="http://api.lejiagx.cn/static/icon/官方授权.png" 
-                size="15px" 
-                v-if="article.mem_id == 1" 
-                style="margin-right:5px;" />
-            <van-tag plain color="#f3a683" v-if="article.mmt_id == 3 && article.mem_id != 1">{{
-              article.ent_district || article.mmt_type_name
-            }}</van-tag>
+            <span v-if="!selectPhoneNumber(article.mem_name)">
+              {{ article.mem_name }}
+            </span>
+            <span v-else>
+              {{ selectPhoneNumber(article.mem_name).name }}
+            </span>
+
+            <van-icon
+              name="http://api.lejiagx.cn/static/icon/官方授权.png"
+              size="15px"
+              v-if="article.mem_id == 1"
+              style="margin-right: 5px"
+            />
+
+            <van-tag
+              plain
+              color="#f3a683"
+              v-if="article.mmt_id == 3 && article.mem_id != 1"
+            >
+              {{ article.ent_district || article.mmt_type_name }}
+            </van-tag>
           </p>
         </div>
         <!-- <div
@@ -34,9 +47,7 @@
           v-if="article.mmt_id == 3 && article.memid != 1"
           @click="userHandle"
         >
-          <van-button color="#D04443" size="mini"
-            >进店</van-button
-          >
+          <van-button color="#D04443" size="mini">进店</van-button>
         </div>
       </div>
 
@@ -54,8 +65,11 @@
           >
             <img src="../../../assets/icons/hjzw.png" alt="" />
           </span>
-          <span>{{ article.graphic_name | strSub(70) | emoji_decode }}
-            <span class="allArt" v-if="article.graphic_name.length > 70">全文</span>
+          <span
+            >{{ article.graphic_name | strSub(70) | emoji_decode }}
+            <span class="allArt" v-if="article.graphic_name.length > 70"
+              >全文</span
+            >
           </span>
         </div>
         <div class="item-img">
@@ -229,6 +243,24 @@ export default {
     //         }
     //     })
     // },
+    selectPhoneNumber(str) {
+      var regx = /(1[3|4|5|7|8][\d]{9}|0[\d]{2,3}-[\d]{7,8}|400[-]?[\d]{3}[-]?[\d]{4})/g;
+      var phoneNums = str.match(regx);
+      var item = {};
+      if (phoneNums) {
+        for (var i = 0; i < phoneNums.length; i++) {
+          var temp = phoneNums[i];
+
+          item = {
+            phone: temp,
+            name: str.replace(phoneNums[i], ""),
+          };
+        }
+      } else {
+        item = false;
+      }
+      return item;
+    },
     showForward(article) {
       this.$emit("showForward", {
         type: "article",
@@ -254,7 +286,6 @@ export default {
       });
     },
     getpreview(val) {
-
       this.goDetail(this.article.gid);
       return false;
 
@@ -309,8 +340,7 @@ export default {
       //  }
     },
     userHandle() {
-
-      if(this.article.memid == 1) {
+      if (this.article.memid == 1) {
         return;
       }
 
@@ -400,12 +430,10 @@ export default {
       // 点赞， 如果点赞失败则请求取消点赞
       memberLike(this.article.gid, 1, 1).then((res) => {
         if (res.code == 100) {
-
           this.$toast.success(res.msg);
           this.status.isLike = "color:#d81e06";
           this.article.graphic_like = parseInt(this.article.graphic_like) + 1;
         } else {
-
           memberLike(this.article.gid, 1, 0)
             .then((res) => {
               if (res.code == 100) {
@@ -466,7 +494,7 @@ export default {
     display: flex;
     align-items: center;
     .avator {
-      width: 34px;
+      width: 30px;
       // border-radius: 100%;
       // overflow: hidden;
       margin-right: 6px;
@@ -477,8 +505,8 @@ export default {
       }
     }
     /deep/ .van-image {
-      width: 34px;
-      height: 34px;
+      width: 30px;
+      height: 30px;
       background: #fff;
     }
     .name {

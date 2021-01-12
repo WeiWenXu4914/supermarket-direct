@@ -1,395 +1,408 @@
 <template>
-    <div class="getAddress">
-      <!--快递-->
-        <div class="adress" @click="toEditAddress" v-show="!way">
-            <img src="../../../components/img1/dingwei.png" alt />
-            <div v-show="isNull">
-                <span class="name">{{ address.contact_name }}</span>
-                <p class="phone">{{ address.contact_number }}</p>
-                <p class="adr">{{ address.province }} {{ address.city }} {{ address.district }} {{ address.detailed_site }}</p>
-                <p class="left"><van-icon name="arrow" /></p>
-            </div>
-            <div v-show="!isNull">
-                <span class="addressNull">请添加默认收货地址</span>
-                <p class="left"><van-icon name="arrow" size=".4rem" color="#ccc"/></p>
-            </div>
-        </div>
-        <!--自取-->
-        <div class="adress2" v-show="way">
-            <div class="store-address" @click="showPicker = true">
-              <img :src="pickResult.pickup_photos" alt="" v-if="pickResult.pickup_photos">
-              <div class="store-site">
-                <h3>{{ pickResult.contact_name }}</h3>
-                <p>{{ pickResult.city + pickResult.district + pickResult.detailed_site }}</p>
-              </div>
-              <span>切换</span>
-              <van-icon class="icon" name="arrow" color="#ccc" size=".4rem"/>
-            </div>
-            <div class="recieve-msg">
-              <div class="name">
-                <p>取货人</p>
-                <input 
-                 type="text" 
-                 placeholder="请输入姓名" 
-                 maxlength="7" 
-                 v-model="addressStore.name"
-                 ref="name"
-                >
-                <img src="../img/edit.svg" @click="nameFocus">
-              </div>
-              <div class="number">
-                <p>手机号码</p>
-                <input 
-                 type="text" 
-                 maxlength="11" 
-                 placeholder="请输入手机号码" 
-                 onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
-                 v-model="addressStore.phone"
-                 ref="phone"
-                >
-                <img src="../img/edit.svg" @click="phoneFocus">
-              </div>
-            </div>
-        </div>
-
-        
-        <van-popup v-model="showPicker" round position="bottom">
-          <van-picker
-            show-toolbar
-            :columns="columns"
-            @cancel="showPicker = false"
-            @confirm="onConfirm"
-          />
-        </van-popup>
+  <div class="getAddress">
+    <!--快递-->
+    <div class="adress" @click="toEditAddress" v-show="!way">
+      <img src="../../../components/img1/dingwei.png" alt />
+      <div v-show="isNull">
+        <span class="name">{{ address.contact_name }}</span>
+        <p class="phone">{{ address.contact_number }}</p>
+        <p class="adr">
+          {{ address.province }} {{ address.city }} {{ address.district }}
+          {{ address.detailed_site }}
+        </p>
+        <p class="left"><van-icon name="arrow" /></p>
+      </div>
+      <div v-show="!isNull">
+        <span class="addressNull">请添加默认收货地址</span>
+        <p class="left"><van-icon name="arrow" size=".4rem" color="#ccc" /></p>
+      </div>
     </div>
+    <!--自取-->
+    <div class="adress2" v-show="way">
+      <div class="adress-title">自提点:</div>
+      <div class="store-address" @click="showPicker = true">
+        <img
+          :src="pickResult.pickup_photos"
+          alt=""
+          v-if="pickResult.pickup_photos"
+        />
+        <div class="store-site">
+          <h3>{{ pickResult.contact_name }}</h3>
+          <p>
+            {{
+              pickResult.city + pickResult.district + pickResult.detailed_site
+            }}
+          </p>
+        </div>
+        <span>切换</span>
+        <van-icon class="icon" name="arrow" color="#ccc" size=".4rem" />
+      </div>
+      <div class="recieve-msg">
+        <div class="name">
+          <p>取货人</p>
+          <input
+            type="text"
+            placeholder="请输入姓名"
+            maxlength="7"
+            v-model="addressStore.name"
+            ref="name"
+          />
+          <img src="../img/edit.svg" @click="nameFocus" />
+        </div>
+        <div class="number">
+          <p>联系方式</p>
+          <input
+            type="text"
+            maxlength="11"
+            placeholder="请输入手机号码"
+            onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+            v-model="addressStore.phone"
+            ref="phone"
+          />
+          <img src="../img/edit.svg" @click="phoneFocus" />
+        </div>
+      </div>
+    </div>
+
+    <van-popup v-model="showPicker" round position="bottom">
+      <van-picker
+        show-toolbar
+        :columns="columns"
+        @cancel="showPicker = false"
+        @confirm="onConfirm"
+      />
+    </van-popup>
+  </div>
 </template>
 
 <script>
-import { shippingAddress,entAddress, entSelfPickupSite, SuperMarketList } from '../actions/index';
-import { mapState, mapMutations } from 'vuex'
-import { Toast, DropdownMenu, DropdownItem, Icon, Picker, Popup } from 'vant';
+import {
+  shippingAddress,
+  entAddress,
+  entSelfPickupSite,
+  SuperMarketList,
+} from "../actions/index";
+import { mapState, mapMutations } from "vuex";
+import { Toast, DropdownMenu, DropdownItem, Icon, Picker, Popup } from "vant";
 export default {
-    props:['showMsg','entid','proid'],
-    data() {
-        return {
-            address: {},
-            addressStore: {},
-            addressStoreList: [], 
-            addressListResult: 0,
-            isNull: false,
-            setBydefault:false,
-            pickResult: {},
-            showPicker: false,
-            columns: [],
-        }
+  props: ["showMsg", "entid", "proid"],
+  data() {
+    return {
+      address: {},
+      addressStore: {},
+      addressStoreList: [],
+      addressListResult: 0,
+      isNull: false,
+      setBydefault: false,
+      pickResult: {},
+      showPicker: false,
+      columns: [],
+    };
+  },
+  computed: {
+    way() {
+      return this.showMsg === 0 ? true : false;
     },
-    computed: {
-        way() {
-          return this.showMsg === 0 ? true : false;
-        }
+  },
+  watch: {
+    //获得提货人信息
+    // entid(newVal,old) {
+    //   if(newVal) {
+    //     this.getEntSite();
+    //   }
+    // },
+    //获得商家地址列表
+    proid(val) {
+      if (val) {
+        this.getEntSiteReal();
+      }
     },
-    watch: {
-      //获得提货人信息
-      // entid(newVal,old) {
-      //   if(newVal) {
-      //     this.getEntSite();
-      //   }
-      // },
-      //获得商家地址列表
-      proid(val) {
-        if(val) {
-          this.getEntSiteReal()
-        }
-      },
-
+  },
+  methods: {
+    ...mapState(["user"]),
+    nameFocus() {
+      this.$refs.name.focus();
     },
-    methods: {
-      ...mapState(['user']),
-      nameFocus() {
-        this.$refs.name.focus();
-      },
-      phoneFocus() {
-        this.$refs.phone.focus();
-      },
-      //编辑地址
-      toEditAddress() {
-
-        if(this.setBydefault == true){
-          this.$router.push({path:'/myaddress',query: { add: 1 } })
-        }else{
-          this.$router.push({path:'/add',query: { add: 1 } })
-        }
-      },
-      getEntSiteReal() {
-        SuperMarketList()
-        .then((res) => {
- 
-          if(res.code == 100) {
-            this.addressStoreList = res.data;
-            this.addressStoreList.map((item,index) => {
-                item.text = item.city + item.district + item.detailed_site + item.contact_name;
-            })
-            //存入选择器列表
-            this.addressStoreList.forEach(item => {
-                this.columns.push(item.text)
-              })
-              if(this.columns.length == 0) {
-                this.pickResult.contact_name = "商家未设置自取地址，请切换收货方式";
-              } else {
-                this.pickResult = this.addressStoreList[0];
-            }
+    phoneFocus() {
+      this.$refs.phone.focus();
+    },
+    //编辑地址
+    toEditAddress() {
+      if (this.setBydefault == true) {
+        this.$router.push({ path: "/myaddress", query: { add: 1 } });
+      } else {
+        this.$router.push({ path: "/add", query: { add: 1 } });
+      }
+    },
+    getEntSiteReal() {
+      SuperMarketList().then((res) => {
+        if (res.code == 100) {
+          this.addressStoreList = res.data;
+          this.addressStoreList.map((item, index) => {
+            item.text =
+              item.city +
+              item.district +
+              item.detailed_site +
+              item.contact_name;
+          });
+          //存入选择器列表
+          this.addressStoreList.forEach((item) => {
+            this.columns.push(item.text);
+          });
+          if (this.columns.length == 0) {
+            this.pickResult.contact_name = "商家未设置自取地址，请切换收货方式";
           } else {
-            Toast(res.msg)
+            this.pickResult = this.addressStoreList[0];
           }
-        })
-        // entSelfPickupSite(this.proid)
-        // .then((res) => {
-        //   if(res.code == 100) {
+        } else {
+          Toast(res.msg);
+        }
+      });
+      // entSelfPickupSite(this.proid)
+      // .then((res) => {
+      //   if(res.code == 100) {
 
-        //     this.addressStoreList = res.data;
-        //     //拼接地址
-        //     this.addressStoreList.map((item,index) => {
+      //     this.addressStoreList = res.data;
+      //     //拼接地址
+      //     this.addressStoreList.map((item,index) => {
 
-        //       item.text = item.pinv_district + item.pinv_addres;
+      //       item.text = item.pinv_district + item.pinv_addres;
 
-        //     })
-        //     console.log(this.addressStoreList)
-        //     //存入选择器列表
-        //     this.addressStoreList.forEach(item => {
-        //       this.columns.push(item.text)
-        //     })
-        //     if(this.columns.length == 0) {
-        //       this.value = "商家未设置自取地址，请切换收货方式";
-        //     } else {
-        //       this.value = this.columns[0];
-        //     }
+      //     })
+      //     console.log(this.addressStoreList)
+      //     //存入选择器列表
+      //     this.addressStoreList.forEach(item => {
+      //       this.columns.push(item.text)
+      //     })
+      //     if(this.columns.length == 0) {
+      //       this.value = "商家未设置自取地址，请切换收货方式";
+      //     } else {
+      //       this.value = this.columns[0];
+      //     }
 
-        //   } else {
-        //     Toast(res.msg);
-        //   }
-        // })
-        // .catch((err) => {
-        //   Toast("请求出错");
-        // });
-      },
-      getUserSite() {
-        //获取收货地址
-        shippingAddress()
-        .then((res) => { 
-          if (res.code == 100 && res.data.length > 0) {
+      //   } else {
+      //     Toast(res.msg);
+      //   }
+      // })
+      // .catch((err) => {
+      //   Toast("请求出错");
+      // });
+    },
+    getUserSite() {
+      //获取收货地址
+      shippingAddress().then((res) => {
+        if (res.code == 100 && res.data.length > 0) {
+          let name = res.data[0].contact_name;
+          let phone = res.data[0].contact_number;
+          this.addressStore.name = name;
+          this.addressStore.phone = phone;
+          this.setBydefault = true;
+          var addressIsorNo = 0;
+          var addressIsorNoIndex = "";
+          res.data.forEach((item, index) => {
+            if (item.by_default == 0) {
+              ++addressIsorNo;
+            } else {
+              addressIsorNoIndex = index;
+            }
+          });
 
-              let name = res.data[0].contact_name;
-              let phone = res.data[0].contact_number;
-              this.addressStore.name = name;
-              this.addressStore.phone = phone;
-              this.setBydefault = true;
-              var addressIsorNo = 0;
-              var addressIsorNoIndex = '';
-              res.data.forEach((item,index)=>{
-                if(item.by_default == 0){
-                  ++addressIsorNo
-                }else{
-                  addressIsorNoIndex = index;
-                }
-              })
-
-              if(res.data.length <= addressIsorNo) {
-                
-                this.address = {
-                  country: 0,
-                  province: 0,
-                  city: 0,
-                  district: 0,
-                  detailed_site: 0,
-                  contact_number: 0,
-                  contact_name: '无默认收货地址，请添加',
-                  by_default: 0,
-                  id: 0
-                }
-                
-              }else{
-
-                this.address = res.data[addressIsorNoIndex]
-                this.isNull = true;
-              }
-
-          } else {
-
-            this.address  = {
+          if (res.data.length <= addressIsorNo) {
+            this.address = {
               country: 0,
               province: 0,
               city: 0,
               district: 0,
               detailed_site: 0,
               contact_number: 0,
-              contact_name: '无默认收货地址，请添加',
+              contact_name: "无默认收货地址，请添加",
               by_default: 0,
-              id: 0
-            }
+              id: 0,
+            };
+          } else {
+            this.address = res.data[addressIsorNoIndex];
+            this.isNull = true;
           }
-
-        })
-      },
-      //选择商家地址
-      onConfirm(value) {
-        for(let i = 0; i < this.addressStoreList.length; i++) {
-          if(this.addressStoreList[i].text == value) {
-            this.pickResult = this.addressStoreList[i];
-            break;
-          }
+        } else {
+          this.address = {
+            country: 0,
+            province: 0,
+            city: 0,
+            district: 0,
+            detailed_site: 0,
+            contact_number: 0,
+            contact_name: "无默认收货地址，请添加",
+            by_default: 0,
+            id: 0,
+          };
         }
-        this.showPicker = false;
-      },
+      });
     },
-    mounted() {
-      this.getUserSite();
-    }
-}
+    //选择商家地址
+    onConfirm(value) {
+      for (let i = 0; i < this.addressStoreList.length; i++) {
+        if (this.addressStoreList[i].text == value) {
+          this.pickResult = this.addressStoreList[i];
+          break;
+        }
+      }
+      this.showPicker = false;
+    },
+  },
+  mounted() {
+    this.getUserSite();
+  },
+};
 </script>
 
 <style lang="less" scoped>
 .getAddress {
-    .adress {
-      display: flex;
-      position: relative;
-      flex-wrap: nowrap;
-      align-items: center;
-      // border-bottom: 0.5px solid rgba(229, 229, 229, 0.5);
-      // border-top: 0.5px solid rgba(229, 229, 229, 0.5);
-      width: 90%;
-      margin-left: 0.5rem;
-      padding: 0.5rem 0;
-      img {
-        width: 0.5rem;
-        height: 0.5rem;
-        margin: 0.0rem 0rem 0rem 0rem;
-      }
-      .name {
-        margin: 0.3rem 0rem 0rem 0.3rem;
-        color: #212121;
-        font-size: 0.45rem;
-      }
-      .phone {
-        display: inline-block;
-        margin: 0.3rem 0rem 0rem 0.3rem;
-        color: #212121;
-        font-size: 0.45rem;
-      }
-      div {
-        flex: 1;
-      }
-      .adr {
-        margin: 0rem 0rem 0rem 0.3rem;
-        width: 80%;
-        color: #676767;
-      }
-      .left {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #717171;
-        font-size: 0.45rem;
-      }
-      .addressNull {
-          position: absolute;
-          font-size: 20px;
-          color: red;
-          font-weight: bold;
-          top: 50%;
-          transform: translateY(-50%);
-          left: 10%;
-      }
+  .adress {
+    display: flex;
+    position: relative;
+    flex-wrap: nowrap;
+    align-items: center;
+    // border-bottom: 0.5px solid rgba(229, 229, 229, 0.5);
+    // border-top: 0.5px solid rgba(229, 229, 229, 0.5);
+    width: 90%;
+    margin-left: 0.5rem;
+    padding: 0.5rem 0;
+    img {
+      width: 0.5rem;
+      height: 0.5rem;
+      margin: 0rem 0rem 0rem 0rem;
     }
-    .adress2 {
-      width: 90%;
-      margin: 0 auto;
-      padding: 20px 0;
-      .store-address {
+    .name {
+      margin: 0.3rem 0rem 0rem 0.3rem;
+      color: #212121;
+      font-size: 0.45rem;
+    }
+    .phone {
+      display: inline-block;
+      margin: 0.3rem 0rem 0rem 0.3rem;
+      color: #212121;
+      font-size: 0.45rem;
+    }
+    div {
+      flex: 1;
+    }
+    .adr {
+      margin: 0rem 0rem 0rem 0.3rem;
+      width: 80%;
+      color: #676767;
+    }
+    .left {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #717171;
+      font-size: 0.45rem;
+    }
+    .addressNull {
+      position: absolute;
+      font-size: 20px;
+      color: red;
+      font-weight: bold;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 10%;
+    }
+  }
+  .adress2 {
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px 0;
+    .adress-title {
+      font-size: 15px;
+      font-weight: 500;
+      padding-bottom: 10px;
+    }
+    .store-address {
+      display: flex;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: .5px #e9eaec solid;
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 1px;
+      }
+      span {
+        font-size: 12px;
+        color: #ccc;
+        line-height: 50px;
+        padding-left: 7px;
+      }
+      .store-site {
+        flex: 1;
+        padding-left: 10px;
+        h3 {
+          color: #232426;
+          font-size: 16px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        p {
+          text-overflow: -o-ellipsis-lastline;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+      }
+
+      .icon {
         display: flex;
         align-items: center;
+        // margin-left: 15px;
+      }
+    }
+
+    .recieve-msg {
+      display: flex;
+      margin-top: 15px;
+      div {
+        display: inline-block;
+      }
+      input {
+        border: none;
+        width: 80px;
+        font-weight: bold;
+        color: #232426;
+      }
+      p:nth-of-type(1) {
+        font-size: 14px;
+        color: #868688;
+        margin-bottom: 10px;
+      }
+      .name {
+        padding-right: 20px;
+        // margin-left: 20px;
+        position: relative;
         img {
-          width: 50px;
-          height: 50px;
-          border-radius: 1px;
-        }
-        span {
-          font-size: 12px;
-          color: #ccc;
-          line-height: 50px;
-          padding-left: 7px;
-          
-        }
-        .store-site {
-          flex: 1;
-          padding-left: 10px;
-          h3 {
-            color: #232426;
-            font-size: 16px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-          p {
-            text-overflow: -o-ellipsis-lastline;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-          }
-        }
-        
-        .icon {
-          display: flex;
-          align-items: center;
-          // margin-left: 15px;
+          position: absolute;
+          right: 7px;
+          bottom: 0px;
         }
       }
-      
-      .recieve-msg {
-        display: flex;
-        margin-top: 25px;
-        div {
-          display: inline-block;
-        }
+      .number {
+        position: relative;
+        border-left: 1px solid #e4e4e4;
+        padding-left: 20px;
         input {
-          border: none;
-          width: 80px;
-          font-weight: bold;
-          color: #232426;
+          width: 100px;
         }
-        p:nth-of-type(1) {
-            font-size: 14px;
-            color: #868688;
-            margin-bottom: 10px;
-        }
-        .name {
-          padding-right: 20px;
-          // margin-left: 20px;
-          position: relative;
-          img {
-            position: absolute;
-            right: 7px;
-            bottom: 0px;
-          }
-        }
-        .number {
-          position: relative;
-          border-left: 1px solid #E4E4E4;
-          padding-left: 20px;
-          input {
-            width: 100px;
-          }
-          img {
-            position: absolute;
-            bottom: 0;
-            right: -21px;
-          }
+        img {
+          position: absolute;
+          bottom: 0;
+          right: -21px;
         }
       }
     }
+  }
 }
-    
 </style>
