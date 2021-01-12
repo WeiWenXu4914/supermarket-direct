@@ -12,6 +12,9 @@
           <div class="back" @click="$router.go(-1)">
             <van-icon name="arrow-left" size="30px" color="#fff" />
             <span>{{ article.graphic_name | strSub(15) | emoji_decode }}</span>
+            <div class="goindex" v-if="goindex == true" @click.stop="goHome">
+              <van-icon name="wap-home-o" size="25px" color="#FFFFFF" />
+            </div>
           </div>
           <div class="rec-pro" v-if="ProductSetList != '' && recProShow">
             <div class="pro-img" @click="recProShow = false">
@@ -1280,6 +1283,16 @@ export default {
 .van-swipe-item {
   width: 100%;
   height: 100%;
+   .goindex {
+    width: 15%;
+    height: 50px;
+    position: fixed;
+    top: 0px;
+    z-index: 5000;
+    right: 0px;
+    text-align: center;
+    line-height: 60px;
+  }
   .video-class {
     width: 100%;
     height: 100vh;
