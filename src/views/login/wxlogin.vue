@@ -84,7 +84,7 @@ export default {
             if (data.code === 2) {
               //this.data = data.loginToken;
               localStorage.setItem("LoginToken", data.loginToken);
-              location.href = data.url;
+              location.href = data.url+'&timestamp=' + Math.random();
             } else if (data.code === 200) {
               localStorage.removeItem("LoginToken");
               localStorage.removeItem("Token");
