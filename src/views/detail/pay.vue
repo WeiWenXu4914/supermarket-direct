@@ -6,7 +6,7 @@
     </header>
 
     <div class="navigator-address">
-      <div class="navigator">
+      <!-- <div class="navigator">
         <button
          v-for="(item,index) in menuList"
          :key="index"
@@ -15,7 +15,7 @@
         >
           {{ item.dw_name }}
         </button>
-      </div>
+      </div> -->
       <div class="content">
         <my-address :showMsg="active" :entid="dataMsg.entid" :proid="dataMsg.proid" ref="myAddress" />
       </div>
@@ -826,8 +826,9 @@ export default {
     }
     .content {
       background-color: #fff;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
+      // border-bottom-left-radius: 10px;
+      // border-bottom-right-radius: 10px;
+      border-radius: 10px;
     }
   }
   .goods-message {
