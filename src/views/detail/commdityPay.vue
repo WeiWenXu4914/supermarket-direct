@@ -58,8 +58,8 @@
     <!--地址-->
     <div class="address" @click="toEditAddress">
       <span>送至</span>
-      <span v-if="address != {}">{{ address.province }} {{ address.city }} {{ address.district }} {{ address.detailed_site }}</span>
-      <span v-else>您还没有添加默认地址</span>
+      <span v-if="address.city">{{ address.province }} {{ address.city }} {{ address.district }} {{ address.detailed_site }}</span>
+      <span v-else style="color:red">请添加默认地址</span>
       <van-icon class="icon" name="arrow" />
     </div>
     <!--商品详情图片-->
@@ -294,7 +294,7 @@ export default {
       memberCommentList: [], //商品评价数据
       canNotPay: false,
       countAll: 0, //全部库存数量 -1
-      address: [],
+      address: {},
       forwardMark: false,
     };
   },
@@ -537,6 +537,10 @@ export default {
     },
     // 显示下单操作
     buyPro(pro_id) {
+      if(!this.address.city) {
+        Toast.fail("请添加默认收货地址");
+        return;
+      }
       this.numShow = true;
     },
     // 滚动事件
@@ -640,7 +644,7 @@ export default {
     getAddress() {
       shippingAddress()
       .then((res) => {
-
+        console.log(res)
         let addressList = res.data;
         for(let i = 0; i < addressList.length; i++) {
           if(addressList[i].by_default == 1) {
@@ -648,7 +652,6 @@ export default {
             break;
           }
         }
-
       })
       .catch((err) => {
         console.log(err)
