@@ -12,13 +12,15 @@
     <div class="adress">
         <div class="address-info">
           <img src="../../components/img1/dingwei.png" alt="">
-          <p class="p1">{{ data.product_invite.pinv_city }} {{ data.product_invite.pinv_district }} {{ data.product_invite.pinv_addres }}</p>
+          <!-- <p class="p1">{{ data.product_invite.pinv_city }} {{ data.product_invite.pinv_district }} {{ data.product_invite.pinv_addres }}</p> -->
+          <p class="p1"> 阿斯顿发送到发生飞洒发撒的发送到发大</p>
         </div>
         <p class="p2"><van-icon name="arrow" /></p>
     </div>
     <div class="phone">
         <img src="../../components/img1/dianhua.png" alt="">
-        <p>{{ data.product_invite.pinv_phone }}</p>
+        <!-- <p>{{ data.product_invite.pinv_phone }}</p> -->
+        <p>17647463584</p>
     </div>
     <div class="center">
         <vue-qr :text="orderNumber"></vue-qr>
