@@ -9,7 +9,6 @@
           :border="true"
           animated
           swipeable
-          sticky
           :ellipsis="false"
           :lazy-render="false"
           title-active-color="#07C160"
@@ -139,7 +138,8 @@ export default {
   margin: 0 auto;
   background: #fff;
   .content-item-all {
-    height: 700px;
+    height: calc(100vh - 130px);
+    padding-bottom: 20px;
     overflow: scroll;
   }
   .body {
@@ -174,7 +174,7 @@ export default {
       .van-tab__text {
         transition: all 0.5s ease;
         font-size: 18px;
-        font-weight: 800;
+        font-weight: 550;
       }
     }
   }
@@ -203,7 +203,7 @@ export default {
     }
   }
   /deep/.van-tabs__wrap {
-    height: 44px;
+    height: 35px;
   }
 }
 </style>

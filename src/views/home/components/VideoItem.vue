@@ -10,15 +10,28 @@
       </div>
       <div class="name" @click.stop="userHandle">
         <p>
+          <span v-if="!selectPhoneNumber(videoItemVal.mem_name)">
             {{ videoItemVal.mem_name }}
-            <van-icon name="http://api.lejiagx.cn/static/icon/官方授权.png" 
-                size="15px" 
-                v-if="videoItemVal.mem_id == 1" 
-                style="margin-right:5px;" />
-            <van-tag plain color="#f3a683" v-if="videoItemVal.mmt_id == 3 && videoItemVal.mem_id != 1">{{
-              videoItemVal.ent_district || videoItemVal.mmt_type_name
-            }}</van-tag>
-          </p>
+          </span>
+          <span v-else>
+            {{ selectPhoneNumber(videoItemVal.mem_name).name }}
+          </span>
+
+          <van-icon
+            name="http://api.lejiagx.cn/static/icon/官方授权.png"
+            size="15px"
+            v-if="videoItemVal.mem_id == 1"
+            style="margin-right: 5px"
+          />
+
+          <van-tag
+            plain
+            color="#f3a683"
+            v-if="videoItemVal.mmt_id == 3 && videoItemVal.mem_id != 1"
+          >
+            {{ videoItemVal.ent_district || videoItemVal.mmt_type_name }}
+          </van-tag>
+        </p>
       </div>
       <!-- <div
         class="buttons"
@@ -177,6 +190,24 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    selectPhoneNumber(str) {
+      var regx = /(1[3|4|5|7|8][\d]{9}|0[\d]{2,3}-[\d]{7,8}|400[-]?[\d]{3}[-]?[\d]{4})/g;
+      var phoneNums = str.match(regx);
+      var item = {};
+      if (phoneNums) {
+        for (var i = 0; i < phoneNums.length; i++) {
+          var temp = phoneNums[i];
+
+          item = {
+            phone: temp,
+            name: str.replace(phoneNums[i], ""),
+          };
+        }
+      } else {
+        item = false;
+      }
+      return item;
+    },
     //处理视频时间
     secondsFormat() {
       let video = document.getElementById("video_null");
@@ -383,13 +414,15 @@ export default {
       }
     },
     goDetail(val) {
-      if((val.graphic_width/val.graphic_height) < 1 && val.graphic_height > 700){
+      if (
+        val.graphic_width / val.graphic_height < 1 &&
+        val.graphic_height > 700
+      ) {
+        if (this.$route.path == `/article/full_screen_play/${val.gid}`) return;
 
-        if(this.$route.path == `/article/full_screen_play/${val.gid}`) return;
-        
         this.$router.push(`/article/full_screen_play/${val.gid}`);
-      }else{
-        if(this.$route.path == `/videoDetail/${val.gid}`) return;
+      } else {
+        if (this.$route.path == `/videoDetail/${val.gid}`) return;
 
         this.$router.push(`/videoDetail/${val.gid}`);
       }

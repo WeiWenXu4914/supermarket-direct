@@ -119,15 +119,9 @@ export default {
         }
     },
     watch: {
-      //获得商家地址列表
-      proid(val) {
-        if(val) {
-          this.getEntSiteReal()
-        }
-      },
       //搜索商家地址
       value(val) {
-        this.getEntSiteReal(val);
+        this.getEntSiteRealSearch(val);
       }
     },
     methods: {
@@ -158,22 +152,35 @@ export default {
           this.$router.push({path:'/add',query: { add: 1 } })
         }
       },
-      getEntSiteReal(value) {
-        SuperMarketList(value)
+      //获取自提地址
+      getEntSiteReal() {
+        SuperMarketList()
         .then((res) => {
- 
-          if(res.code == 100 && res.data.length > 0) {
-            console.log(res)
+          
+          if(res.code == 100) {
             this.addressStoreList = res.data;
             this.addressStoreList.map((item,index) => {
                 item.text = item.city + item.district + item.detailed_site + item.contact_name;
             })
-            //默认选择第一项地址
             this.pickResult = this.addressStoreList[0];
+            this.columns = Object.assign(this.pickResult);
           } else {
             Toast(res.msg)
           }
+
+        })
+      },
+      getEntSiteRealSearch(value) {
+        SuperMarketList(value)
+        .then((res) => {
           
+          if(res.code == 100) {
+            this.addressStoreList = res.data;
+            this.addressStoreList.map((item,index) => {
+                item.text = item.city + item.district + item.detailed_site + item.contact_name;
+            })
+          }
+
         })
       },
       getUserSite() {
@@ -237,6 +244,7 @@ export default {
     },
     mounted() {
       this.getUserSite();
+      this.getEntSiteReal();
     }
 }
 </script>

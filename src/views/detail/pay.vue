@@ -17,10 +17,15 @@
         </button>
       </div> -->
       <div class="content">
-        <my-address :showMsg="active" :entid="dataMsg.entid" :proid="dataMsg.proid" ref="myAddress" />
+        <my-address
+          :showMsg="active"
+          :entid="dataMsg.entid"
+          :proid="dataMsg.proid"
+          ref="myAddress"
+        />
       </div>
     </div>
-    
+
     <div class="goods-message">
       <div class="message" v-if="dataMsg != ''">
         <div class="brand" @click="intoStore">
@@ -28,7 +33,7 @@
             <img :src="dataMsg.ent_logo" alt />
             <p class="p1">{{ dataMsg.ent_name }}</p>
           </div>
-          <p class="p2"><van-icon name="arrow" size=".4rem" color="#ccc"/></p>
+          <p class="p2"><van-icon name="arrow" size=".4rem" color="#ccc" /></p>
         </div>
 
         <div class="productDetail">
@@ -39,15 +44,15 @@
               <p class="p3">￥{{ price }}</p>
             </div>
           </div>
-          <div class="right">
+          <!-- <div class="right">
             <div>{{ active === 0 ? "到店自取" : "物流配送" }}</div>
             <p class="p2">x{{ count }}</p>
-          </div>
+          </div> -->
         </div>
       </div>
 
       <div class="time">
-         <span>下单时间</span><span>{{ localDate }}</span>
+        <span>下单时间</span><span>{{ localDate }}</span>
       </div>
 
       <div class="price">
@@ -76,7 +81,7 @@
         />
       </div>
     </div>
-    
+
     <div style="width: 100%; height: 2.75rem"></div>
     <div class="btn">
       <div class="text">
@@ -89,7 +94,6 @@
     <van-overlay :show="isPaying">
       <span class="overlay-text">正在为您进入支付环境</span>
     </van-overlay>
-
   </div>
 </template>
 
@@ -133,24 +137,22 @@ export default {
       couMoney: "",
       cou_id: "",
       isPaying: false, //是否正在支付
-      
     };
   },
   beforeCreate() {
-		Toast.loading({
-			message: '加载中...',
-			forbidClick: true,
-			loadingType: 'spinner',
-			overlay: true,
-			duration:0
-		});
+    Toast.loading({
+      message: "加载中...",
+      forbidClick: true,
+      loadingType: "spinner",
+      overlay: true,
+      duration: 0,
+    });
   },
   updated() {
     Toast.clear();
   },
   watch: {},
   async created() {
-    
     //商品数量
     if (this.$route.query.pro_id == undefined)
       return Toast("请返回选择购的商品");
@@ -159,7 +161,7 @@ export default {
     this.count = this.$route.query.pay_num;
 
     //配送状态
-    if (this.$store.state.commodityState) { 
+    if (this.$store.state.commodityState) {
       this.active = 1;
     }
 
@@ -275,28 +277,32 @@ export default {
     },
     //支付
     payMoney() {
-      
       // 判断支付环境
-      // let ua = window.navigator.userAgent.toLowerCase();
-      // if (!(ua.match(/MicroMessenger/i) == 'micromessenger')) { 
-      //   Toast("请在微信中支付");
-      //   return;
-      // }
-      if(this.$refs.myAddress.addressStoreList.length == 0  && this.active == 0) {
-        Toast("该商家未设置店铺地址，无法下单")
+      let ua = window.navigator.userAgent.toLowerCase();
+      if (!(ua.match(/MicroMessenger/i) == "micromessenger")) {
+        Toast("请在微信中支付");
+        return;
+      }
+
+      if (
+        this.$refs.myAddress.addressStoreList.length == 0 &&
+        this.active == 0
+      ) {
+        Toast("该商家未设置店铺地址，无法下单");
         return;
       }
       // 更新收货地址
       this.$refs.myAddress.getUserSite();
 
-
-      if(this.$refs.myAddress.addressStore.name == undefined  
-        && this.active == 0 
-        || this.$refs.myAddress.addressStore.name == "") {
+      if (
+        (this.$refs.myAddress.addressStore.name == undefined &&
+          this.active == 0) ||
+        this.$refs.myAddress.addressStore.name == ""
+      ) {
         Toast("请输入取货人姓名");
         return;
       }
-      
+
       if (this.$refs.myAddress.address.id == 0 && this.active == 1) {
         Toast("请添加收货地址");
         return;
@@ -305,11 +311,11 @@ export default {
       let regPhone = /^1[3456789]\d{9}$/;
       let resReg = !regPhone.test(this.$refs.myAddress.addressStore.phone);
 
-      if(resReg && this.active == 0) {
+      if (resReg && this.active == 0) {
         Toast("请添写正确的手机号码");
         return;
       }
-      
+
       let orderAdd = {
         pay_type: 1, //支付方式 1微信 2支付宝 3现金 4其他
         order_type: 6, //订单类型：1：商品 2：拼团3：团购 4：优惠券 5：员工任务 6:乐家市场
@@ -317,11 +323,14 @@ export default {
         price: parseFloat(this.totalPrice).toFixed(2),
         num: this.count, //购买数量
         remark: this.textValue, //备注
-        way: this.active == 1 ? 3 : 1, //配送方式 3物流 1自取
+        way: 3, //配送方式 3物流 1自取
         name: this.$refs.myAddress.addressStore.name,
         phone: this.$refs.myAddress.addressStore.phone,
       };
-      if(this.$refs.myAddress.addressStoreList.length !== 0  && this.active == 0) {
+      if (
+        this.$refs.myAddress.addressStoreList.length !== 0 &&
+        this.active == 0
+      ) {
         orderAdd.pinv_id = this.$refs.myAddress.pickResult.msid;
       }
       //使用了优惠券
@@ -363,7 +372,7 @@ export default {
             this.isPaying = false;
             return false;
           }
-          
+
           wxpay(obj).then((res) => {
             this.wxMsg = res.data;
             this.callpay(1, obj, this);
@@ -453,9 +462,10 @@ export default {
 
 <style lang="less">
 .pay {
+  min-height: 100vh;
   // background: linear-gradient(to bottom,#F50 0%,#FF7D01 10%,#FBD870 20%,#F2F2F2 30%);
   background-color: #f2f2f2;
-  header {
+  > header {
     display: flex;
     position: relative;
     padding-top: 0.2rem;
@@ -822,7 +832,6 @@ export default {
         height: 50px;
         background-color: #fff;
       }
-      
     }
     .content {
       background-color: #fff;
@@ -845,7 +854,7 @@ export default {
     left: 50%;
     top: 50%;
     font-size: 20px;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
   }
 }
 </style>
