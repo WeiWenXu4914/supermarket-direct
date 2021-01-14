@@ -279,10 +279,10 @@ export default {
     payMoney() {
       // 判断支付环境
       let ua = window.navigator.userAgent.toLowerCase();
-      if (!(ua.match(/MicroMessenger/i) == "micromessenger")) {
-        Toast("请在微信中支付");
-        return;
-      }
+      // if (!(ua.match(/MicroMessenger/i) == "micromessenger")) {
+      //   Toast("请在微信中支付");
+      //   return;
+      // }
 
       if (
         this.$refs.myAddress.addressStoreList.length == 0 &&
@@ -379,7 +379,6 @@ export default {
           });
         })
         .catch((e) => {
-          console.log(e);
           Toast("请求出错");
           this.isPaying = false;
         });
