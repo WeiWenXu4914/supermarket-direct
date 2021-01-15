@@ -234,14 +234,14 @@ export default {
       }
       .add-class {
         position: relative;
-        width: 40px;
-        height: 40px;
-        margin-top: -15px;
+        width: 30px;
+        height: 30px;
+        // margin-top: -15px;
         margin-bottom: 0px;
         .add-icon {
-          width: 40px;
-          height: 40px;
-          border-radius: 40px;
+          width: 30px;
+          height: 30px;
+          border-radius: 30px;
           border: 2px #ffffff solid;
           padding: 0;
           margin: 0;
