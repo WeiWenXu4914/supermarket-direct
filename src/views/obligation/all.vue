@@ -3,7 +3,7 @@
     <div class="header">
       <div class="top">
         <img src="../../components/img1/返回.png" class="i1" @click="back()" />
-        <p class="p1">全部订单</p>
+        <p class="p11">全部订单</p>
         <img
           src="../../components/img1/搜索.png"
           alt
@@ -77,8 +77,8 @@ export default {
 }
 .all {
   background-color: #f6f6f6;
-  > .header {
-    > .top {
+  .header {
+    .top {
       display: flex;
       margin-top: 0.3rem;
       padding-bottom: 0.3rem;
@@ -88,7 +88,7 @@ export default {
         height: 0.5rem;
         margin: 0.1rem 0rem 0rem 0.3rem;
       }
-      .p1 {
+      .p11 {
         margin-left: 3rem;
         color: #2f2f2f;
         font-size: 0.5rem;

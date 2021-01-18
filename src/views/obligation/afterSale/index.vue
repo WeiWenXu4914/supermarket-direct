@@ -128,9 +128,6 @@ export default {
             if(this.reason == '') {
                 Toast.fail("请选择申请原因");
                 return;
-            } else if(this.description == '') {
-                Toast.fail("请填写申请说明");
-                return;
             }
 
             //处理图片

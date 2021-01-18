@@ -74,7 +74,7 @@
                 </div>
                 <div class="allBtn"  v-else-if="item.status == 1 && item.dw_id == 3">
                     <button type="default" @click="toRefund(item)">申请退款</button>
-                    <!-- <button type="default" class="red">提醒发货</button> -->
+                    <button type="default" class="red">提醒发货</button>
                 </div>
                 <div class="allBtn" v-else-if="item.status == 1 && item.dw_id == 1">
                     <button type="default" @click="toRefund(item)">申请退款</button>

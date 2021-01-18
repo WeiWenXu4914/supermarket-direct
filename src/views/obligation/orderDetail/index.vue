@@ -184,6 +184,7 @@ export default {
                 }
             })
         },
+        
         //删除订单
         dellOrder(order) {
             delOrder(order.order_number)
@@ -261,12 +262,10 @@ export default {
         },
         //提醒发货
         urgeSent() {
-
+            
         },
         //申请退款
         refund(val) {
-            Toast("请到线下与店家协商");
-            return;
             let orderInfo = JSON.stringify(val)
             this.$router.push({
                 path: '/afterSale',
