@@ -1,10 +1,10 @@
 <template>
   <div class="agora-all-commdity">
-    <page-header ref="pageHeader"/>
+    <page-header ref="pageHeader" :isAddShow="false" />
 
     <div :class="navBarFixed == true ? 'navBarWrap' : 'body'">
       <div class="bodyClass">
-        <van-tabs
+        <!-- <van-tabs
           v-model="active"
           :border="true"
           animated
@@ -27,12 +27,18 @@
             v-for="(item,index) in items"
             :key="item.pbcid"
             :title="item.pbc_name"
+          > -->
+        <div v-for="(item, index) in items" :key="item.pbcid">
+          <div
+            class="content-item-all"
+            ref="content-item"
+            @scroll="handleScroll($event, index)"
           >
-            <div class="content-item-all" ref="content-item" @scroll="handleScroll($event,index)">
-              <content-item :cindex="item.pbcid" :key="new Date()"></content-item>
-            </div>
-          </van-tab>
-        </van-tabs>
+            <content-item :cindex="item.pbcid" :key="new Date()"></content-item>
+          </div>
+        </div>
+        <!-- </van-tab>
+        </van-tabs> -->
       </div>
     </div>
   </div>
@@ -65,8 +71,8 @@ export default {
       //切换
       indexItem: 0,
       isLoading: false,
-      scrollTop: '',
-      index: 0
+      scrollTop: "",
+      index: 0,
     };
   },
   // 注册组件
@@ -87,19 +93,17 @@ export default {
   created() {
     this.getLejiaProductListFun();
   },
-  activated () {
+  activated() {
     try {
-      if (this.$refs['content-item-all']) {
-        const dom = this.$refs['content-item-all']
-        dom.scrollTop = this.scrollTop
+      if (this.$refs["content-item-all"]) {
+        const dom = this.$refs["content-item-all"];
+        dom.scrollTop = this.scrollTop;
       }
-      if (this.$refs['content-item']) {
-        const dom1 = this.$refs['content-item']
-        dom1[this.index].scrollTop = this.scrollTop
+      if (this.$refs["content-item"]) {
+        const dom1 = this.$refs["content-item"];
+        dom1[this.index].scrollTop = this.scrollTop;
       }
-    } catch(e) {
-
-    }
+    } catch (e) {}
   },
   methods: {
     handleScroll(e, index) {
@@ -116,9 +120,9 @@ export default {
         .then((res) => {
           this.items = res.data.class;
           this.dataList = res.data.list;
-          console.log(res)
+          console.log(res);
           if (res) {
-            Toast.clear()
+            Toast.clear();
           }
         })
         .catch((res) => {
@@ -126,7 +130,6 @@ export default {
           Toast.fail("获取数据失败，请重试");
         });
     },
-    
   },
 };
 </script>
@@ -136,15 +139,15 @@ export default {
   width: 100%;
   height: 100vh;
   margin: 0 auto;
-  background: #fff;
+  background: #f6f6f6;
   .content-item-all {
-    height: calc(100vh - 130px);
+    height: calc(100vh - 95px);
     padding-bottom: 20px;
     overflow: scroll;
   }
   .body {
     width: 100%;
-    background: #fff;
+    background: #f6f6f6;
     height: calc(100vh - 92px);
     margin: 44px auto;
     transition: all 0.5s ease;
@@ -153,7 +156,7 @@ export default {
   .navBarWrap {
     width: 100%;
     height: 100%;
-    background: #fff;
+    background: #f6f6f6;
     height: calc(100vh - 65px);
     transition: all 0.5s ease;
     margin: 0px auto;
@@ -165,9 +168,9 @@ export default {
     margin: 0px auto;
     border-radius: 5px 5px 0px 0px;
     z-index: 500000000;
-    background: #fff;
+    background: #f0f0f0;
     .van-tab__pane-wrapper {
-      background: #F0F0F0;
+      background: #f0f0f0;
       min-height: calc(100vh - 159px);
     }
     .van-tab--active {
@@ -180,7 +183,7 @@ export default {
   }
   .titleicon {
     .mid {
-      background-color: #D04443;
+      background-color: #d04443;
       border-radius: 100%;
       width: 40px;
       height: 40px;

@@ -380,6 +380,7 @@ export default {
         })
         .catch((e) => {
           Toast("请求出错");
+          console.log(e)
           this.isPaying = false;
         });
     },

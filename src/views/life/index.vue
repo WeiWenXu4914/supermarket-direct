@@ -6,7 +6,7 @@
         <van-icon name="arrow-up" />
       </div>
     </transition>
-    <van-tabs
+    <!-- <van-tabs
       swipeable
       duration="0.5"
       line-height="0"
@@ -23,45 +23,41 @@
         v-for="(item, index) in navList"
         :key="index"
         :title="item.ent_class_name"
-      >
-        <div
-          ref="scroll-wrapper"
-          class="scroll-wrapper"
-          @scroll="remember($event)"
+      > -->
+    <div ref="scroll-wrapper" class="scroll-wrapper" @scroll="remember($event)">
+      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
         >
-          <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-            <van-list
-              v-model="loading"
-              :finished="finished"
-              finished-text="没有更多了"
-              @load="onLoad"
+          <div class="scroll">
+            <div
+              class="item"
+              v-for="(val, inx) in pageData"
+              :key="inx"
+              @click="userHandle(val.entid)"
             >
-              <div class="scroll">
-                <div
-                  class="item"
-                  v-for="(val, inx) in pageData"
-                  :key="inx"
-                  @click="userHandle(val.entid)"
+              <div class="img">
+                <van-image
+                  :src="val.ent_logo"
+                  v-if="val.ent_name"
+                  width="55"
+                  height="55"
+                  lazy-load
+                  fit="contain"
                 >
-                  <div class="img">
-                    <van-image
-                      :src="val.ent_logo"
-                      v-if="val.ent_name"
-                      width="55"
-                      height="55"
-                      lazy-load
-                      fit="contain"
-                    >
-                      <template v-slot:loading>
-                        <van-loading type="spinner" size="20" />
-                      </template>
-                    </van-image>
-                  </div>
-                  <div class="center">
-                    <div class="title">
-                      <div class="name">
-                        {{ val.ent_name }}
-                        <!-- <span v-if="inx == 0">
+                  <template v-slot:loading>
+                    <van-loading type="spinner" size="20" />
+                  </template>
+                </van-image>
+              </div>
+              <div class="center">
+                <div class="title">
+                  <div class="name">
+                    {{ val.ent_name }}
+                    <!-- <span v-if="inx == 0">
                           <img src="./images/no1.png" alt="">
                         </span>
                         <span v-if="inx == 1">
@@ -70,37 +66,37 @@
                         <span v-if="inx == 2">
                           <img src="./images/no3.png" alt="">
                         </span> -->
-                      </div>
-                      <div class="msg">
-                        <span v-if="val.ent_detailed_site != '无'"
-                          >{{ val.ent_detailed_site }}
-                        </span>
-                        <span v-if="val.ent_introduction != '无'"
-                          >| {{ val.ent_introduction }}</span
-                        >
-                      </div>
-                      <div class="star">
-                        <div class="star-rate">
-                          <van-rate
-                            v-model="val.ent_grade"
-                            :size="18"
-                            color="#ffd21e"
-                            void-icon="star"
-                            void-color="#eee"
-                            readonly
-                          />
-                        </div>
-                        <!-- <div
+                  </div>
+                  <div class="msg">
+                    <span v-if="val.ent_detailed_site != '无'"
+                      >{{ val.ent_detailed_site }}
+                    </span>
+                    <span v-if="val.ent_introduction != '无'"
+                      >| {{ val.ent_introduction }}</span
+                    >
+                  </div>
+                  <div class="star">
+                    <div class="star-rate">
+                      <van-rate
+                        v-model="val.ent_grade"
+                        :size="18"
+                        color="#ffd21e"
+                        void-icon="star"
+                        void-color="#eee"
+                        readonly
+                      />
+                    </div>
+                    <!-- <div
                           v-for="(val,index) in 5"
                           :key="index"
                           :class="index < parseInt(val.ent_grade)? 'huang': 'hui'"
                         >
                           <img src="./images/星(1).png" alt />
                         </div> -->
-                        <div class="score">{{ val.ent_grade }}.0</div>
-                      </div>
-                    </div>
-                    <!-- <div class="act" v-if="inx%2 == 0">
+                    <div class="score">{{ val.ent_grade }}.0</div>
+                  </div>
+                </div>
+                <!-- <div class="act" v-if="inx%2 == 0">
                       <div class="tuan">
                         <span>团</span>2人套餐200元
                       </div>
@@ -108,17 +104,17 @@
                         <span>券</span>满100-20元
                       </div>
                     </div> -->
-                  </div>
-                  <div class="right">
-                    <div>进店</div>
-                  </div>
-                </div>
               </div>
-            </van-list>
-          </van-pull-refresh>
-        </div>
-      </van-tab>
-    </van-tabs>
+              <div class="right">
+                <div>进店</div>
+              </div>
+            </div>
+          </div>
+        </van-list>
+      </van-pull-refresh>
+    </div>
+    <!-- </van-tab> -->
+    <!-- </van-tabs> -->
   </div>
 </template>
 
@@ -167,7 +163,8 @@ export default {
   activated() {
     // 驼峰获取dom无效问题
     if (this.$refs["scroll-wrapper"]) {
-      const dom = this.$refs["scroll-wrapper"][this.activeIndex];
+      // const dom = this.$refs["scroll-wrapper"][this.activeIndex];
+      const dom = this.$refs["scroll-wrapper"];
       dom.scrollTop = this.activeChannel.scrollTop;
       this.activeIndex = this.activeChannel.index;
     }
@@ -287,7 +284,8 @@ export default {
     // 回到顶部
     goTop() {
       if (this.$refs["scroll-wrapper"]) {
-        const dom = this.$refs["scroll-wrapper"][this.activeIndex];
+        // const dom = this.$refs["scroll-wrapper"][this.activeIndex];
+        const dom = this.$refs["scroll-wrapper"];
         let i = 0;
         const timeTop = setInterval(() => {
           dom.scrollTop = this.easeInOutQuad(
@@ -340,6 +338,11 @@ export default {
     -moz-box-shadow: 0px 0px 3px #333333;
     -webkit-box-shadow: 0px 0px 3px #333333;
     box-shadow: 0px 0px 3px #333333;
+  }
+  .scroll-wrapper {
+    height: 100%;
+    padding-bottom: 100px;
+    overflow-y: auto;
   }
   .van-tabs {
     height: calc(100vh - 92px);
