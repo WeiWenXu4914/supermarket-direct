@@ -140,3 +140,8 @@ export const orderRefund = (obj) => {
 export const orderRefundInfo = (obj) => {
     return request('/api/orderRefundInfo',"post", obj )
 }
+
+//退款详情
+export const sendDelivery = (number) => {
+    return request('/api/sendDelivery',"post", { oid: number })
+}
