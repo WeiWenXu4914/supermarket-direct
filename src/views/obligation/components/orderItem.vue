@@ -74,7 +74,7 @@
                 </div>
                 <div class="allBtn"  v-else-if="item.status == 1 && item.dw_id == 3">
                     <button type="default" @click="toRefund(item)">申请退款</button>
-                    <button type="default" class="red">提醒发货</button>
+                    <button type="default" class="red" @click="urgeSent(item)">提醒发货</button>
                 </div>
                 <div class="allBtn" v-else-if="item.status == 1 && item.dw_id == 1">
                     <button type="default" @click="toRefund(item)">申请退款</button>
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { orderList, delOrder, cancelOrder, confirmOrder, getLogistic } from '../actions/index';
+import { orderList, delOrder, cancelOrder, confirmOrder, getLogistic, sendDelivery } from '../actions/index';
 import { Icon,Toast,Empty,Dialog } from 'vant';
 export default {
     props: ['state'],
@@ -179,6 +179,18 @@ export default {
                 query: {
                     res: shopKey
                 }
+            })
+        },
+        //提醒发货
+        urgeSent(item) {
+            sendDelivery(item.order_number)
+            .then((res) => {
+                console.log(res)
+                Toast(res.msg);
+            })
+            .catch((e) => {
+                Toast("请求出错");
+                console.log(e);
             })
         },
         getDate() {

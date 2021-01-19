@@ -134,7 +134,7 @@
 import titleView from '../../../components/public_views/titleView';
 import myAddress from './components/address';
 import { Icon, Toast, CountDown, Dialog } from 'vant';
-import { orderList, delOrder, cancelOrder, wxpay, confirmOrder, orderState, getLogistic } from '../actions/index';
+import { orderList, delOrder, cancelOrder, wxpay, confirmOrder, orderState, getLogistic, sendDelivery } from '../actions/index';
 export default {
     components: {
         titleView,
@@ -262,7 +262,15 @@ export default {
         },
         //提醒发货
         urgeSent() {
-            
+            sendDelivery(this.data.order_number)
+            .then((res) => {
+                console.log(res)
+                Toast(res.msg);
+            })
+            .catch((e) => {
+                Toast("请求出错");
+                console.log(e);
+            })
         },
         //申请退款
         refund(val) {
