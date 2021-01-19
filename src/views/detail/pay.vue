@@ -366,21 +366,26 @@ export default {
             url: "http://apis.lejiagx.cn/api/wxpay",
             type: 1,
           };
-          this.isPaying = true;
+
           if (res.code != 100) {
             Toast(res.msg);
-            this.isPaying = false;
             return false;
           }
 
+          this.isPaying = true;
+
           wxpay(obj).then((res) => {
+            if (res.code != 100) {
+              this.isPaying = false;
+            }
+
             this.wxMsg = res.data;
             this.callpay(1, obj, this);
           });
         })
         .catch((e) => {
           Toast("请求出错");
-          console.log(e)
+          console.log(e);
           this.isPaying = false;
         });
     },
