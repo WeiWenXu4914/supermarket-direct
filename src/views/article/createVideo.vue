@@ -128,7 +128,7 @@ export default {
       videoList: [],
       coverList: [],
       videoForm: {
-        nav_id: 8,
+        nav_id: 71,
         graphic_name: "",
         video_path: "",
         surface_plot: "",
@@ -262,7 +262,7 @@ export default {
                 }
 
                 this.$toast.success(res.msg);
-                
+
                 setTimeout(() => {
                   this.$router.go(-1);
                 }, 200);
@@ -311,7 +311,7 @@ export default {
             this.playerOptions.sources[0].src = res.data.data.file;
             this.videoForm.video_path = res.data.data.file;
             this.imgdef = res.data.data.video_surface_plot;
-            if(this.coverList.length <= 0){
+            if (this.coverList.length <= 0) {
               this.coverList[0] = {
                 url: res.data.data.video_surface_plot_base,
               };
@@ -354,7 +354,7 @@ export default {
         this.videoForm.surface_plot = this.coverList[0].url;
       }
 
-      if(this.videoForm["graphic_name"].length < 3){
+      if (this.videoForm["graphic_name"].length < 3) {
         Notify("标题长度最少三个字符");
         return false;
       }
@@ -410,14 +410,14 @@ export default {
   },
   created() {
     //草稿箱跳转编辑
-    if(this.$route.query.draftsEdit) {
-      console.log(this.$route.query.videoData)
+    if (this.$route.query.draftsEdit) {
+      console.log(this.$route.query.videoData);
       this.videoForm = JSON.parse(this.$route.query.videoData);
-      this.playerOptions.sources[0].src = this.videoForm.video_path
-      console.log(this.videoForm)
+      this.playerOptions.sources[0].src = this.videoForm.video_path;
+      console.log(this.videoForm);
       return;
     }
-    
+
     var edit_id = this.$route.query.editId;
     if (edit_id != undefined) {
       var data = JSON.parse(
@@ -451,7 +451,6 @@ export default {
       }
     }
   },
-
 };
 </script>
 <style lang='less' scoped>

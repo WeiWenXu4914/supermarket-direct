@@ -23,7 +23,7 @@
         v-for="(item, index) in activeNav"
         :key="index"
       >
-        <div class="pre-nav-class" v-if="activePreNav.length > 0">
+        <!-- <div class="pre-nav-class" v-if="activePreNav.length > 0">
           <div class="pre-nav-item" @click="onRefresh">全部</div>
           <div
             v-for="(preitems, preindex) in activePreNav"
@@ -57,7 +57,7 @@
           >
             <van-icon name="arrow-up" />
           </div>
-        </div>
+        </div> -->
         <div
           ref="scroll-wrapper"
           class="scroll-wrapper"
