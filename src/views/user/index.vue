@@ -249,8 +249,22 @@
           </div>
         </div>
       </div>
+      <!-- <div>
+        <aplayer
+          :music="audio[0]"
+          :list="audio"
+          mini="true"
+          ref="aplayer"
+        ></aplayer>
+      </div> -->
+
       <div class="footer">
-        <van-cell title="绑定微信号" v-if="bindingWx" is-link @click="$router.push('/bindWechat')" />
+        <van-cell
+          title="绑定微信号"
+          v-if="bindingWx"
+          is-link
+          @click="$router.push('/bindWechat')"
+        />
         <van-cell
           title="商家注册"
           is-link
@@ -275,6 +289,8 @@
         />
         <van-cell title="修改密码" @click="$router.push('/editPass')" is-link />
         <van-cell title="退出账号" @click="removeToken" is-link />
+        <!-- <van-cell title="播放" @click="bofang" /> -->
+
         <!-- <van-cell title="设置" is-link /> -->
       </div>
     </van-pull-refresh>
@@ -295,10 +311,12 @@ import { userInfo, userIndex, userHome } from "./actions";
 import { mapState, mapMutations } from "vuex";
 import { Toast } from "vant";
 import util from "../util";
+import Aplayer from "vue-aplayer";
 export default {
   name: "user-index",
   components: {
     PageTitle,
+    Aplayer,
   },
   beforeCreate() {
     Toast.loading({
@@ -323,6 +341,13 @@ export default {
       },
       collectionNumber: 0,
       isLoading: false,
+      audio: [
+        {
+          url:
+            "http://api.lejiagx.cn/static/mp3/yinxiao1323.mp3",
+          pic: "http://api.lejiagx.cn/static/icon/lejia_logo.png",
+        },
+      ],
     };
   },
   created() {
@@ -331,6 +356,9 @@ export default {
   },
   methods: {
     ...mapState(["user"]),
+    bofang() {
+      this.$refs.aplayer.play();
+    },
     onRefresh() {
       this.userInfoFun();
       this.userHome();
