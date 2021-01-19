@@ -499,6 +499,9 @@ export default {
       font-weight: 500;
     }
   }
+  /deep/ .van-tabs__content {
+    height: auto;
+  }
   .ImClass {
     width: 52px;
     height: 52px;
