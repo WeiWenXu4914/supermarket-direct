@@ -388,13 +388,11 @@ export default {
       memberCommentList(2, this.proDetail.proid).then((res) => {
         if (res.code == 100) {
           this.memberCommentList = res.data;
-          console.log(this.memberCommentList)
         }
       });
     },
     back() {
       if (this.$route.query.taskKey || this.$route.query.forward) {
-        console.log("aaa")
         this.$router.replace("/");
       } else {
         this.$router.go(-1);
@@ -459,7 +457,6 @@ export default {
         }
 
         this.proDetailL = res.data[0].pro_carousel.length;
-        console.log(res)
         this.price = parseFloat(res.data[0].pro_price).toFixed(2);
         if (res.data[0].is_collect == 1) {
           this.collctionState = true;
@@ -644,7 +641,7 @@ export default {
     getAddress() {
       shippingAddress()
       .then((res) => {
-        console.log(res)
+        console.log(res,"111")
         let addressList = res.data;
         for(let i = 0; i < addressList.length; i++) {
           if(addressList[i].by_default == 1) {
@@ -658,6 +655,8 @@ export default {
       });
     },
     toEditAddress() {
+      this.$router.push({path:'/myaddress',query: { add: 1 } })
+      return;
         if(this.setBydefault == true){
           this.$router.push({path:'/myaddress',query: { add: 1 } })
         }else{
@@ -682,7 +681,6 @@ export default {
                 imgUrl: this.proDetail.pro_thumbnail,
                 desc: this.proDetail.pro_introduction,
               };
-            console.log(form)
 
             wxJSSDK(form);
             this.forwardMark = true;
