@@ -23,7 +23,7 @@
         v-for="(item, index) in activeNav"
         :key="index"
       >
-        <div class="pre-nav-class" v-if="activePreNav.length > 0">
+        <!-- <div class="pre-nav-class" v-if="activePreNav.length > 0">
           <div class="pre-nav-item" @click="onRefresh">全部</div>
           <div
             v-for="(preitems, preindex) in activePreNav"
@@ -57,7 +57,7 @@
           >
             <van-icon name="arrow-up" />
           </div>
-        </div>
+        </div> -->
         <div
           ref="scroll-wrapper"
           class="scroll-wrapper"
@@ -544,17 +544,17 @@ export default {
     ...mapState(["user"]),
     // 初始化登录信息,与员工任务
     initLogin() {
-      if (
-        (this.user.id != undefined && !this.user.phone) ||
-        this.user.phone == ""
-      ) {
-        this.$router.push({
-          path: "/bindingPhone",
-          query: {
-            back: "no",
-          },
-        });
-      }
+      // if (
+      //   (this.user.id != undefined && !this.user.phone) ||
+      //   this.user.phone == ""
+      // ) {
+      //   this.$router.push({
+      //     path: "/bindingPhone",
+      //     query: {
+      //       back: "no",
+      //     },
+      //   });
+      // }
 
       var LoginToken = localStorage.getItem("LoginToken");
       var Token = localStorage.getItem("Token");
@@ -591,17 +591,17 @@ export default {
               localStorage.removeItem("LoginToken");
               sessionStorage.removeItem("codeState");
 
-              if (
-                !data.userSession.mem_phone ||
-                data.userSession.mem_phone == ""
-              ) {
-                this.$router.push({
-                  path: "/bindingPhone",
-                  query: {
-                    back: "no",
-                  },
-                });
-              }
+              // if (
+              //   !data.userSession.mem_phone ||
+              //   data.userSession.mem_phone == ""
+              // ) {
+              //   this.$router.push({
+              //     path: "/bindingPhone",
+              //     query: {
+              //       back: "no",
+              //     },
+              //   });
+              // }
             } else if (data.code === 202) {
               this.attqrcode = true;
               this.att_qrcode.src = data.src;

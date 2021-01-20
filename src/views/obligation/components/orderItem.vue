@@ -183,9 +183,8 @@ export default {
         },
         //提醒发货
         urgeSent(item) {
-            sendDelivery(item.order_number)
+            sendDelivery(item.oid)
             .then((res) => {
-                console.log(res)
                 Toast(res.msg);
             })
             .catch((e) => {
