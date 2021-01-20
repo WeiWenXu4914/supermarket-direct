@@ -839,6 +839,11 @@ export default {
           this.forwardMark = true;
 
           if (res.code == 100) {
+
+            if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
+              var desc = "来自用户《" + this.article.mem_name + "》的分享"
+            }
+
             if (this.article.gc_id == 1) {
               var imgUrl = "http://api.lejiagx.cn/static/icon/lejia_logo.png";
 
@@ -854,9 +859,7 @@ export default {
                   "?goindex=true&key=" +
                   res.data.mem_urlkey,
                 imgUrl: imgUrl,
-                desc:
-                  this.article.graphic_intro ||
-                  "来自" + this.article.mem_name + "的分享",
+                desc: desc,
               };
             } else {
               var form = {
@@ -868,9 +871,7 @@ export default {
                 imgUrl:
                   this.article.graphic_surface_plot ||
                   "http://api.lejiagx.cn/static/icon/lejia_logo.png",
-                desc:
-                  this.article.graphic_intro ||
-                  "来自" + this.article.mem_name + "的分享",
+                desc: desc,
                 type: "video",
                 dataUrl: this.article.graphic_video_path,
               };
@@ -1131,6 +1132,11 @@ export default {
       // 注册微信分享
       let ua = window.navigator.userAgent.toLowerCase();
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
+
+        if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
+          var desc = "来自用户《" + this.article.mem_name + "》的分享"
+        }
+
         if (this.article.gc_id == 2) {
           var form = {
             title: this.article.graphic_name,
@@ -1138,9 +1144,7 @@ export default {
             imgUrl:
               this.article.graphic_surface_plot ||
               "http://api.lejiagx.cn/static/icon/lejia_logo.png",
-            desc:
-              this.article.graphic_intro ||
-              "来自" + this.article.mem_name + "的分享",
+            desc: desc,
             type: "video",
             dataUrl: this.article.graphic_video_path,
           };
@@ -1155,9 +1159,7 @@ export default {
             title: this.article.graphic_name,
             link: window.location.href + "?goindex=true",
             imgUrl: imgUrl,
-            desc:
-              this.article.graphic_intro ||
-              "来自" + this.article.mem_name + "的分享",
+            desc: desc,
           };
         }
 
@@ -1168,6 +1170,11 @@ export default {
     showForward(article) {
       let ua = window.navigator.userAgent.toLowerCase();
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
+
+        if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
+          var desc = "来自用户《" + this.article.mem_name + "》的分享"
+        }
+
         forwardArticles(article.gid, 1).then((res) => {
           this.forwardMark = true;
 
