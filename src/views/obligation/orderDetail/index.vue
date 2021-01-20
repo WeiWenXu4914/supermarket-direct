@@ -126,7 +126,12 @@
                 <button @click="toBuy">进店购买</button>
             </div>
         </div>
-        
+        <div class="contact-service"  v-if="data.status == 1 || data.status == 2 || data.status == 3">
+            <a href="tel:1231231231">
+                <p>联系</p>
+                <p>客服</p>
+            </a>
+        </div>
     </div>
 </template>
 
@@ -544,6 +549,21 @@ export default {
 <style lang="less">
 .obligation-not-payment {
     width: 100%;
+    .contact-service {
+        position: fixed;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #D04443;
+        right: 4vw;
+        bottom: 100px;
+        color: #fff;
+        text-align: center;
+        box-shadow: 0px 0px 1px 5px #D04443;
+        p:nth-of-type(1) {
+            margin-top: 5px;
+        }
+    }
     .van-count-down {
         color: #fff;
         display: inline;
