@@ -116,7 +116,7 @@
             </div>
             <!--交易成功-->
             <div class="button" v-else-if="data.status == 3">
-                <button @click="toChooseType(data)">申请售后</button>
+                <button @click="refund(data)">申请售后</button>
                 <button @click="toBuy">再次购买</button>
                 <button @click="appraise" v-if="data.is_mark == 0">评价商品</button>
             </div>
