@@ -563,7 +563,7 @@ export default {
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
         if (this.dataAll.gc_id == 2) {
 
-          if(!this.dataAll.graphic_intro || this.article.graphic_intro == '无'){
+          if(!this.dataAll.graphic_intro || this.dataAll.graphic_intro == '无'){
             var desc = "来自用户《" + this.dataAll.mem_name + "》的分享"
           }
 
@@ -584,7 +584,7 @@ export default {
             imgUrl = this.dataAll.graphic_thumbnail[0].graphic_thumbnail_path;
           }
 
-          if(!this.article.graphic_intro || this.dataAll.graphic_intro == '无'){
+          if(!this.dataAll.graphic_intro || this.dataAll.graphic_intro == '无'){
             var desc = "来自用户《" + this.dataAll.mem_name + "》的分享"
           }
           
