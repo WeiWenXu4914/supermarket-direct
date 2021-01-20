@@ -28,14 +28,15 @@
             <div class="recieve-msg">
               <div class="name">
                 <p>取货人</p>
-                <input 
+                <input
                  type="text" 
                  placeholder="请输入姓名" 
                  maxlength="7" 
-                 v-model="addressStore.name"
+                 v-model="name"
                  ref="name"
                 >
-                <img src="../img/edit.svg" @click="nameFocus">
+                <img src="../img/edit.svg" @click.stop="nameFocus" v-show="!nameClear">
+                <img src="../img/clear.svg" @click.stop="clear('name',e)" v-show="nameClear">
               </div>
               <div class="number">
                 <p>手机号码</p>
@@ -44,10 +45,11 @@
                  maxlength="11" 
                  placeholder="请输入手机号码" 
                  onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
-                 v-model="addressStore.phone"
+                 v-model="phone"
                  ref="phone"
                 >
-                <img src="../img/edit.svg" @click="phoneFocus">
+                <img src="../img/edit.svg" @click.stop="phoneFocus" v-show="!phoneClear">
+                <img src="../img/clear.svg" @click.stop="clear('phone')" v-show="phoneClear">
               </div>
             </div>
         </div>
@@ -110,34 +112,61 @@ export default {
             },
             showPicker: false,
             columns: [],
-            value: ''
+            value: '',
+            nameClear: false,
+            phoneClear: false,
+            name: '',
+            phone: ''
         }
     },
     computed: {
         way() {
           return this.showMsg === 0 ? true : false;
-        }
+        },
+        
     },
     watch: {
       //搜索商家地址
       value(val) {
         this.getEntSiteRealSearch(val);
+      },
+      name(newVal, oldVal) {
+        if(newVal == '') {
+          this.nameClear = false
+        }
+      },
+      phone(newVal, oldVal) {
+        if(newVal == '') {
+          this.phoneClear = false
+        }
       }
     },
     methods: {
       ...mapState(['user']),
+      clear(val) {
+        if(val == 'name') {
+          this.name = '';
+          this.$refs.name.focus();
+          
+        } else {
+          this.phone = ''
+          this.$refs.phone.focus();
+        }
+      },
       nameFocus() {
         this.$refs.name.focus();
+        this.nameClear = true;
       },
       phoneFocus() {
         this.$refs.phone.focus();
+        this.phoneClear = true;
       },
       //选择地址
       choose(text) {
         // showPicker = true;
         for(let i = 0; i < this.addressStoreList.length; i++) {
           if(this.addressStoreList[i].text == text) {
-            this.pickResult = this.addressStoreList[i];
+            this.pickResult = Object.assign(this.addressStoreList[i]);
             break;
           }
         }
@@ -191,8 +220,8 @@ export default {
 
               let name = res.data[0].contact_name;
               let phone = res.data[0].contact_number;
-              this.addressStore.name = name;
-              this.addressStore.phone = phone;
+              this.name = name;
+              this.phone = phone;
               this.setBydefault = true;
               var addressIsorNo = 0;
               var addressIsorNoIndex = '';
@@ -408,12 +437,15 @@ export default {
       
       .recieve-msg {
         display: flex;
+        align-items: flex-end;
         margin-top: 25px;
         div {
           display: inline-block;
         }
         input {
           border: none;
+          height: 20px;
+          line-height: 20px;
           width: 80px;
           font-weight: bold;
           color: #232426;
@@ -429,6 +461,7 @@ export default {
           position: relative;
           img {
             position: absolute;
+            width: 18px;
             right: 7px;
             bottom: 0px;
           }
@@ -442,6 +475,7 @@ export default {
           }
           img {
             position: absolute;
+            width: 18px;
             bottom: 0;
             right: -21px;
           }

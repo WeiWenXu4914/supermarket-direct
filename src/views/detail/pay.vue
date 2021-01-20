@@ -44,10 +44,9 @@
               <p class="p3">￥{{ price }}</p>
             </div>
           </div>
-          <!-- <div class="right">
-            <div>{{ active === 0 ? "到店自取" : "物流配送" }}</div>
-            <p class="p2">x{{ count }}</p>
-          </div> -->
+          <div class="right">
+            <van-stepper v-model="count" />
+          </div>
         </div>
       </div>
 
@@ -99,7 +98,7 @@
 
 <script>
 import myAddress from "./components/address";
-import { Card, Icon, Toast, Dialog, ActionSheet, Overlay } from "vant";
+import { Card, Icon, Toast, Dialog, ActionSheet, Overlay, Stepper } from "vant";
 import {
   messageDetail,
   pay,
@@ -295,9 +294,9 @@ export default {
       this.$refs.myAddress.getUserSite();
 
       if (
-        (this.$refs.myAddress.addressStore.name == undefined &&
+        (this.$refs.myAddress.name == undefined &&
           this.active == 0) ||
-        this.$refs.myAddress.addressStore.name == ""
+        this.$refs.myAddress.name == ""
       ) {
         Toast("请输入取货人姓名");
         return;
@@ -309,7 +308,7 @@ export default {
       }
       //校验手机号
       let regPhone = /^1[3456789]\d{9}$/;
-      let resReg = !regPhone.test(this.$refs.myAddress.addressStore.phone);
+      let resReg = !regPhone.test(this.$refs.myAddress.phone);
 
       if (resReg && this.active == 0) {
         Toast("请添写正确的手机号码");
@@ -324,8 +323,8 @@ export default {
         num: this.count, //购买数量
         remark: this.textValue, //备注
         way: 3, //配送方式 3物流 1自取
-        name: this.$refs.myAddress.addressStore.name,
-        phone: this.$refs.myAddress.addressStore.phone,
+        name: this.$refs.myAddress.name,
+        phone: this.$refs.myAddress.phone,
       };
       if (
         this.$refs.myAddress.addressStoreList.length !== 0 &&
@@ -597,10 +596,10 @@ export default {
     }
 
     .productDetail {
-      display: flex;
+      position: relative;
       margin: 0.5rem 0rem 0rem 0.5rem;
       width: 90%;
-      justify-content: space-between;
+      // justify-content: space-between;
       .wrapper {
         flex: 1;
         position: relative;
@@ -634,36 +633,16 @@ export default {
         }
       }
       .right {
-        position: relative;
-        text-align: end;
-
-        div {
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 60px;
-          height: 18px;
-          line-height: 18px;
-          text-align: center;
-          background: #db1043;
-          font-weight: 400;
-          font-size: 12px;
-          color: #fff;
-          border-radius: 1px;
-        }
-        p {
-          position: absolute;
-          bottom: 10px;
-          right: 0;
-        }
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        align-items: flex-end;
       }
     }
   }
 
   //时间
   .time {
-    // border-top: 5px solid #f7f7f7;
-    // border-bottom: 5px solid #f7f7f7;
     display: flex;
     justify-content: space-between;
     width: 100%;

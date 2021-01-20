@@ -355,6 +355,10 @@ export default {
     },
   },
   methods: {
+    //修改组件input框状态
+    cancel() {
+      console.log("aaa")
+    },
     //限制输入数量
     countNum() {
       if (this.countChoose == 0) {
