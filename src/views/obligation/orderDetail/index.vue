@@ -127,8 +127,8 @@
             </div>
         </div>
         <div class="contact-service"  v-if="data.status == 1 || data.status == 2 || data.status == 3">
-            <a href="tel:1231231231">
-                <p>联系</p>
+            <a href="tel:13654889817">
+                <p>平台</p>
                 <p>客服</p>
             </a>
         </div>
