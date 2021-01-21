@@ -350,7 +350,7 @@ export default {
           return Notify("请将信息填写完整");
       }
 
-      if (this.coverList.length > 0 && this.coverList != undefined) {
+      if (this.coverList.length > 0 && this.coverList != undefined && this.videoForm.surface_plot == '') {
         this.videoForm.surface_plot = this.coverList[0].url;
       }
 
@@ -358,7 +358,7 @@ export default {
         Notify("标题长度最少三个字符");
         return false;
       }
-
+      
       this.$dialog
         .confirm({
           title: "发布视频",
@@ -400,6 +400,7 @@ export default {
       data.append("file", content);
       const res = await uploadImg(data);
       if (res.code === 100) {
+        console.log(res.data.src)
         this.videoForm.surface_plot = res.data.src;
         this.imgdef = res.data.src_base;
         this.playerOptions.poster = res.data.src;
