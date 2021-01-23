@@ -144,7 +144,7 @@ export default {
       loading: false,
       finished: false,
       query: {
-        num: 1,
+        num: 0,
         size: 10,
       },
       page: 1,
