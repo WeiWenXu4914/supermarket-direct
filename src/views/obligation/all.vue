@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import { Toast, Tab, Tabs } from "vant";
 import orderItem from "./components/orderItem";
 export default {
   name: "all",
@@ -50,7 +49,6 @@ export default {
   },
   data() {
     return {
-      dataList: [],
       active: 0,
     };
   },
