@@ -42,7 +42,7 @@
       </div> -->
       <div
         style="margin-left: 10px"
-        v-if="videoItemVal.mmt_id == 3"
+        v-if="videoItemVal.mmt_id == 3 && videoItemVal.memid != 1"
         @click="userHandle"
       >
         <van-button color="#D04443" size="mini">进店</van-button>

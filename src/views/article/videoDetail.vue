@@ -40,7 +40,7 @@
         <img :src="dataAll.mem_head_portrait" />
         <h4>{{ dataAll.mem_name }}</h4>
       </div>
-      <button @click="toStore">进店</button>
+      <button @click="toStore" v-if="dataAll.mem_id != 1">进店</button>
       <button
         @click="focus"
         v-show="!isLoading"
