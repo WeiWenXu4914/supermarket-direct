@@ -326,6 +326,11 @@ export default {
         name: this.$refs.myAddress.name,
         phone: this.$refs.myAddress.phone,
       };
+      //服务站点
+      if(!this.$refs.myAddress.pickResult.msid) {
+        Toast("请选择服务站点");
+        return;
+      }
       if (
         this.$refs.myAddress.addressStoreList.length !== 0 &&
         this.active == 0
