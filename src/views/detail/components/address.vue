@@ -82,7 +82,7 @@
                   <p>{{ pickResult.city + pickResult.district + pickResult.detailed_site }}</p>
               </div>
 
-              <h3 v-else>请选择就近服务站点</h3>
+              <h3 v-else>{{ tipChooseSite }}</h3>
 
               <span>切换<van-icon class="icon" name="arrow" color="#ccc" size=".4rem"/></span>
               
@@ -135,6 +135,7 @@
               </div>
               <button class="choose" @click="choose(item.text)">选择</button>
             </div>
+            <button class="not-choose-serve-site" @click="notChooseServeSite">不选择服务站点</button>
           </div>
         </van-popup>
     </div>
@@ -166,7 +167,8 @@ export default {
             showArea: false,
             areaList: {},
             valueArea: "",
-            isTipArea: false
+            isTipArea: false,
+            tipChooseSite: "请选择服务站点"
         }
     },
     computed: {
@@ -193,8 +195,13 @@ export default {
     },
     methods: {
       ...mapState(['user']),
+      notChooseServeSite() {
+        this.pickResult = {};
+        window.localStorage.removeItem('serviceSiteResult')
+        this.tipChooseSite = "不选择服务站点"
+        this.showPicker = false
+      },
       valueAreaFocus() {
-        console.log("aaaa")
         if(this.valueArea == "") {
           Toast("请选择区域地址");
           this.isTipArea = true;
@@ -305,12 +312,19 @@ export default {
         shippingAddress()
         .then((res) => { 
           if (res.code == 100 && res.data.length > 0) {
+                
+              console.log(res)
 
-              this.name = res.data[0].contact_name;
-              this.phone = res.data[0].contact_number;
-              this.addressSite = res.data[0].province + res.data[0].city + res.data[0].district + res.data[0].detailed_site;
+              for (let i = 0; i < res.data.length; i++) {
+                if(res.data[i].by_default == 1) {
+                  this.name = res.data[i].contact_name;
+                  this.phone = res.data[i].contact_number;
+                  this.addressSite = res.data[i].province + res.data[i].city + res.data[i].district + res.data[i].detailed_site;
 
-              this.valueArea = res.data[0].province + '/' + res.data[0].city + '/' + res.data[0].district;
+                  this.valueArea = res.data[i].province + '/' + res.data[i].city + '/' + res.data[i].district;
+                }
+              }
+
               //获取默认地区的服务点
               this.getEntSiteReal();
 
@@ -377,6 +391,17 @@ export default {
   .choose-content {
     width: 100vw;
     height: 100vh;
+    .not-choose-serve-site {
+      width: 90vw;
+      border: none;
+      outline: none;
+      margin-left: 5vw;
+      margin-top: 20px;
+      font-size: 20px;
+      padding: 10px 0;
+      color: #fff;
+      background-color: #d04443;
+    }
     .tip-border {
       border: 1px solid red;
     }

@@ -283,13 +283,13 @@ export default {
       //   return;
       // }
 
-      if (
-        this.$refs.myAddress.addressStoreList.length == 0 &&
-        this.active == 0
-      ) {
-        Toast("该商家未设置店铺地址，无法下单");
-        return;
-      }
+      // if (
+      //   this.$refs.myAddress.addressStoreList.length == 0 &&
+      //   this.active == 0
+      // ) {
+      //   Toast("该商家未设置店铺地址，无法下单");
+      //   return;
+      // }
       // 更新收货地址
       this.$refs.myAddress.getUserSite();
 
@@ -327,10 +327,11 @@ export default {
         phone: this.$refs.myAddress.phone,
       };
       //服务站点
-      if(!this.$refs.myAddress.pickResult.msid) {
+      if(this.$refs.myAddress.tipChooseSite == "请选择服务站点" && !this.$refs.myAddress.pickResult.msid) {
         Toast("请选择服务站点");
         return;
       }
+      
       if (
         this.$refs.myAddress.addressStoreList.length !== 0 &&
         this.active == 0
