@@ -56,11 +56,11 @@
       <van-icon class="icon" name="weapp-nav" />
     </div>
     <!--地址-->
-    <div class="address" @click="toEditAddress">
+    <div @click="toEditAddress" :class="isSiteNull ? 'tipWarn' : 'address'">
       <span>送至</span>
       <span v-if="address.city">{{ address.province }} {{ address.city }} {{ address.district }} {{ address.detailed_site }}</span>
-      <span v-else style="color:red">请添加默认地址</span>
-      <van-icon class="icon" name="arrow" />
+      <span v-else>请添加默认地址</span>
+      <van-icon class="icon" name="arrow" :color="isSiteNull ? 'red' : ''"/>
     </div>
     <!--商品详情图片-->
     <div class="shop">
@@ -296,6 +296,7 @@ export default {
       countAll: 0, //全部库存数量 -1
       address: {},
       forwardMark: false,
+      isSiteNull: false
     };
   },
   created() {
@@ -539,7 +540,8 @@ export default {
     // 显示下单操作
     buyPro(pro_id) {
       if(!this.address.city) {
-        Toast.fail("请添加默认收货地址");
+        Toast("请点击红色区域添加地址")
+        this.isSiteNull = true;
         return;
       }
       this.numShow = true;
@@ -1083,6 +1085,26 @@ export default {
   }
   .navClassTrue {
     background: rgba(255, 255, 255, 0);
+  }
+  .tipWarn {
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin-top: 0.2rem;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid red;
+    span {
+      margin: 0 10px;
+      color: red;
+      font-size: 13px;
+      padding: 10px 0;
+    }
+    .icon {
+      position: absolute;
+      right: 10px;
+      margin: 0;
+    }
   }
   .address {
     display: flex;

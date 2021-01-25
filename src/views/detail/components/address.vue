@@ -1,6 +1,7 @@
 <template>
     <div class="getAddress">
-      <!--快递-->
+      
+      <!--地址（旧）-->
         <div class="adress" @click="toEditAddress" v-show="!way">
             <img src="../../../components/img1/dingwei.png" alt />
             <div v-show="isNull">
@@ -14,18 +15,37 @@
                 <p class="left"><van-icon name="arrow" size=".4rem" color="#ccc"/></p>
             </div>
         </div>
-        <!--自取-->
+        
+        <!--地址新-->
         <div class="adress2" v-show="way">
-            <div class="store-address">
-              <img :src="pickResult.pickup_photos" alt="" v-if="pickResult.pickup_photos">
-              <div class="store-site">
-                <h3>{{ pickResult.contact_name }}</h3>
-                <p>{{ pickResult.city + pickResult.district + pickResult.detailed_site }}</p>
-              </div>
-              <span @click="showPicker = true">切换</span>
-              <van-icon class="icon" name="arrow" color="#ccc" size=".4rem"/>
+
+            <!-- <div class="recive-address">
+                <h4>收货地址</h4>
+                <van-field
+                  v-model="addressSite"
+                  rows="1"
+                  autosize
+                  maxlength="50"
+                  type="textarea"
+                  placeholder="请输入收货地址"
+                />
+            </div> -->
+
+            <div class="adress" @click="toEditAddress">
+                <img src="../../../components/img1/dingwei.png" alt />
+                <div v-show="isNull">
+                    <span class="name">{{ address.contact_name }}</span>
+                    <p class="phone">{{ address.contact_number }}</p>
+                    <p class="adr">{{ address.province }} {{ address.city }} {{ address.district }} {{ address.detailed_site }}</p>
+                    <p class="left"><van-icon name="arrow" color="#ccc" size=".4rem"/></p>
+                </div>
+                <!-- <div v-show="!isNull">
+                    <span class="addressNull">请添加默认收货地址</span>
+                    <p class="left"><van-icon name="arrow" size=".4rem" color="#ccc"/></p>
+                </div> -->
             </div>
-            <div class="recieve-msg">
+
+            <!-- <div class="recieve-msg">
               <div class="name">
                 <p>取货人</p>
                 <input
@@ -51,18 +71,25 @@
                 <img src="../img/edit.svg" @click.stop="phoneFocus" v-show="!phoneClear">
                 <img src="../img/clear.svg" @click.stop="clear('phone')" v-show="phoneClear">
               </div>
-            </div>
-        </div>
+            </div> -->
 
-        
-        <!-- <van-popup v-model="showPicker" round position="bottom">
-          <van-picker
-            show-toolbar
-            :columns="columns"
-            @cancel="showPicker = false"
-            @confirm="onConfirm"
-          />
-        </van-popup> -->
+            <h4 class="service-site">服务站点</h4>
+            <div class="store-address" @click="showPicker = true">
+
+              <img :src="pickResult.pickup_photos" alt="" v-if="pickResult.pickup_photos">
+              <div class="store-site" v-if="pickResult.city">
+                  <h3>{{ pickResult.contact_name }}</h3>
+                  <p>{{ pickResult.city + pickResult.district + pickResult.detailed_site }}</p>
+              </div>
+
+              <h3 v-else>请选择就近服务站点</h3>
+
+              <span>切换<van-icon class="icon" name="arrow" color="#ccc" size=".4rem"/></span>
+              
+            </div>
+
+        </div>
+        <!--弹出页面-->
         <van-popup v-model="showPicker" position="right">
           <div class="choose-content">
             <div class="header">
@@ -75,9 +102,31 @@
               <van-search
                class="search" 
                v-model="value" 
-               placeholder="请输入搜索关键词" 
+               placeholder="请输入搜索关键词"
+               @focus="valueAreaFocus"
               />
             </div>
+
+
+            <van-field
+              :class="isTipArea ? 'tip-border' : ''"
+              readonly
+              clickable
+              name="area"
+              :value="valueArea"
+              label="地区切换"
+              placeholder="点击选择省市区"
+              @click="showArea = true"
+            />
+            <van-icon name="arrow"  class="right-icon"/>
+            <van-popup v-model="showArea" position="bottom">
+              <van-area 
+                :area-list="areaList" 
+                @confirm="onConfirm" 
+                @cancel="showArea = false"
+                :columns-placeholder="['请选择', '请选择', '请选择']" />
+            </van-popup>
+
             <div class="store-address" v-for="item in addressStoreList" :key="item.msid">
               <img :src="item.pickup_photos" alt="" v-if="item.pickup_photos">
               <div class="store-site">
@@ -92,9 +141,10 @@
 </template>
 
 <script>
-import { shippingAddress,entAddress, entSelfPickupSite, SuperMarketList } from '../actions/index';
+import { shippingAddress,entAddress, entSelfPickupSite, searchSuperMarketList } from '../actions/index';
 import { mapState, mapMutations } from 'vuex'
-import { Toast, DropdownMenu, DropdownItem, Icon, Picker, Popup, Search } from 'vant';
+import  province_list  from '../../shop/actions/area';
+import { Toast, DropdownMenu, DropdownItem, Icon, Picker, Popup, Search, Area, Dialog } from 'vant';
 export default {
     props:['showMsg','entid','proid'],
     data() {
@@ -105,18 +155,18 @@ export default {
             addressListResult: 0,
             isNull: false,
             setBydefault:false,
-            pickResult: {
-              city: '',
-              district: '',
-              detailed_site: ''
-            },
+            pickResult: {},
             showPicker: false,
-            columns: [],
             value: '',
             nameClear: false,
             phoneClear: false,
             name: '',
-            phone: ''
+            phone: '',
+            addressSite: '',
+            showArea: false,
+            areaList: {},
+            valueArea: "",
+            isTipArea: false
         }
     },
     computed: {
@@ -143,6 +193,26 @@ export default {
     },
     methods: {
       ...mapState(['user']),
+      valueAreaFocus() {
+        console.log("aaaa")
+        if(this.valueArea == "") {
+          Toast("请选择区域地址");
+          this.isTipArea = true;
+        } else {
+          this.isTipArea = false;
+        }
+      },
+      //确认地区区域
+      onConfirm(values) {
+        if(values[0].name == '' || values[1].name == '' || values[2].name == '') {
+          Toast("请选择具体的地址");
+          return;
+        }
+        this.valueArea = values.map(item => item.name).join("/");
+        this.showArea = false;
+        this.isTipArea = false;
+        this.getEntSiteReal();
+      },
       clear(val) {
         if(val == 'name') {
           this.name = '';
@@ -167,6 +237,8 @@ export default {
         for(let i = 0; i < this.addressStoreList.length; i++) {
           if(this.addressStoreList[i].text == text) {
             this.pickResult = Object.assign(this.addressStoreList[i]);
+            window.localStorage.serviceSiteResult = JSON.stringify(this.pickResult)
+            
             break;
           }
         }
@@ -181,9 +253,13 @@ export default {
           this.$router.push({path:'/add',query: { add: 1 } })
         }
       },
-      //获取自提地址
+      //获取服务站点
       getEntSiteReal() {
-        SuperMarketList()
+        const obj = {
+          where: this.value,
+          site: this.valueArea
+        }
+        searchSuperMarketList(obj)
         .then((res) => {
           
           if(res.code == 100) {
@@ -191,16 +267,21 @@ export default {
             this.addressStoreList.map((item,index) => {
                 item.text = item.city + item.district + item.detailed_site + item.contact_name;
             })
-            this.pickResult = this.addressStoreList[0];
-            this.columns = Object.assign(this.pickResult);
+            
           } else {
             Toast(res.msg)
           }
 
         })
+
+
       },
       getEntSiteRealSearch(value) {
-        SuperMarketList(value)
+        const obj = {
+          where: value,
+          site: this.valueArea
+        }
+        searchSuperMarketList(obj)
         .then((res) => {
           
           if(res.code == 100) {
@@ -212,16 +293,27 @@ export default {
 
         })
       },
+      //本地取出服务点地址
+      getServiceSite() {
+        let data = window.localStorage.serviceSiteResult;
+        if(data) {
+          this.pickResult = JSON.parse(data);
+        }
+      },
       getUserSite() {
-        //获取收货地址
+        //获取服务点地址
         shippingAddress()
         .then((res) => { 
           if (res.code == 100 && res.data.length > 0) {
 
-              let name = res.data[0].contact_name;
-              let phone = res.data[0].contact_number;
-              this.name = name;
-              this.phone = phone;
+              this.name = res.data[0].contact_name;
+              this.phone = res.data[0].contact_number;
+              this.addressSite = res.data[0].province + res.data[0].city + res.data[0].district + res.data[0].detailed_site;
+
+              this.valueArea = res.data[0].province + '/' + res.data[0].city + '/' + res.data[0].district;
+              //获取默认地区的服务点
+              this.getEntSiteReal();
+
               this.setBydefault = true;
               var addressIsorNo = 0;
               var addressIsorNoIndex = '';
@@ -273,7 +365,9 @@ export default {
     },
     mounted() {
       this.getUserSite();
-      this.getEntSiteReal();
+      this.getServiceSite();
+      //地区字典
+      this.areaList = province_list;
     }
 }
 </script>
@@ -283,6 +377,14 @@ export default {
   .choose-content {
     width: 100vw;
     height: 100vh;
+    .tip-border {
+      border: 1px solid red;
+    }
+    .right-icon {
+      position: absolute;
+      right: 10px;
+      top: 67px;
+    }
     .header {
       display: flex;
       align-items: center;
@@ -297,7 +399,7 @@ export default {
         display: flex;
         align-items: center;
         width: 94vw;
-        margin: 7px auto;
+        margin: 0 auto;
         padding: 10px 0;
         box-shadow: 0px 1px 1px -1px #adadad;
         img {
@@ -324,7 +426,6 @@ export default {
             // display: block;
             color: #232426;
             font-size: 16px;
-            
           }
           p {
             color: #ccc;
@@ -347,22 +448,20 @@ export default {
       align-items: center;
       // border-bottom: 0.5px solid rgba(229, 229, 229, 0.5);
       // border-top: 0.5px solid rgba(229, 229, 229, 0.5);
-      width: 90%;
-      margin-left: 0.5rem;
-      padding: 0.5rem 0;
+      padding: 0.2rem 0;
       img {
         width: 0.5rem;
         height: 0.5rem;
         margin: 0.0rem 0rem 0rem 0rem;
       }
       .name {
-        margin: 0.3rem 0rem 0rem 0.3rem;
+        margin: 0.2rem 0rem 0.1rem 0.3rem;
         color: #212121;
         font-size: 0.45rem;
       }
       .phone {
         display: inline-block;
-        margin: 0.3rem 0rem 0rem 0.3rem;
+        margin: 0.1rem 0rem 0.1rem 0.3rem;
         color: #212121;
         font-size: 0.45rem;
       }
@@ -371,7 +470,7 @@ export default {
       }
       .adr {
         margin: 0rem 0rem 0rem 0.3rem;
-        width: 80%;
+        width: 90%;
         color: #676767;
       }
       .left {
@@ -396,8 +495,26 @@ export default {
       width: 90%;
       margin: 0 auto;
       padding: 20px 0;
+      .recive-address {
+        padding-bottom: 10px;
+        h4 {
+          color: #868688;
+          padding: 5px 0;
+          font-weight: normal;
+        }
+        .van-cell {
+          padding: 0;
+          font-family:Arial, Helvetica, sans-serif;
+          // font-weight: bold;
+          color: #232426;
+          font-size: 18px;
+        }
+      }
       .store-address {
         display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        padding-top: 10px;
         align-items: center;
         img {
           width: 50px;
@@ -410,6 +527,9 @@ export default {
           line-height: 50px;
           padding-left: 7px;
           
+        }
+        .icon {
+          transform: translateY(3px);
         }
         .store-site {
           flex: 1;
@@ -434,11 +554,16 @@ export default {
         
         
       }
-      
+      .service-site {
+        margin-top: 15px;
+        color: #898986;
+        font-weight: normal;
+      }
       .recieve-msg {
         display: flex;
         align-items: flex-end;
-        margin-top: 25px;
+        margin: 10px 0 15px 0;
+        padding-bottom: 15px;
         div {
           display: inline-block;
         }

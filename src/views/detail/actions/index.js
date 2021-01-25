@@ -108,6 +108,6 @@ export function entSelfPickupSite(id) {
     return request('/api/entSelfPickupSite', 'get', { id});
 }
 //自提地址
-export function SuperMarketList(value) {
-    return request('/api/SuperMarketList', 'post', { where: value });
+export function searchSuperMarketList(obj) {
+    return request('/api/searchSuperMarketList', 'get', obj);
 }
