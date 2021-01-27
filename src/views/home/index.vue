@@ -451,7 +451,7 @@ export default {
 
       if (type == 2) {
         obj.size = 10;
-        obj.num = 1;
+        obj.num = 2;
       }
 
       getHome(obj).then((res) => {
@@ -469,6 +469,17 @@ export default {
           this.activeNav[this.activeIndex].num > 1
             ? this.activeNav[this.activeIndex].pageData.push(...res.data)
             : (this.activeNav[this.activeIndex].pageData = res.data);
+            //去掉列表重复项
+            let deWeight = () => {
+              let map = new Map();
+              for (let item of this.pageData) {
+                if (!map.has(item.entid)) {
+                  map.set(item.entid, item);
+                }
+              }
+              return [...map.values()];
+            };
+            this.pageData = deWeight();
         } else {
           this.activeNav[this.activeIndex].finished = true;
           this.activeNav[this.activeIndex].downLoading = false;
