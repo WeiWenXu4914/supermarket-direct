@@ -376,8 +376,10 @@ export default {
 
         if (res.data.pro_id) {
           const prores = await getProductSetList(res.data.pro_id);
-          this.ProductSetList = prores.data[0];
-          this.recProShow = true;
+          if(prores.length > 0) {
+            this.ProductSetList = prores.data[0];
+            this.recProShow = true;
+          }
         }
 
         const commList = await articleCommList(query);
