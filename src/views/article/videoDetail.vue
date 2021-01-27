@@ -246,7 +246,7 @@ export default {
       commType: 1,
       ProductSetList: "",
       recProShow: false,
-      goindex: false
+      goindex: false,
     };
   },
   beforeCreate() {
@@ -266,7 +266,7 @@ export default {
     this.userIndex();
     this.getCommList();
   },
-   watch: {
+  watch: {
     $route(to, from) {
       if (to.query) {
         this.getData();
@@ -277,18 +277,17 @@ export default {
   },
   methods: {
     toStore() {
-
-      console.log(this.dataAll)
+      console.log(this.dataAll);
       let obj = {
         entid: this.dataAll.rel_id,
-        entfid: 0
+        entfid: 0,
       };
-      
+
       var res = this.$Utils.demoRequest(JSON.stringify(obj));
       this.$router.push({
-        path: '/merchants/produce',
-        query: {res: res}
-      })
+        path: "/merchants/produce",
+        query: { res: res },
+      });
     },
     goProductDetail(val) {
       var obj = {
@@ -562,9 +561,13 @@ export default {
       let ua = window.navigator.userAgent.toLowerCase();
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
         if (this.dataAll.gc_id == 2) {
-
-          if(!this.dataAll.graphic_intro || this.dataAll.graphic_intro == '无'){
-            var desc = "来自用户《" + this.dataAll.mem_name + "》的分享"
+          if (
+            !this.dataAll.graphic_intro ||
+            this.dataAll.graphic_intro == "无"
+          ) {
+            var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
+          } else {
+            var desc = this.dataAll.graphic_intro;
           }
 
           var form = {
@@ -584,10 +587,15 @@ export default {
             imgUrl = this.dataAll.graphic_thumbnail[0].graphic_thumbnail_path;
           }
 
-          if(!this.dataAll.graphic_intro || this.dataAll.graphic_intro == '无'){
-            var desc = "来自用户《" + this.dataAll.mem_name + "》的分享"
+          if (
+            !this.dataAll.graphic_intro ||
+            this.dataAll.graphic_intro == "无"
+          ) {
+            var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
+          } else {
+            var desc = this.dataAll.graphic_intro;
           }
-          
+
           var form = {
             title: this.dataAll.graphic_name,
             link: window.location.href + "?goindex=true",
@@ -614,11 +622,16 @@ export default {
                 imgUrl = this.dataAll.graphic_thumbnail[0]
                   .graphic_thumbnail_path;
               }
-              
-              if(!this.dataAll.graphic_intro || this.dataAll.graphic_intro == '无'){
-                var desc = "来自用户《" + this.dataAll.mem_name + "》的分享"
+
+              if (
+                !this.dataAll.graphic_intro ||
+                this.dataAll.graphic_intro == "无"
+              ) {
+                var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
+              } else {
+                var desc = this.dataAll.graphic_intro;
               }
-              
+
               var form = {
                 title: this.dataAll.graphic_name,
                 link:
@@ -629,6 +642,15 @@ export default {
                 desc: desc,
               };
             } else {
+              if (
+                !this.dataAll.graphic_intro ||
+                this.dataAll.graphic_intro == "无"
+              ) {
+                var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
+              } else {
+                var desc = this.dataAll.graphic_intro;
+              }
+
               var form = {
                 title: this.dataAll.graphic_name,
                 link:
@@ -668,7 +690,7 @@ export default {
 
 <style lang="less">
 .video-detail-small {
-   .goindex {
+  .goindex {
     width: 15%;
     height: 50px;
     position: fixed;
@@ -1100,7 +1122,7 @@ export default {
   width: 90%;
   height: 50px;
   background: #fff;
-//   position: fixed;
+  //   position: fixed;
   top: 20px;
   right: 10px;
   display: flex;

@@ -842,6 +842,8 @@ export default {
 
             if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
               var desc = "来自用户《" + this.article.mem_name + "》的分享"
+            }else{
+              var desc = this.article.graphic_intro;
             }
 
             if (this.article.gc_id == 1) {
@@ -1135,6 +1137,8 @@ export default {
 
         if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
           var desc = "来自用户《" + this.article.mem_name + "》的分享"
+        }else{
+          var desc = this.article.graphic_intro;
         }
 
         if (this.article.gc_id == 2) {
@@ -1173,6 +1177,8 @@ export default {
 
         if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
           var desc = "来自用户《" + this.article.mem_name + "》的分享"
+        }else{
+          var desc = this.article.graphic_intro;
         }
 
         forwardArticles(article.gid, 1).then((res) => {
@@ -1193,8 +1199,7 @@ export default {
                   "?goindex=true&key=" +
                   res.data.mem_urlkey,
                 imgUrl: imgUrl,
-                desc:
-                  article.graphic_intro || "来自" + article.mem_name + "的分享",
+                desc: desc,
               };
 
               this.$refs.articleItem[article.index].showForwardOper(1);
@@ -1208,8 +1213,7 @@ export default {
                 imgUrl:
                   article.graphic_surface_plot ||
                   "http://api.lejiagx.cn/static/icon/lejia_logo.png",
-                desc:
-                  article.graphic_intro || "来自" + article.mem_name + "的分享",
+                desc: desc,
                 type: "video",
                 dataUrl: article.graphic_video_path,
               };
