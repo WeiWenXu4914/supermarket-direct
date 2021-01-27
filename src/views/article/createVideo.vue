@@ -306,7 +306,9 @@ export default {
           if (res.data.status === 100) {
             file.status = "success";
             file.message = "上传成功";
-
+            
+            this.videoForm.height = res.data.data.height;
+            this.videoForm.width = res.data.data.width;
             this.surface_plot_show = true;
             this.playerOptions.sources[0].src = res.data.data.file;
             this.videoForm.video_path = res.data.data.file;
