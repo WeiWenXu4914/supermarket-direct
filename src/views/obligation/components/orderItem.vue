@@ -70,7 +70,7 @@
                 <div class="allBtn" v-else-if="item.status == 2 && item.dw_id == 3">
                     <button @click="toRefund(item)">申请退款</button>
                     <button @click="seeLogistics(item)">查看物流</button>
-                    <button @click="confirmReceive(item)">确认收货</button>
+                    <button @click="confirmReceive(item,index)">确认收货</button>
                 </div>
                 <div class="allBtn"  v-else-if="item.status == 1 && item.dw_id == 3">
                     <button type="default" @click="toRefund(item)">申请退款</button>
@@ -195,7 +195,7 @@ export default {
         getDate() {
             let obj = {
                 num: 1,
-                size: 5
+                size: 10
             }
             orderList(obj)
             .then((res) => {
@@ -203,7 +203,7 @@ export default {
 
                 this.loading = false;
                 
-               //分类数据                                           dw_id  1 自取   2 同城  3 发货
+               //分类数据                                          
                 if( this.state === 0 ) {//已删除  is_del 1 是  0 否     待评价同理
                     this.dataListItem = res.data.filter( item => item.is_del != 1);
                 } else if( this.state === 1) {//0 待付款；1待发货；2已发货；3已完成；4已关闭；5无效订单 6是过期 --->status
@@ -371,6 +371,7 @@ export default {
                 .then((res) => {
                     if(res.code === 100) {
                         Toast("删除订单成功");
+                        this.page = 1;
                         this.getDate();
                     }
                 })
@@ -406,8 +407,13 @@ export default {
         confirmReceive(item) {
             confirmOrder(item.order_number)
             .then((res) => {
-                Toast("确认成功");
-                this.getDate();
+                if (res.code == 100) {
+                    Toast("确认成功");
+                    this.page = 1;
+                    this.getDate();
+                } else {
+                    Toast(res.msg);
+                }
             })
             .catch((err) => {
                 Toast("请求出错");
