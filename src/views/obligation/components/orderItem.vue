@@ -1,14 +1,14 @@
 <template>
     <div class="orderListWrapper">
 
-        <van-list
+        <!-- <van-list
             v-model="loading"
             :finished="finished"
             finished-text="没有更多订单了"
             @load="onLoad"
             immediate-check="false"
             ref="bottomCompoment"
-            >
+            > -->
             <div class="zong" v-for="(item,index) in dataListItem" :key="index">
                 <div class="content">
                     <div class="list" @click="intoStore(item.entid)">
@@ -89,7 +89,7 @@
                     <button type="default" class="appraise" @click="appraise(item)" v-if="item.is_mark == 0">评价</button>
                 </div>
             </div>
-        </van-list>
+        <!-- </van-list> -->
 
         
         <van-empty description="无订单" class="state" v-if="dataListItem.length === 0 ? true : false" />
@@ -114,8 +114,8 @@ export default {
         state() {
             //处理组件tab切换无法下拉请求数据BUG
             this.getDate();
-            this.page = 1;
-            this.finished = false;
+            // this.page = 1;
+            // this.finished = false;
         }
     },
     beforeCreate() {
@@ -195,7 +195,7 @@ export default {
         getDate() {
             let obj = {
                 num: 1,
-                size: 10
+                size: 1000
             }
             orderList(obj)
             .then((res) => {
