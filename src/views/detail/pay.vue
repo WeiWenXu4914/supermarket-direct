@@ -278,10 +278,10 @@ export default {
     payMoney() {
       // 判断支付环境
       let ua = window.navigator.userAgent.toLowerCase();
-      // if (!(ua.match(/MicroMessenger/i) == "micromessenger")) {
-      //   Toast("请在微信中支付");
-      //   return;
-      // }
+      if (!(ua.match(/MicroMessenger/i) == "micromessenger")) {
+        Toast("请在微信中支付");
+        return;
+      }
 
       // if (
       //   this.$refs.myAddress.addressStoreList.length == 0 &&
@@ -387,11 +387,6 @@ export default {
             this.wxMsg = res.data;
             this.callpay(1, obj, this);
           });
-        })
-        .catch((e) => {
-          Toast("请求出错");
-          console.log(e);
-          this.isPaying = false;
         });
     },
     //调用微信JS api 支付

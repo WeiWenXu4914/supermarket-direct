@@ -779,11 +779,19 @@ export default {
                   article.graphic_intro || "来自" + article.mem_name + "的分享",
               };
             } else {
+
+              if (article.graphic_width / article.graphic_height < 1) {
+                
+                var toUrl = `article/full_screen_play/${article.gid}`;
+              } else {
+
+                var toUrl = `videoDetail/${article.gid}`;
+              }
+
               var form = {
                 title: article.graphic_name,
                 link:
-                  window.location.href +
-                  `article/detail/${article.gid}?goindex=true&key=` +
+                  window.location.href + toUrl +`?goindex=true&key=` +
                   res.data.mem_urlkey,
                 imgUrl:
                   article.graphic_surface_plot ||

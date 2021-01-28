@@ -21,7 +21,15 @@
         <!-- <span class="tittle-num">
           <van-icon name="warn-o" color="#FF0000"/> 您已输入{{descNum}}个字了
         </span> -->
-        <van-field v-model="videoForm.graphic_name" v-bind="descNum" left-icon="http://api.lejiagx.cn/static/icon/bitian.png" placeholder="请输入标题（3-150个字）"/>
+        <van-field 
+          v-model="videoForm.graphic_name" 
+          rows="1" 
+          type="textarea" 
+          autosize 
+          v-bind="descNum" 
+          left-icon="http://api.lejiagx.cn/static/icon/bitian.png" 
+          placeholder="请输入标题（3-150个字）"
+        />
         <!-- <van-cell-group> -->
           <van-field
             v-model="videoForm.details"
@@ -189,12 +197,12 @@ export default {
   },
   computed: {
     descNum() {
-      if (this.videoForm.graphic_name.length > 20) {
-        this.videoForm.graphic_name = this.videoForm.graphic_name.substr(0, 20);
+      if (this.videoForm.graphic_name.length > 150) {
+        this.videoForm.graphic_name = this.videoForm.graphic_name.substr(0, 150);
 
         Notify("无法在输入了");
 
-        return 20;
+        return 150;
       }
       return this.videoForm.graphic_name.length == 0
         ? 0
@@ -213,6 +221,8 @@ export default {
           imgVal: canvas.toDataURL("image/png"),
         }).then((res) => {
           if (res.code === 100) {
+
+            this.videoForm.surface_plot = '';
             this.coverList[0] = {
               url: res.data,
             };
@@ -285,38 +295,53 @@ export default {
     },
     // 上传视频
     async afterRead(file) {
+
       file.status = "uploading";
       file.message = "上传中...";
+
       let content = file.file;
       let data = new FormData();
       data.append("file", content);
       this.videoForm.video_path = 1;
+
       return axios
         .post("http://apis.lejiagx.cn/api/VideoUpload", data, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
           onUploadProgress: (progressEvent) => {
+
             var progr = progressEvent.loaded / progressEvent.total;
             this.uploadSchedule = parseInt(progr * 100);
           },
         })
         .then((res) => {
+
           this.uploadShow = false;
           if (res.data.status === 100) {
+
             file.status = "success";
             file.message = "上传成功";
+            
+            this.videoForm.height = res.data.data.height;
+            this.videoForm.width = res.data.data.width;
 
-            this.surface_plot_show = true;
+            if(this.videoForm.surface_plot == '') {
+              this.surface_plot_show = true;
+            }
+            
             this.playerOptions.sources[0].src = res.data.data.file;
             this.videoForm.video_path = res.data.data.file;
             this.imgdef = res.data.data.video_surface_plot;
+
             if (this.coverList.length <= 0) {
+
               this.coverList[0] = {
                 url: res.data.data.video_surface_plot_base,
               };
             }
           } else {
+
             file.status = "failed";
             file.message = "上传失败";
           }
@@ -324,6 +349,7 @@ export default {
     },
     //删除未发布上传视频
     async deletevideo() {
+
       for (const video_path in this.videoForm) {
         if (!this.videoForm.video_path) return this.$toast("请先上传视频");
       }
@@ -334,13 +360,16 @@ export default {
           message: "确定要删除此视频吗",
         })
         .then(() => {
+
           (this.videoForm.video_path = ""), (this.videoList = []);
         })
         .catch(() => {});
     },
     // 发布视频
     async submit() {
+
       for (const key in this.videoForm) {
+
         if (
           !this.videoForm[key] &&
           key != "details" &&
@@ -365,10 +394,13 @@ export default {
           message: "确定要发布此视频吗",
         })
         .then(() => {
+
           this.isDisable = true;
           publishVideo(this.videoForm)
             .then((res) => {
+
               if (res.code === 100) {
+
                 this.isDisable = false;
                 localStorage.removeItem("drafts");
                 localStorage.removeItem("eventBusName");
@@ -377,6 +409,7 @@ export default {
                   !this.videoForm.gid != undefined ||
                   !this.videoForm.gid != ""
                 ) {
+
                   sessionStorage.removeItem(this.videoForm.gid + "_edit");
                 }
 
@@ -386,36 +419,44 @@ export default {
                   this.$router.go(-1);
                 }, 200);
               } else {
+
                 this.$toast.error(res.msg);
+                this.isDisable = false;
               }
-            })
-            .catch((error) => {});
+            });
         })
         .catch(() => {});
     },
     // 上传图片
     async afterReadImg(file) {
+
       let content = file.file;
       let data = new FormData();
       data.append("file", content);
+
       const res = await uploadImg(data);
       if (res.code === 100) {
-        console.log(res.data.src)
+
         this.videoForm.surface_plot = res.data.src;
         this.imgdef = res.data.src_base;
         this.playerOptions.poster = res.data.src;
       } else {
+        
         this.$toast.error("图片上传失败");
       }
     },
   },
   created() {
+
+    var data = this.$route.query.id;
+    if(data) {
+      this.videoForm.nav_id = data;
+    }
+
     //草稿箱跳转编辑
     if (this.$route.query.draftsEdit) {
-      console.log(this.$route.query.videoData);
       this.videoForm = JSON.parse(this.$route.query.videoData);
       this.playerOptions.sources[0].src = this.videoForm.video_path;
-      console.log(this.videoForm);
       return;
     }
 

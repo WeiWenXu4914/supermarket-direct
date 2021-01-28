@@ -246,7 +246,7 @@ export default {
       commType: 1,
       ProductSetList: "",
       recProShow: false,
-      goindex: false
+      goindex: false,
     };
   },
   beforeCreate() {
@@ -263,10 +263,9 @@ export default {
       this.goindex = true;
     }
     this.getData();
-    this.userIndex();
     this.getCommList();
   },
-   watch: {
+  watch: {
     $route(to, from) {
       if (to.query) {
         this.getData();
@@ -277,18 +276,16 @@ export default {
   },
   methods: {
     toStore() {
-
-      console.log(this.dataAll)
       let obj = {
         entid: this.dataAll.rel_id,
-        entfid: 0
+        entfid: 0,
       };
-      
+
       var res = this.$Utils.demoRequest(JSON.stringify(obj));
       this.$router.push({
-        path: '/merchants/produce',
-        query: {res: res}
-      })
+        path: "/merchants/produce",
+        query: { res: res },
+      });
     },
     goProductDetail(val) {
       var obj = {
@@ -377,8 +374,10 @@ export default {
 
         if (res.data.pro_id) {
           const prores = await getProductSetList(res.data.pro_id);
-          this.ProductSetList = prores.data[0];
-          this.recProShow = true;
+          if(prores.length > 0) {
+            this.ProductSetList = prores.data[0];
+            this.recProShow = true;
+          }
         }
 
         const commList = await articleCommList(query);
@@ -476,7 +475,6 @@ export default {
         })
         .catch((res) => {
           Toast("请求出错");
-          console.log(res);
         });
     },
     // 关注
@@ -510,6 +508,8 @@ export default {
             this.isCollection =
               this.dataAll.mem_collect == "已收藏" ? true : false;
             this.$refs.video.play();
+
+            this.userIndex();
           } else {
             Toast(res.msg);
           }
@@ -562,9 +562,21 @@ export default {
       let ua = window.navigator.userAgent.toLowerCase();
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
         if (this.dataAll.gc_id == 2) {
+          if (
+            !this.dataAll.graphic_intro ||
+            this.dataAll.graphic_intro == "无"
+          ) {
+            var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
+          } else {
+            // 检测是否存在p标签
+            var regPtags = RegExp(/<p>/);
+            if (regPtags.exec(this.dataAll.graphic_details)) {
 
-          if(!this.dataAll.graphic_intro || this.dataAll.graphic_intro == '无'){
-            var desc = "来自用户《" + this.dataAll.mem_name + "》的分享"
+              var desc = this.dataAll.graphic_intro;
+            }else {
+              
+              var desc = this.dataAll.graphic_details;
+            }
           }
 
           var form = {
@@ -584,10 +596,24 @@ export default {
             imgUrl = this.dataAll.graphic_thumbnail[0].graphic_thumbnail_path;
           }
 
-          if(!this.dataAll.graphic_intro || this.dataAll.graphic_intro == '无'){
-            var desc = "来自用户《" + this.dataAll.mem_name + "》的分享"
+          if (
+            !this.dataAll.graphic_intro ||
+            this.dataAll.graphic_intro == "无"
+          ) {
+            var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
+          } else {
+            
+            // 检测是否存在p标签
+            var regPtags = RegExp(/<p>/);
+            if (regPtags.exec(this.dataAll.graphic_details)) {
+
+              var desc = this.dataAll.graphic_intro;
+            }else {
+              
+              var desc = this.dataAll.graphic_details;
+            }
           }
-          
+
           var form = {
             title: this.dataAll.graphic_name,
             link: window.location.href + "?goindex=true",
@@ -614,11 +640,24 @@ export default {
                 imgUrl = this.dataAll.graphic_thumbnail[0]
                   .graphic_thumbnail_path;
               }
-              
-              if(!this.dataAll.graphic_intro || this.dataAll.graphic_intro == '无'){
-                var desc = "来自用户《" + this.dataAll.mem_name + "》的分享"
+
+              if (
+                !this.dataAll.graphic_intro ||
+                this.dataAll.graphic_intro == "无"
+              ) {
+                var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
+              } else {
+                // 检测是否存在p标签
+                var regPtags = RegExp(/<p>/);
+                if (regPtags.exec(this.dataAll.graphic_details)) {
+
+                  var desc = this.dataAll.graphic_intro;
+                }else {
+                  
+                  var desc = this.dataAll.graphic_details;
+                }
               }
-              
+
               var form = {
                 title: this.dataAll.graphic_name,
                 link:
@@ -629,6 +668,23 @@ export default {
                 desc: desc,
               };
             } else {
+              if (
+                !this.dataAll.graphic_intro ||
+                this.dataAll.graphic_intro == "无"
+              ) {
+                var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
+              } else {
+                // 检测是否存在p标签
+                var regPtags = RegExp(/<p>/);
+                if (regPtags.exec(this.dataAll.graphic_details)) {
+
+                  var desc = this.dataAll.graphic_intro;
+                }else {
+                  
+                  var desc = this.dataAll.graphic_details;
+                }
+              }
+
               var form = {
                 title: this.dataAll.graphic_name,
                 link:
@@ -668,7 +724,7 @@ export default {
 
 <style lang="less">
 .video-detail-small {
-   .goindex {
+  .goindex {
     width: 15%;
     height: 50px;
     position: fixed;
@@ -685,23 +741,24 @@ export default {
     z-index: 999;
   }
   .video-area {
-    position: relative;
+    // position: relative;
     width: 100vw;
-    height: 60vw;
+    // height: 60vw;
     background-color: #000;
     .video {
-      position: absolute;
+      // position: absolute;
+       width: 100%;
       height: 100%;
-      margin-left: 50%;
-      top: 0;
-      transform: translateX(-50%);
+      // margin-left: 50%;
+      // top: 0;
+      // transform: translateX(-50%);
     }
     .horizontal {
-      position: absolute;
+      // position: absolute;
       width: 100%;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
+      // top: 50%;
+      // left: 0;
+      // transform: translateY(-50%);
     }
   }
   .user-info {
@@ -1100,7 +1157,7 @@ export default {
   width: 90%;
   height: 50px;
   background: #fff;
-//   position: fixed;
+  //   position: fixed;
   top: 20px;
   right: 10px;
   display: flex;

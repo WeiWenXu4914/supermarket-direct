@@ -29,14 +29,14 @@
               去购买
             </div>
           </div>
-          <div class="video-top" :style="'backgroundImage:url(\''+ article.graphic_surface_plot + '\')'">
+          <div class="video-top" :style="'backgroundImage:url(\''+ article.video_surface_plot_height + '\')'">
             <div class="bg"></div>
           </div>
           <video
             ref="detailVideo0"
             class="video-item"
             controls=""
-            :poster="article.graphic_surface_plot"
+            :poster="article.video_surface_plot_height"
             preload="auto"
             webkit-playsinline=""
             playsinline=""
@@ -570,7 +570,7 @@ export default {
     //进入全屏
     FullScreen() {
       var ele = document.documentElement;
-      console.log(ele)
+
       if (ele.requestFullscreen) {
         ele.requestFullscreen();
       } else if (ele.mozRequestFullScreen) {
@@ -842,6 +842,16 @@ export default {
 
             if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
               var desc = "来自用户《" + this.article.mem_name + "》的分享"
+            }else{
+              // 检测是否存在p标签
+              var regPtags = RegExp(/<p>/);
+              if (regPtags.exec(this.article.graphic_details)) {
+
+                var desc = this.article.graphic_intro;
+              }else {
+                
+                var desc = this.article.graphic_details;
+              }
             }
 
             if (this.article.gc_id == 1) {
@@ -931,7 +941,6 @@ export default {
         })
         .catch((res) => {
           Toast("请求出错");
-          console.log(res);
         });
     },
     // 关注
@@ -1047,20 +1056,35 @@ export default {
       };
 
       const res = await articleDetail(obj);
-
+        
       setTimeout(function () {
         Toast.clear();
       }, 200);
 
       if (res.data.pro_id) {
         const prores = await getProductSetList(res.data.pro_id);
-        this.ProductSetList = prores.data[0];
-        this.recProShow = true;
+        if(prores.length > 0) {
+          this.ProductSetList = prores.data[0];
+          this.recProShow = true;
+        }
       }
 
       if (res.code === 100) {
         this.article = res.data;
-        this.intro = res.data.graphic_intro || res.data.graphic_name;
+
+				// 检测是否存在p标签
+				var regPtags = RegExp(/<p>/);
+				if (regPtags.exec(res.data.graphic_details)) {
+
+					this.intro = res.data.graphic_intro || res.data.graphic_name;
+        }else {
+          
+          if(res.data.graphic_details != '无') {
+            this.intro = res.data.graphic_details || res.data.graphic_name;
+          }else {
+            this.intro = res.data.graphic_name;
+          }
+        }
 
         this.userid = res.data.mem_id;
         this.gid = res.data.gid;
@@ -1135,6 +1159,17 @@ export default {
 
         if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
           var desc = "来自用户《" + this.article.mem_name + "》的分享"
+        }else{
+
+          // 检测是否存在p标签
+          var regPtags = RegExp(/<p>/);
+          if (regPtags.exec(this.article.graphic_details)) {
+
+            var desc = this.article.graphic_intro;
+          }else {
+            
+            var desc = this.article.graphic_details;
+          }
         }
 
         if (this.article.gc_id == 2) {
@@ -1173,6 +1208,16 @@ export default {
 
         if(!this.article.graphic_intro || this.article.graphic_intro == '无'){
           var desc = "来自用户《" + this.article.mem_name + "》的分享"
+        }else{
+          // 检测是否存在p标签
+          var regPtags = RegExp(/<p>/);
+          if (regPtags.exec(this.article.graphic_details)) {
+
+            var desc = this.article.graphic_intro;
+          }else {
+            
+            var desc = this.article.graphic_details;
+          }
         }
 
         forwardArticles(article.gid, 1).then((res) => {
@@ -1193,8 +1238,7 @@ export default {
                   "?goindex=true&key=" +
                   res.data.mem_urlkey,
                 imgUrl: imgUrl,
-                desc:
-                  article.graphic_intro || "来自" + article.mem_name + "的分享",
+                desc: desc,
               };
 
               this.$refs.articleItem[article.index].showForwardOper(1);
@@ -1208,8 +1252,7 @@ export default {
                 imgUrl:
                   article.graphic_surface_plot ||
                   "http://api.lejiagx.cn/static/icon/lejia_logo.png",
-                desc:
-                  article.graphic_intro || "来自" + article.mem_name + "的分享",
+                desc: desc,
                 type: "video",
                 dataUrl: article.graphic_video_path,
               };
