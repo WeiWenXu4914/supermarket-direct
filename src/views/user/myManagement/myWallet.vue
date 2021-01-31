@@ -16,7 +16,7 @@
         <!--充值-->
         <div class="history" v-for="(item,index) in dataList.recharge" :key="index">
             <div class="item-top">
-                <span>充值</span>
+                <span>入账</span>
                 <span>+{{ changeMoney(item.wd_recharge_amount) }}</span>
             </div>
             <div class="item-bottom">

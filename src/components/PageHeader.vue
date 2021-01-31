@@ -2,10 +2,10 @@
   <div class="page-wrapper" :style="getStyle()">
     <div class="page-heade">
       <div class="page-left">
-        <div class="page-location" @click="openMap">
+        <!-- <div class="page-location" @click="openMap">
           <div class="txt">{{ local.district || "定位中" }}</div>
-          <!-- <van-icon color="#D04443" size="15" name="arrow-down" /> -->
-        </div>
+          <van-icon color="#D04443" size="15" name="arrow-down" />
+        </div> -->
         <div class="seach" @click="$router.push('/searchNew')">
           <van-icon name="search" color="#8D8D8D" size="17" />
           <span>您喜欢的内容</span>

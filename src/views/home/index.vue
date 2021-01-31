@@ -74,14 +74,44 @@
             >
               <div
                 v-if="item.pageData.length > 0"
-                :class="[item.nid == 77 ? 'pageData-item-father' : '']"
+                :class="[item.nid == 74 ? 'pageData-item-father' : '']"
               >
                 <div
                   v-for="(items, index) in item.pageData"
                   :key="items.gid"
-                  :class="[item.nid == 77 ? 'pageData-item' : '']"
+                  :class="[item.nid == 74 ? 'pageData-item' : '']"
+                  :ref="'waterfall_'+index"
                 >
-                  <van-cell>
+
+                  <template v-if="item.nid === 74">
+                    <!-- <new-add-merchant
+                      :merItem="items"
+                      :key="items.entid + '-' + item.nid"
+                    /> -->
+                    <div class="product-video">
+                      <div class="product-video-plot" @click="goDetail(items)">
+                        <img :src="items.graphic_surface_plot" alt="">
+                      </div>
+                      <div class="product-video-title" @click="goDetail(items)">{{ items.graphic_name | strSub(18) }}</div>
+                      <div class="product-video-user">
+                        <div class="user-avtor">
+                          <van-image :src="items.mem_head_portrait" round width="20px" height="20px">
+                            <template v-slot:loading>
+                              <van-loading type="spinner" size="20" />
+                            </template>
+                          </van-image>
+                        </div>
+                        <div class="user-name">
+                          {{ items.mem_name | strSub(4) }}
+                        </div>
+                        <div class="user-type" v-if="items.mmt_id == 3 && items.memid != 1" @click="goEntHome(items)">
+                          <van-button color="#D04443" size="mini">进店</van-button>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+
+                  <van-cell v-else>
                     <template v-if="items.gc_id === 1">
                       <!-- 图文 -->
                       <article-item
@@ -96,7 +126,7 @@
                       />
                     </template>
 
-                    <template v-else-if="items.gc_id === 2 && item.nid != 77">
+                    <template v-else-if="items.gc_id === 2">
                       <!-- 视频 -->
                       <video-item
                         :videoItem="items"
@@ -148,13 +178,6 @@
                         v-if="items.gc_id === 999"
                         :proItem="items"
                         :key="items.gid"
-                      />
-                    </template>
-
-                    <template v-else-if="item.nid === 74">
-                      <new-add-merchant
-                        :merItem="items"
-                        :key="items.entid + '-' + item.nid"
                       />
                     </template>
 
@@ -362,6 +385,49 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    goDetail(val) {
+      if (
+        val.graphic_width / val.graphic_height < 1
+      ) {
+        if (this.$route.path == `/article/full_screen_play/${val.gid}`) return;
+
+        this.$router.push(`/article/full_screen_play/${val.gid}`);
+      } else {
+        if (this.$route.path == `/videoDetail/${val.gid}`) return;
+
+        this.$router.push(`/videoDetail/${val.gid}`);
+      }
+    },
+    goEntHome(val) {
+      if (val.mmt_id === 3) {
+        if (this.$route.path == "/merchants/produce") {
+          Toast("您已经在店铺内了");
+          return;
+        }
+        var obj = {
+          entid: val.rel_id,
+          entfid: 0,
+        };
+
+        var res = this.$Utils.demoRequest(JSON.stringify(obj));
+
+        this.$router.push({
+          path: "/merchants",
+          query: { res: res },
+        });
+
+      } else {
+        if (this.$route.path == `/user/page/${val.mem_id}`) {
+          Toast("您已经在自己的主页了");
+          return;
+        }
+
+        this.$router.push({
+          path: `/user/page/${val.mem_id}`,
+          query: { type: "u" },
+        });
+      }
+    },
     async getTabbat(type = 2) {
       const res = await getTabbat(type);
       this.tabbarData = res.data.tabbar;
@@ -449,6 +515,7 @@ export default {
         nid: id,
       };
 
+      console.log(obj)
       if (type == 2) {
         obj.size = 10;
         obj.num = 2;
@@ -1135,11 +1202,66 @@ export default {
 }
 .pageData-item-father {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  padding: 5px 5px 0 5px;
+  background: #f6f6f6;
+  // display: flex;
+  // justify-content: space-between;
+  // flex-wrap: wrap;
+  // margin: 0 auto;
+  column-width: 50%; /*设定列宽*/
+  column-count: 2; /*列数*/
+  column-gap: 10px; /*列间距*/
   .pageData-item {
-    width: 50%;
+    width: 100%;
+    padding: 5px;
+    border-radius: 4px;
+    margin: 0 auto;
+    background: #fff;
+    margin-bottom: 10px;
+    break-inside: avoid; /*避免在元素内部断行并产生新列*/
+    .product-video {
+      width: 100%;
+      // position: relative;
+      .product-video-plot {
+        width: 100%;
+        height: auto;
+        img {
+          width: 100%;
+          max-height: 250px;
+          object-fit: fill;
+          border-radius: 5px 5px 0 0;
+        }
+      }
+      .product-video-title {
+        width: 100%;
+        padding: 0px 5px 5px 5px;
+        border-radius: 0 0 5px 5px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .product-video-user {
+        width: 100%;
+        display: flex;
+        background: rgba(0, 0, 0, 0.041);
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px;
+        border-radius: 0 0 5px 5px;
+        .user-avtor {
+          width: 20px;
+          height: 20px;
+        }
+        .user-name {
+          flex: 1;
+          font-size: 12px;
+          color: #111;
+          margin-left: 5px;
+        }
+        .user-type {
+          margin-left: 5px;
+        }
+      }
+    }
   }
 }
 .van-popup {
