@@ -79,7 +79,7 @@
             >
               <div class="user-name">
                 <span>@{{ article.mem_name | strSub(15) | emoji_decode }}</span>
-                <span v-if="article.mmt_id == 3">进店</span>
+                <span v-if="article.mmt_id == 3 && article.memid != 1">进店</span>
               </div>
               <div class="video-title">
                 <span>{{ intro | emoji_decode }}</span>
