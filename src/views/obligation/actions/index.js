@@ -145,3 +145,8 @@ export const orderRefundInfo = (obj) => {
 export const sendDelivery = (number) => {
     return request('/api/sendDelivery',"post", { oid: number })
 }
+
+//查看物流
+export const parcel = (number) => {
+    return request('/api/parcel',"post", { number: number })
+}

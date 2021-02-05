@@ -51,6 +51,7 @@
 
                 <!--上线使用-->
                 <div class="allBtn" v-if="item.status == 0">
+                    
                     <button @click="dellOrder(item)" v-show="!isCancel">删除订单</button>
                     <button @click="cancelOrders(item)" v-show="isCancel">取消订单</button>
                     <button class="red" @click="toDetail(item)">立即支付</button>
@@ -133,7 +134,14 @@ export default {
     methods: {
         //查看物流
         async seeLogistics(item) {
-
+            const data = JSON.stringify(item)
+            this.$router.push({
+                path:'/seeLogistics',
+                query: {
+                    data
+                }
+            })
+            return;
             let number = null;
             
             await getLogistic(item.olog_id)

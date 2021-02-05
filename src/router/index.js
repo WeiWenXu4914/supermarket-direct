@@ -1079,6 +1079,11 @@ const routes = [
         component: () => 
             import('@/views/invitation/invitation_register')
     },
+    {//查看物流
+        path: '/seeLogistics',
+        component: () => 
+            import('@/views/obligation/seeLogistics')
+    },
 ]
 
 const router = new VueRouter({
