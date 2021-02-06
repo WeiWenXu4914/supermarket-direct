@@ -129,7 +129,7 @@
             </div>
         </div>
         <div class="contact-service"  v-if="data.status == 1 || data.status == 2 || data.status == 3">
-            <a href="tel:18384788883">
+            <a href="tel:18304780803">
                 <p>平台</p>
                 <p>客服</p>
             </a>
