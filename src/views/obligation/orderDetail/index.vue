@@ -75,9 +75,9 @@
             <p>支付方式： 微信支付</p>
             <p>支付时间： {{ data.order_paytime }}</p>
         </div>
-        <div class="receiving-way">
+        <!-- <div class="receiving-way">
             <span>收货方式： {{ getLogisticsWay() }}</span>
-        </div>
+        </div> -->
         <!--商品总额-->
         <div class="total-money">
             <p><span>商品总额：</span><span><span class="symbol">￥</span>{{ data.pro_price * parseInt(data.buy_num) }}</span></p>
@@ -86,11 +86,13 @@
         </div>
         <!--留言-->
         <div class="word">
-            <span>留言：</span>
-            <input 
-            type="text"
-            v-model="textValue"
-            placeholder="给卖家留言">
+            <span>联系商家：</span>
+            <a :href="'tel:' + data.service_phone">{{ data.service_phone }}</a>
+        </div>
+
+        <div class="word">
+            <span>收货地址：</span>
+            <a :href="'tel:' + data.service_phone">{{ data.service_phone }}</a>
         </div>
         <div class="confirm-area">
             <div class="info">
@@ -139,7 +141,7 @@
 import titleView from '../../../components/public_views/titleView';
 import myAddress from './components/address';
 import { Icon, Toast, CountDown, Dialog } from 'vant';
-import { orderList, delOrder, cancelOrder, wxpay, confirmOrder, orderState, getLogistic, sendDelivery } from '../actions/index';
+import { searchMemberSite, delOrder, cancelOrder, wxpay, confirmOrder, orderState, getLogistic, sendDelivery } from '../actions/index';
 export default {
     components: {
         titleView,
@@ -154,6 +156,7 @@ export default {
             wxMsg: {}, //微信支付信息
             storeAddress: {},
             time: 30 * 60 * 60 * 1000,
+            address: ""
         }
     },
     watch: {
@@ -172,6 +175,14 @@ export default {
         }
         //留言
         this.textValue = this.data.order_remark;
+
+        searchMemberSite(this.data.mem_site_id)
+        .then((res) => {
+            const data = res.data;
+            if (data) {
+                this.address = data.provice + data.city + data.district + data.detailed_site;
+            }
+        })
     },
     methods: {
         //进店购买
@@ -798,10 +809,8 @@ export default {
             font-size: 14px;
             margin-left: 5%;
         }
-        input {
-            width: 70%;
-            outline: none;
-            border: none;
+        a {
+            color: royalblue;
         }
     }
     .confirm-area {

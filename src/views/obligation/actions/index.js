@@ -150,3 +150,7 @@ export const sendDelivery = (number) => {
 export const parcel = (number) => {
     return request('/api/parcel',"post", { number: number })
 }
+//收货地址
+export const searchMemberSite = (id) => {
+    return request('/api/searchMemberSite',"post", { msid: id })
+}
