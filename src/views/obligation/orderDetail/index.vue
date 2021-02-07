@@ -92,7 +92,7 @@
 
         <div class="word">
             <span>收货地址：</span>
-            <a :href="'tel:' + data.service_phone">{{ data.service_phone }}</a>
+            {{ address }}
         </div>
         <div class="confirm-area">
             <div class="info">
@@ -139,13 +139,12 @@
 
 <script>
 import titleView from '../../../components/public_views/titleView';
-import myAddress from './components/address';
+// import myAddress from './components/address';
 import { Icon, Toast, CountDown, Dialog } from 'vant';
 import { searchMemberSite, delOrder, cancelOrder, wxpay, confirmOrder, orderState, getLogistic, sendDelivery } from '../actions/index';
 export default {
     components: {
-        titleView,
-        myAddress
+        titleView
     },
     data() {
         return {
@@ -165,7 +164,6 @@ export default {
     created() {
         this.data = JSON.parse(this.$route.query.data);
         this.storeAddress = this.data.product_invite;
-        console.log(this.data)
         //剩余时间
         this.computeTime(this.data.order_expirationtime);
         //配送方式
@@ -180,7 +178,7 @@ export default {
         .then((res) => {
             const data = res.data;
             if (data) {
-                this.address = data.provice + data.city + data.district + data.detailed_site;
+                this.address = data.province + data.city + data.district + data.detailed_site;
             }
         })
     },

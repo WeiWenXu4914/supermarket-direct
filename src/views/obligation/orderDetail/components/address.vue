@@ -18,7 +18,7 @@
 
             <div class="a1">
                 <p class="p1">商店名称</p>
-                <p class="p2">
+                <p class="p2" v-if="storeAddress.pinv_name">
                   {{ storeAddress.pinv_name }}
                 </p>
             </div>
