@@ -340,6 +340,7 @@ export default {
       //  }
     },
     userHandle() {
+
       if (this.article.memid == 1) {
         return;
       }
@@ -349,7 +350,7 @@ export default {
           Toast("您已经在店铺内了");
           return;
         }
-
+        
         this.setMerchant(this.$route.path);
 
         var obj = {
@@ -364,6 +365,7 @@ export default {
           query: { res: res },
         });
       } else {
+        
         if (this.$route.path == `/user/page/${this.article.mem_id}`) {
           Toast("您已经在自己的主页了");
           return;

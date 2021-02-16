@@ -515,7 +515,6 @@ export default {
         nid: id,
       };
 
-      console.log(obj)
       if (type == 2) {
         obj.size = 10;
         obj.num = 2;

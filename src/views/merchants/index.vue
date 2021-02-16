@@ -358,7 +358,7 @@ export default {
     getPageData() {
       var id = JSON.parse(this.$Utils.demoResponse(this.$route.query.res));
       getEnterpriseHomepage(id.entid).then((res) => {
-
+        console.log(res)
         setTimeout(function () {
           Toast.clear();
         }, 200);
@@ -382,7 +382,7 @@ export default {
           this.$toast(res.msg);
           setTimeout(() => {
             this.$router.push("/life");
-          }, 300);
+          }, 1000);
         }
       });
     },
