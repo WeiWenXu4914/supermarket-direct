@@ -960,6 +960,7 @@ export default {
       align-items: center;
       padding: 10px 0;
       .p1 {
+        margin-top: 0 !important;
         color: #212121;
         font-weight: bold;
         font-family: "siyuan";

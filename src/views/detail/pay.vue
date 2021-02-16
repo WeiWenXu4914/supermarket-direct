@@ -54,16 +54,16 @@
         <span>下单时间</span><span>{{ localDate }}</span>
       </div>
 
-      <div class="price">
-        <div class="list">
+      <div class="price-pay-message">
+        <div class="pay-message-list">
           <p class="p1">商品总额</p>
           <p class="p3">￥ {{ setMonery(count * price, 1) }}</p>
         </div>
-        <div class="list">
+        <div class="pay-message-list">
           <p class="p1">运费</p>
           <p class="p3">+ 0.00</p>
         </div>
-        <div class="list">
+        <div class="pay-message-list">
           <p class="p1">优惠</p>
           <p class="p3" v-if="couMoney != ''">-{{ setMonery(couMoney, 2) }}</p>
           <p class="p3" v-else>- 0.00</p>
@@ -664,35 +664,6 @@ export default {
       margin-right: 5%;
     }
   }
-  .price {
-    // margin-top: 0.2rem;
-    background-color: #ffffff;
-    // padding-top: 0.5rem;
-    padding-bottom: 0.2rem;
-    .list {
-      display: flex;
-      justify-content: space-between;
-      color: #212121;
-      p {
-        padding-right: 5%;
-      }
-      .p1 {
-        color: #212121;
-        margin-left: 0.5rem;
-        font-size: 0.45rem;
-      }
-      .p2 {
-        color: #212121;
-        font-size: 0.3rem;
-        margin-top: 0.08rem;
-      }
-      .p3 {
-        color: #212121;
-        font-size: 0.4rem;
-        font-weight: bold;
-      }
-    }
-  }
   .word {
     background-color: #ffffff;
     margin-top: 0.1rem;
@@ -831,6 +802,36 @@ export default {
     padding: 10px 0;
     border-radius: 10px;
     background-color: #fff;
+    .price-pay-message {
+      // margin-top: 0.2rem;
+      background-color: #ffffff;
+      // padding-top: 0.5rem;
+      padding-bottom: 0.2rem;
+      .pay-message-list {
+        display: flex;
+        justify-content: space-between;
+        color: #212121;
+        p {
+          padding-right: 5%;
+        }
+        .p1 {
+          margin-top: 0 !important;
+          color: #212121;
+          margin-left: 0.5rem;
+          font-size: 0.45rem;
+        }
+        .p2 {
+          color: #212121;
+          font-size: 0.3rem;
+          // margin-top: 0.08rem;
+        }
+        .p3 {
+          color: #212121;
+          font-size: 0.4rem;
+          font-weight: bold;
+        }
+      }
+    }
   }
   .overlay-text {
     position: absolute;

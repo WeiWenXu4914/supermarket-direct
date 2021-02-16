@@ -1,5 +1,5 @@
 // import Vue from 'vue'
-import App from './App.vue'
+
 import router from './router'
 import store from './store'
 import Vant, { Lazyload } from 'vant'
@@ -12,10 +12,9 @@ import '@/styles/index.scss'
 import VideoPlayer from 'vue-video-player'
 import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
+import App from './App.vue'
 // import VueAwesomeSwiper from 'vue-awesome-swiper'
 // 1.全局引用
-import VueVideoPlayer from 'vue-video-player'
-import 'video.js/dist/video-js.css'
 import Utils from './utils/utils'
 import IMService from './views/im/assets/lib/imservice';
 import lottie from 'vue-lottie';
