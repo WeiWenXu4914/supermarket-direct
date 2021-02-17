@@ -15,7 +15,7 @@
                         <div class="icon">
                             <img :src="item.ent_logo" alt />
                         </div>
-                        <p class="p1">{{ item.ent_name }} <van-icon class="arrow-icon" name="arrow" /></p>
+                        <p class="store-name">{{ item.ent_name }} <van-icon class="arrow-icon" name="arrow" /></p>
                         <p class="p2">{{ titleInfo(item.status) }}</p>
                         
                     </div>
@@ -40,7 +40,7 @@
                     <span class="order-addtime">下单时间： {{ item.order_addtime }}</span>
                 </div>
                 <div class="last">
-                    <p class="p1">共 {{ item.buy_num }} 件商品</p>
+                    <p class="goods-number">共 {{ item.buy_num }} 件商品</p>
                     <div class="right">
                         <p class="p2">实付:</p>
                         <p class="p3">￥</p>
@@ -51,7 +51,6 @@
 
                 <!--上线使用-->
                 <div class="allBtn" v-if="item.status == 0">
-                    
                     <button @click="dellOrder(item)" v-show="!isCancel">删除订单</button>
                     <button @click="cancelOrders(item)" v-show="isCancel">取消订单</button>
                     <button class="red" @click="toDetail(item)">立即支付</button>
@@ -508,7 +507,7 @@ export default {
                                 border-radius: 0.1rem;
                             }
                     }
-                    .p1 {
+                    .store-name {
                         position: relative;
                         color: #212121;
                         font-size: 13px;
@@ -613,9 +612,8 @@ export default {
         p {
             display: inline-block;
         }
-        .p1 {
-            color: #767676;
-            font-size: 13px;
+        .goods-number {
+            display: inline-block;
         }
         .right {
             flex: 1;

@@ -2,7 +2,7 @@
   <div class="pay">
     <header>
       <img src="../../components/img1/返回.png" @click="back()" />
-      <p class="p1">确认订单</p>
+      <p>确认订单</p>
     </header>
 
     <div class="navigator-address">
@@ -483,7 +483,7 @@ export default {
       height: 0.5rem;
       left: 10px;
     }
-    .p1 {
+    p {
       color: #242424;
       font-size: 0.5rem;
     }
