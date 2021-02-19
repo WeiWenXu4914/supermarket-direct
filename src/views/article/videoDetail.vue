@@ -184,7 +184,7 @@
         <div class="ipt">
           <input ref="inputVal" v-model="commVal" type="text" />
         </div>
-        <div class="btn" @click="submitComm(commType)">发送</div>
+        <div class="btn-send" @click="submitComm(commType)">发送</div>
       </div>
     </transition>
 
@@ -1116,7 +1116,7 @@ export default {
         color: #424242;
       }
     }
-    .btn {
+    .btn-send {
       text-align: center;
       width: 60px;
       font-size: 15px;

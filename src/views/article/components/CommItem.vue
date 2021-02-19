@@ -6,14 +6,14 @@
     <div class="cont">
         <div class="name">
           <div class="n">{{commItem.mem_name}}</div>
-          <div class="btn" @click.stop="replay">回复</div>
+          <div class="replay-btn" @click.stop="replay">回复</div>
         </div>
         <div class="inner">
           {{commItem.mem_comment_text}} 
         </div>
         <div class="replay" v-show="commItem.reply" v-for="(items,index) in commItem.reply" :key="index">
           <span class="sp">{{items.mem_name}}</span>
-          <span class="ss" >回复</span>
+          <span class="replay-ss" >回复</span>
           <span class="sp">{{commItem.mem_name}}</span>:
           {{items.mem_comment_text}}
         </div>
@@ -76,7 +76,7 @@ export default {
         font-weight: 500;
         padding: 5px 0;
       }
-      .btn{
+      .replay-btn{
         padding: 5px 0;
         text-align: right;
         width: 30px;
@@ -105,7 +105,7 @@ export default {
         font-weight: 500;
         
       }
-      .ss {
+      .replay-ss {
         font-size: 14px;
         color: #929292;
         margin: 0 5px;
