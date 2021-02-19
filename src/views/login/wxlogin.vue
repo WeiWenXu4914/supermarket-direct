@@ -6,7 +6,7 @@
         style="width: 90%; margin: 30px auto"
         type="primary"
         @click="login"
-        >授权登录</van-button
+        >微信登录 or 注册</van-button
       >
     </div>
     <!-- <div class="log">

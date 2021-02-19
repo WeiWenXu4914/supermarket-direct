@@ -521,6 +521,8 @@ export default {
       }
 
       getHome(obj).then((res) => {
+
+        console.log(res)
         Toast.clear();
 
         if (type == 2) {

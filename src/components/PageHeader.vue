@@ -147,7 +147,7 @@ export default {
       if (this.user.token) {
         this.$router.push("/user");
       } else {
-        this.$router.push("/login");
+        this.$router.push("/wlogin");
       }
     },
     // 获取头部组件样式
