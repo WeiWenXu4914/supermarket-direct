@@ -23,48 +23,11 @@
         v-for="(item, index) in activeNav"
         :key="index"
       >
-        <!-- <div class="pre-nav-class" v-if="activePreNav.length > 0">
-          <div class="pre-nav-item" @click="onRefresh">全部</div>
-          <div
-            v-for="(preitems, preindex) in activePreNav"
-            :key="preindex"
-            class="pre-nav-item"
-            @click="preNav(preitems.nid, preitems.nav_name)"
-            v-if="showAllPrenav"
-          >
-            {{ preitems.nav_name }}
-          </div>
-          <div
-            v-for="(preitems, preindex) in activePreNav"
-            :key="preindex"
-            class="pre-nav-item"
-            @click="preNav(preitems.nid, preitems.nav_name)"
-            v-if="preindex <= 2 && !showAllPrenav"
-          >
-            {{ preitems.nav_name }}
-          </div>
-          <div
-            class="pre-nav-item"
-            @click="showAllPrenav = true"
-            v-if="activePreNav.length > 3 && !showAllPrenav"
-          >
-            <van-icon name="arrow-down" />
-          </div>
-          <div
-            class="pre-nav-item"
-            @click="showAllPrenav = false"
-            v-if="activePreNav.length > 3 && showAllPrenav"
-          >
-            <van-icon name="arrow-up" />
-          </div>
-        </div> -->
         <div
           ref="scroll-wrapper"
           class="scroll-wrapper"
           @scroll="remember($event)"
         >
-          <!-- <van-cell-group> -->
-
           <van-pull-refresh v-model="item.downLoading" @refresh="onRefresh">
             <van-list
               v-model="item.upLoading"
@@ -77,42 +40,64 @@
                 :class="[item.nid == 74 ? 'pageData-item-father' : '']"
               >
                 <div
-                  v-for="(items, index) in item.pageData"
-                  :key="items.gid"
                   :class="[item.nid == 74 ? 'pageData-item' : '']"
-                  :ref="'waterfall_'+index"
                 >
-
                   <template v-if="item.nid === 74">
-                    <!-- <new-add-merchant
-                      :merItem="items"
-                      :key="items.entid + '-' + item.nid"
-                    /> -->
-                    <div class="product-video">
-                      <div class="product-video-plot" @click="goDetail(items)">
-                        <img :src="items.graphic_surface_plot" alt="">
+                    <!--瀑布流左侧-->
+                    <div class="waterful-side" ref="warterfulLeft">
+                      <div class="product-video" v-for="items in waterfulData.leftSideData" :key="items.g_rel_id">
+                        <div class="product-video-plot" @click="goDetail(items)">
+                          <img :src="items.graphic_surface_plot" alt="">
+                        </div>
+                        <div class="product-video-title" @click="goDetail(items)">{{ items.graphic_name | strSub(18) }}</div>
+                        <div class="product-video-user">
+                          <div class="user-avtor">
+                            <van-image :src="items.mem_head_portrait" round width="20px" height="20px">
+                              <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                              </template>
+                            </van-image>
+                          </div>
+                          <div class="user-name">
+                            {{ items.mem_name | strSub(4) }}
+                          </div>
+                          <div class="user-type" v-if="items.mmt_id == 3 && items.memid != 1" @click="goEntHome(items)">
+                            <van-button color="#D04443" size="mini">进店</van-button>
+                          </div>
+                        </div>
                       </div>
-                      <div class="product-video-title" @click="goDetail(items)">{{ items.graphic_name | strSub(18) }}</div>
-                      <div class="product-video-user">
-                        <div class="user-avtor">
-                          <van-image :src="items.mem_head_portrait" round width="20px" height="20px">
-                            <template v-slot:loading>
-                              <van-loading type="spinner" size="20" />
-                            </template>
-                          </van-image>
-                        </div>
-                        <div class="user-name">
-                          {{ items.mem_name | strSub(4) }}
-                        </div>
-                        <div class="user-type" v-if="items.mmt_id == 3 && items.memid != 1" @click="goEntHome(items)">
-                          <van-button color="#D04443" size="mini">进店</van-button>
-                        </div>
+                    </div>
+                    <!--瀑布流右侧-->
+                    <div class="waterful-side" ref="warterfulRight">
+                      <div class="product-video" v-for="items in waterfulData.rightSideData" :key="items.g_rel_id">
+                          <div class="product-video-plot" @click="goDetail(items)">
+                            <img :src="items.graphic_surface_plot" alt="">
+                          </div>
+                          <div class="product-video-title" @click="goDetail(items)">{{ items.graphic_name | strSub(18) }}</div>
+                          <div class="product-video-user">
+                            <div class="user-avtor">
+                              <van-image :src="items.mem_head_portrait" round width="20px" height="20px">
+                                <template v-slot:loading>
+                                  <van-loading type="spinner" size="20" />
+                                </template>
+                              </van-image>
+                              <!-- <img :src="items.mem_head_portrait"> -->
+                            </div>
+                            <div class="user-name">
+                              {{ items.mem_name | strSub(4) }}
+                            </div>
+                            <div class="user-type" v-if="items.mmt_id == 3 && items.memid != 1" @click="goEntHome(items)">
+                              <van-button color="#D04443" size="mini">进店</van-button>
+                            </div>
+                          </div>
                       </div>
+                      <div></div>
                     </div>
                   </template>
 
                   <van-cell v-else>
-                    <template v-if="items.gc_id === 1">
+                    <div v-for="items in item.pageData" :key="items.g_rel_id">
+                      <template v-if="items.gc_id === 1">
                       <!-- 图文 -->
                       <article-item
                         v-if="items.gc_id === 1"
@@ -128,17 +113,19 @@
 
                     <template v-else-if="items.gc_id === 2">
                       <!-- 视频 -->
-                      <video-item
-                        :videoItem="items"
-                        @changeFocus="changeFocus"
-                        @showForward="showForward"
-                        :key="videoKey"
-                        ref="videoItem"
-                        @playerVideo="playerVideo(items)"
-                        @deleteIndex="deleteIndex"
-                        :index="index"
-                        :title="item.nav_name"
-                      />
+                      <template>
+                        <video-item
+                          :videoItem="items"
+                          @changeFocus="changeFocus"
+                          @showForward="showForward"
+                          :key="videoKey"
+                          ref="videoItem"
+                          @playerVideo="playerVideo(items)"
+                          @deleteIndex="deleteIndex"
+                          :index="index"
+                          :title="item.nav_name"
+                        />
+                      </template>
                     </template>
 
                     <template v-else-if="items.gc_id === 3">
@@ -209,6 +196,7 @@
                         </template>
                       </van-card>
                     </template>
+                    </div>
                   </van-cell>
                 </div>
               </div>
@@ -358,6 +346,12 @@ export default {
       tabbarData: "",
       publish: 0,
       publishData: [],
+      waterfulData: {
+        leftSideData: [],
+        rightSideData: [],
+        leftLength: 0,
+        rightLength: 0
+      }
     };
   },
   // 组件开启缓存生效，激活组件(初始化和激活都执行)
@@ -498,13 +492,13 @@ export default {
         } else {
           this.activePreNav = res.data;
         }
-
-        if (this.activePreNav.length <= 0 && type == 1) {
-          if (id == 0) {
-            this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
-            this.getHomeData(1, this.activeNav[this.activeIndex].nid);
-          }
-        }
+        //获取二级导航
+        // if (this.activePreNav.length <= 0 && type == 1) {
+        //   if (id == 0) {
+        //     this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
+        //     this.getHomeData(1, this.activeNav[this.activeIndex].nid);
+        //   }
+        // }
       });
     },
     // 首页数据
@@ -522,7 +516,6 @@ export default {
 
       getHome(obj).then((res) => {
         Toast.clear();
-
         if (type == 2) {
           if (res.data.length < 0) {
             Toast("数据为空");
@@ -531,30 +524,54 @@ export default {
         }
 
         if (res.data.length > 0) {
+          if (type == 2) {//下拉刷新时初始化数据
+            this.waterfulData = {
+              leftSideData: [],
+              rightSideData: [],
+              leftLength: 0,
+              rightLength: 0
+            }
+            this.activeNav[this.activeIndex].size = 2;
+          }
           // 页面渲染完延时关闭
           this.activeNav[this.activeIndex].num > 1
             ? this.activeNav[this.activeIndex].pageData.push(...res.data)
             : (this.activeNav[this.activeIndex].pageData = res.data);
-            //去掉列表重复项
-            let deWeight = () => {
-              let map = new Map();
-              for (let item of this.pageData) {
-                if (!map.has(item.entid)) {
-                  map.set(item.entid, item);
-                }
-              }
-              return [...map.values()];
-            };
-            this.pageData = deWeight();
+          //瀑布流处理数据函数
+            this.handleWaterfulData(res.data)
         } else {
           this.activeNav[this.activeIndex].finished = true;
           this.activeNav[this.activeIndex].downLoading = false;
         }
       });
     },
+    //获取图片像素比例
+    handleWaterfulData(data) {
+      for (let i = 0; i < data.length; i++) {
+        let imgUrl = data[i].graphic_surface_plot;
+        let img = new Image();
+        img.src = imgUrl;
+        img.onload = () => {
+          let imgLengthRate = img.height / img.width;
+          this.computeImgHeightVal(imgLengthRate, data[i]);
+        }
+      }
+    },
+    //分类瀑布流数据
+    computeImgHeightVal(rate, data) {
+      let leftHeight = this.$refs.warterfulLeft[0].offsetHeight;
+      let rightHeight = this.$refs.warterfulRight[0].offsetHeight;
+
+      if (leftHeight <= rightHeight) {
+        this.waterfulData.leftSideData.push(data);
+        // this.waterfulData.leftLength += rate;
+      } else {
+        this.waterfulData.rightSideData.push(data);
+        // this.waterfulData.rightLength += rate;
+      }
+    },
     preNav(id) {
       this.activeNav[this.activeIndex].pageData = [];
-
       this.getHomeData(2, id);
       this.getHomeNav(2, id);
     },
@@ -970,17 +987,6 @@ export default {
     height: 40px;
     position: relative;
   }
-  // /deep/ .van-tabs__wrap::before{
-  // 	position: absolute;
-  // 	right: -3px;
-  // 	top: 3px;
-  // 	display: block;
-  // 	width: 35px;
-  // 	height: 35px;
-  // 	content: '';
-  // 	background:url('./img/more.png') no-repeat center center;
-  // 	background-size:53% 53%;
-  // }
   /deep/ .van-tab--active {
     font-size: 17px;
     font-weight: 600;
@@ -1200,27 +1206,33 @@ export default {
   top: 0px;
 }
 .pageData-item-father {
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  width: 100vw;
   padding: 5px 5px 0 5px;
   background: #f6f6f6;
-  // display: flex;
-  // justify-content: space-between;
-  // flex-wrap: wrap;
-  // margin: 0 auto;
-  column-width: 50%; /*设定列宽*/
-  column-count: 2; /*列数*/
-  column-gap: 10px; /*列间距*/
   .pageData-item {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
     width: 100%;
     padding: 5px;
     border-radius: 4px;
     margin: 0 auto;
     background: #fff;
     margin-bottom: 10px;
-    break-inside: avoid; /*避免在元素内部断行并产生新列*/
+    .waterful-side {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      height: min-content;
+      width: 45vw;
+      flex: 1;
+    }
     .product-video {
-      width: 100%;
-      // position: relative;
+      width: 90%;
+      margin: 15px auto;
       .product-video-plot {
         width: 100%;
         height: auto;
@@ -1249,6 +1261,11 @@ export default {
         .user-avtor {
           width: 20px;
           height: 20px;
+          img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+          }
         }
         .user-name {
           flex: 1;
