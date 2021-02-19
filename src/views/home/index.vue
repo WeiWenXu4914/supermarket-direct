@@ -554,7 +554,6 @@ export default {
         let img = new Image();
         img.src = imgUrl;
         img.onload = () => {
-          let imgLengthRate = img.height / img.width;
           this.computeImgHeightVal(imgLengthRate, data[i]);
         }
       }
@@ -566,10 +565,8 @@ export default {
 
       if (leftHeight <= rightHeight) {
         this.waterfulData.leftSideData.push(data);
-        // this.waterfulData.leftLength += rate;
       } else {
         this.waterfulData.rightSideData.push(data);
-        // this.waterfulData.rightLength += rate;
       }
     },
     preNav(id) {
