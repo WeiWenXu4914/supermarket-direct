@@ -554,12 +554,12 @@ export default {
         let img = new Image();
         img.src = imgUrl;
         img.onload = () => {
-          this.computeImgHeightVal(imgLengthRate, data[i]);
+          this.computeImgHeightVal(data[i]);
         }
       }
     },
     //分类瀑布流数据
-    computeImgHeightVal(rate, data) {
+    computeImgHeightVal(data) {
       let leftHeight = this.$refs.warterfulLeft[0].offsetHeight;
       let rightHeight = this.$refs.warterfulRight[0].offsetHeight;
 
