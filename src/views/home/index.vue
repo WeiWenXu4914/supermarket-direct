@@ -515,6 +515,8 @@ export default {
       }
 
       getHome(obj).then((res) => {
+
+        console.log(res)
         Toast.clear();
         if (type == 2) {
           if (res.data.length < 0) {

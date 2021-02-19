@@ -92,7 +92,7 @@ export default {
     if (this.user.mmtid == 3 && this.isAddShow) {
       this.addshow = true;
     }
-    this.initLocal();
+    // this.initLocal();
     this.getMessage();
   },
   methods: {
@@ -147,7 +147,7 @@ export default {
       if (this.user.token) {
         this.$router.push("/user");
       } else {
-        this.$router.push("/login");
+        this.$router.push("/wlogin");
       }
     },
     // 获取头部组件样式
@@ -190,7 +190,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     .page-left {
-      width: 75%;
+      flex: 1;
       height: 28px;
       border-radius: 5px;
       background: #fff;
@@ -198,8 +198,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       .page-location {
-        min-width: 20%;
-        max-width: 40%;
+        flex: 1;
         height: 100%;
         display: flex;
         align-items: center;
@@ -216,6 +215,7 @@ export default {
       .seach {
         width: 60%;
         color: #8D8D8D;
+        padding-left: 15px;
         // line-height: 42px;
         display: flex;
         align-items: center;
