@@ -52,9 +52,7 @@ export default {
         .then((res) => {
             this.dataList = res.data;
             this.statusComponent = true;
-            Toast.loading({
-                duration: 1
-            });
+            Toast.clear();
         })
         .catch((err) => {
             Toast.fail("请求出错");

@@ -156,7 +156,7 @@ export default {
       this.$route.query.add === 1 ? obj.add = 1 : null;
       //判断是否为编辑地址
       if(this.$route.query.data) {
-        obj.setchecked = this.checked === true ? 1 : 0;
+        obj.edit = 1;
         obj.id = this.data.msid;
       }
 

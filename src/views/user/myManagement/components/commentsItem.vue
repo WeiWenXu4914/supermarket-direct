@@ -23,11 +23,11 @@
                 <div class="mine">
                     <h4>评论消息：</h4>
                     <p>{{ item.mem_comment_text }}</p>
-                    <div class="imgs">
+                    <div class="imgs" v-if="item.mem_comment_imgs">
                         <img 
-                        v-for="item in 3" 
+                        v-for="item in item.mem_comment_imgs" 
                         :key="item" 
-                        src="http://apis.lejiagx.cn:8090/images/advertising/lejia_20201014_eba2b2.jpg"
+                        :src="item"
                         >
                     </div>
                 </div>

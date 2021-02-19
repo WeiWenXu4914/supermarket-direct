@@ -231,15 +231,10 @@ export default {
       }
 
       this.$store.commit('setStoreTab',obj);
-
-    }
-  },
-  computed: {
-    onSearch() {
-      if (this.searchValue != "") {
-        this.onSearchFun();
-      }
     },
+    searchValue(val) {
+      this.$refs.product[0].getEntProduct(val)
+    }
   },
   created() {
     this.getPageData();
@@ -278,9 +273,6 @@ export default {
     },
     changeFun() {
       // this.activeKey = Date.parse(new Date());
-    },
-    onSearchFun() {
-      this.$refs.product[0].productSearch(this.searchValue);
     },
     searchShowFun(type) {
       if (type == 1) {
