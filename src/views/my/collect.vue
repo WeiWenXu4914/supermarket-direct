@@ -12,7 +12,7 @@
             <div class="list" v-for="(item,index) in ShrineList" :key="index"  >
               <div class="model" @click="proDetail(item)">
                 <div class="left">
-                  <img :src="item.myCollect_item[0].pro_desc" alt />
+                  <img :src="item.myCollect_item[0].pro_thumbnail" alt />
                 </div>
                 <div class="right">
                   <p class="p1">{{item.myCollect_item[0].pro_name}}</p>
@@ -23,7 +23,7 @@
                   <p class="p3">{{item.myCollect_item[0].pro_price}}</p>
                 </div>
               </div>
-              <div class="b" v-show="show1">
+              <div class="b">
                  <button class="btn3" @click="deleteItem(item)">删除</button>
               </div>
             </div>
@@ -118,6 +118,7 @@ export default {
         for (let i = 0; i < res.data.list.length; i++) {
           if (res.data.list[i].mem_collect_class == 2) {
             this.ShrineList.push(res.data.list[i]);
+            console.log(this.ShrineList)
           } else if (res.data.list[i].mem_collect_class == 1) {
             this.articleList.push(res.data.list[i]);
           } else if (res.data.list[i].mem_collect_class == 3) {
@@ -128,8 +129,8 @@ export default {
         //
         // }
         // this.ShrineList = res.data.list;
-        this.a = res.data.class[2];
-        this.b = res.data.class[1];
+        this.a = res.data.class[1];
+        this.b = res.data.class[2];
         this.c = res.data.class[3];
       }).catch(() => {
 

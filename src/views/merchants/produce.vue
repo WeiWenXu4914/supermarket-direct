@@ -41,13 +41,14 @@ export default {
     this.getEntProduct();
   },
   methods: {
-    getEntProduct(searchVal=''){
-
+    getEntProduct(searchVal){
+      
       var data = JSON.parse(this.$Utils.demoResponse(this.$route.query.res))
-      if(searchVal != ''){
+      if(searchVal){
         data.val = searchVal;
+      } else {
+        data.val = ""
       }
-
       entProduct(data).then(res => {
         this.proList = res
         setTimeout(()=> {

@@ -104,7 +104,9 @@ export default {
 				}else{
 					this.$toast.fail(res.msg);
 				}
-				
+				setTimeout(() => {
+					this.$router.go(-1)
+				}, 500)
 			})
 			.catch(err => {
 				this.btnDis = true;
