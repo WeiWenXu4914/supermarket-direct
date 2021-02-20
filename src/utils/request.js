@@ -47,7 +47,7 @@ nAxios.interceptors.response.use(
         // router.push('/');
       });
 
-    }else if (!(res.data.code == 100 || res.data.code == 101 ||res.data.code == 2 || res.data.code == 1)) {
+    }else if (!(res.data.code == 100 || res.data.code == 101 ||res.data.code == 2 || res.data.code == 1 || res.data.code == 202)) {
 
       //状态码不为100、101、1、2的时候 返回服务器错误
       Toast(res.data.msg);

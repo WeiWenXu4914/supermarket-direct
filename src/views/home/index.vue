@@ -39,20 +39,35 @@
                 v-if="item.pageData.length > 0"
                 :class="[item.nid == 74 ? 'pageData-item-father' : '']"
               >
-                <div
-                  :class="[item.nid == 74 ? 'pageData-item' : '']"
-                >
+                <div :class="[item.nid == 74 ? 'pageData-item' : '']">
                   <template v-if="item.nid === 74">
                     <!--瀑布流左侧-->
                     <div class="waterful-side" ref="warterfulLeft">
-                      <div class="product-video" v-for="items in waterfulData.leftSideData" :key="items.g_rel_id">
-                        <div class="product-video-plot" @click="goDetail(items)">
-                          <img :src="items.graphic_surface_plot" alt="">
+                      <div
+                        class="product-video"
+                        v-for="items in waterfulData.leftSideData"
+                        :key="items.g_rel_id"
+                      >
+                        <div
+                          class="product-video-plot"
+                          @click="goDetail(items)"
+                        >
+                          <img :src="items.graphic_surface_plot" alt="" />
                         </div>
-                        <div class="product-video-title" @click="goDetail(items)">{{ items.graphic_name | strSub(18) }}</div>
+                        <div
+                          class="product-video-title"
+                          @click="goDetail(items)"
+                        >
+                          {{ items.graphic_name | strSub(18) }}
+                        </div>
                         <div class="product-video-user">
                           <div class="user-avtor">
-                            <van-image :src="items.mem_head_portrait" round width="20px" height="20px">
+                            <van-image
+                              :src="items.mem_head_portrait"
+                              round
+                              width="20px"
+                              height="20px"
+                            >
                               <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />
                               </template>
@@ -61,35 +76,64 @@
                           <div class="user-name">
                             {{ items.mem_name | strSub(4) }}
                           </div>
-                          <div class="user-type" v-if="items.mmt_id == 3 && items.memid != 1" @click="goEntHome(items)">
-                            <van-button color="#D04443" size="mini">进店</van-button>
+                          <div
+                            class="user-type"
+                            v-if="items.mmt_id == 3 && items.memid != 1"
+                            @click="goEntHome(items)"
+                          >
+                            <van-button color="#D04443" size="mini"
+                              >进店</van-button
+                            >
                           </div>
                         </div>
                       </div>
                     </div>
                     <!--瀑布流右侧-->
                     <div class="waterful-side" ref="warterfulRight">
-                      <div class="product-video" v-for="items in waterfulData.rightSideData" :key="items.g_rel_id">
-                          <div class="product-video-plot" @click="goDetail(items)">
-                            <img :src="items.graphic_surface_plot" alt="">
+                      <div
+                        class="product-video"
+                        v-for="items in waterfulData.rightSideData"
+                        :key="items.g_rel_id"
+                      >
+                        <div
+                          class="product-video-plot"
+                          @click="goDetail(items)"
+                        >
+                          <img :src="items.graphic_surface_plot" alt="" />
+                        </div>
+                        <div
+                          class="product-video-title"
+                          @click="goDetail(items)"
+                        >
+                          {{ items.graphic_name | strSub(18) }}
+                        </div>
+                        <div class="product-video-user">
+                          <div class="user-avtor">
+                            <van-image
+                              :src="items.mem_head_portrait"
+                              round
+                              width="20px"
+                              height="20px"
+                            >
+                              <template v-slot:loading>
+                                <van-loading type="spinner" size="20" />
+                              </template>
+                            </van-image>
+                            <!-- <img :src="items.mem_head_portrait"> -->
                           </div>
-                          <div class="product-video-title" @click="goDetail(items)">{{ items.graphic_name | strSub(18) }}</div>
-                          <div class="product-video-user">
-                            <div class="user-avtor">
-                              <van-image :src="items.mem_head_portrait" round width="20px" height="20px">
-                                <template v-slot:loading>
-                                  <van-loading type="spinner" size="20" />
-                                </template>
-                              </van-image>
-                              <!-- <img :src="items.mem_head_portrait"> -->
-                            </div>
-                            <div class="user-name">
-                              {{ items.mem_name | strSub(4) }}
-                            </div>
-                            <div class="user-type" v-if="items.mmt_id == 3 && items.memid != 1" @click="goEntHome(items)">
-                              <van-button color="#D04443" size="mini">进店</van-button>
-                            </div>
+                          <div class="user-name">
+                            {{ items.mem_name | strSub(4) }}
                           </div>
+                          <div
+                            class="user-type"
+                            v-if="items.mmt_id == 3 && items.memid != 1"
+                            @click="goEntHome(items)"
+                          >
+                            <van-button color="#D04443" size="mini"
+                              >进店</van-button
+                            >
+                          </div>
+                        </div>
                       </div>
                       <div></div>
                     </div>
@@ -98,104 +142,104 @@
                   <van-cell v-else>
                     <div v-for="items in item.pageData" :key="items.g_rel_id">
                       <template v-if="items.gc_id === 1">
-                      <!-- 图文 -->
-                      <article-item
-                        v-if="items.gc_id === 1"
-                        :article="items"
-                        @changeFocus="changeFocus"
-                        ref="articleItem"
-                        @showForward="showForward"
-                        :key="items.gid"
-                        @deleteIndex="deleteIndex"
-                        :index="index"
-                      />
-                    </template>
-
-                    <template v-else-if="items.gc_id === 2">
-                      <!-- 视频 -->
-                      <template>
-                        <video-item
-                          :videoItem="items"
+                        <!-- 图文 -->
+                        <article-item
+                          v-if="items.gc_id === 1"
+                          :article="items"
                           @changeFocus="changeFocus"
+                          ref="articleItem"
                           @showForward="showForward"
-                          :key="videoKey"
-                          ref="videoItem"
-                          @playerVideo="playerVideo(items)"
+                          :key="items.gid"
                           @deleteIndex="deleteIndex"
                           :index="index"
-                          :title="item.nav_name"
                         />
                       </template>
-                    </template>
 
-                    <template v-else-if="items.gc_id === 3">
-                      <!-- 中介 -->
-                      <rent-item
-                        v-if="items.gc_id === 3"
-                        :rentItem="items"
-                        :key="items.gid"
-                        @deleteIndex="deleteIndex"
-                        :index="index"
-                      />
-                    </template>
-
-                    <template v-else-if="items.gc_id === 4">
-                      <!-- 招聘 -->
-                      <job-item
-                        v-if="items.gc_id === 4"
-                        :jobItem="items"
-                        :key="items.gid"
-                        @deleteIndex="deleteIndex"
-                        :index="index"
-                      />
-                    </template>
-
-                    <template v-else-if="items.gc_id === 6">
-                      <!-- 广告 -->
-                      <adv-item
-                        v-if="items.gc_id === 6"
-                        :advItem="items"
-                        :key="items.gid"
-                      />
-                    </template>
-
-                    <template v-else-if="items.gc_id === 999">
-                      <!-- 商品 -->
-                      <mer-chant
-                        v-if="items.gc_id === 999"
-                        :proItem="items"
-                        :key="items.gid"
-                      />
-                    </template>
-
-                    <template v-else-if="item.nid === 71">
-                      <new-add-merchant
-                        :merItem="items"
-                        :key="items.entid + '-' + item.nid"
-                      />
-                    </template>
-
-                    <template v-else-if="item.nid === 77">
-                      <small-video
-                        :smallItem="items"
-                        :key="items.entid + '-' + item.nid"
-                      />
-                    </template>
-
-                    <template v-else-if="item.nid === 75">
-                      <van-card
-                        :num="items.pro_inventory"
-                        :price="priceTransform(items.pro_price)"
-                        :desc="items.pro_introduction"
-                        :title="items.pro_name"
-                        :thumb="items.pro_thumbnail"
-                        @click="goProductDetail(items)"
-                      >
-                        <template #footer>
-                          <van-button size="mini">去购买</van-button>
+                      <template v-else-if="items.gc_id === 2">
+                        <!-- 视频 -->
+                        <template>
+                          <video-item
+                            :videoItem="items"
+                            @changeFocus="changeFocus"
+                            @showForward="showForward"
+                            :key="videoKey"
+                            ref="videoItem"
+                            @playerVideo="playerVideo(items)"
+                            @deleteIndex="deleteIndex"
+                            :index="index"
+                            :title="item.nav_name"
+                          />
                         </template>
-                      </van-card>
-                    </template>
+                      </template>
+
+                      <template v-else-if="items.gc_id === 3">
+                        <!-- 中介 -->
+                        <rent-item
+                          v-if="items.gc_id === 3"
+                          :rentItem="items"
+                          :key="items.gid"
+                          @deleteIndex="deleteIndex"
+                          :index="index"
+                        />
+                      </template>
+
+                      <template v-else-if="items.gc_id === 4">
+                        <!-- 招聘 -->
+                        <job-item
+                          v-if="items.gc_id === 4"
+                          :jobItem="items"
+                          :key="items.gid"
+                          @deleteIndex="deleteIndex"
+                          :index="index"
+                        />
+                      </template>
+
+                      <template v-else-if="items.gc_id === 6">
+                        <!-- 广告 -->
+                        <adv-item
+                          v-if="items.gc_id === 6"
+                          :advItem="items"
+                          :key="items.gid"
+                        />
+                      </template>
+
+                      <template v-else-if="items.gc_id === 999">
+                        <!-- 商品 -->
+                        <mer-chant
+                          v-if="items.gc_id === 999"
+                          :proItem="items"
+                          :key="items.gid"
+                        />
+                      </template>
+
+                      <template v-else-if="item.nid === 71">
+                        <new-add-merchant
+                          :merItem="items"
+                          :key="items.entid + '-' + item.nid"
+                        />
+                      </template>
+
+                      <template v-else-if="item.nid === 77">
+                        <small-video
+                          :smallItem="items"
+                          :key="items.entid + '-' + item.nid"
+                        />
+                      </template>
+
+                      <template v-else-if="item.nid === 75">
+                        <van-card
+                          :num="items.pro_inventory"
+                          :price="priceTransform(items.pro_price)"
+                          :desc="items.pro_introduction"
+                          :title="items.pro_name"
+                          :thumb="items.pro_thumbnail"
+                          @click="goProductDetail(items)"
+                        >
+                          <template #footer>
+                            <van-button size="mini">去购买</van-button>
+                          </template>
+                        </van-card>
+                      </template>
                     </div>
                   </van-cell>
                 </div>
@@ -272,6 +316,16 @@
         </div>
       </div>
     </van-popup>
+
+    <!-- 关注公众号 -->
+    <van-overlay :show="attqrcode" @click="attqrcode = false">
+      <div class="qrwrapper" @click.stop="attqrcode = false" v-if="att_qrcode.src != ''">
+        <div class="block">
+          <span>{{ att_qrcode.title }}</span>
+          <img :src="att_qrcode.src" alt="">
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -350,7 +404,12 @@ export default {
         leftSideData: [],
         rightSideData: [],
         leftLength: 0,
-        rightLength: 0
+        rightLength: 0,
+      },
+      attqrcode: false,
+      att_qrcode: {
+        src: '',
+        title: '请扫码关注公众号'
       }
     };
   },
@@ -380,9 +439,7 @@ export default {
   },
   methods: {
     goDetail(val) {
-      if (
-        val.graphic_width / val.graphic_height < 1
-      ) {
+      if (val.graphic_width / val.graphic_height < 1) {
         if (this.$route.path == `/article/full_screen_play/${val.gid}`) return;
 
         this.$router.push(`/article/full_screen_play/${val.gid}`);
@@ -409,7 +466,6 @@ export default {
           path: "/merchants",
           query: { res: res },
         });
-
       } else {
         if (this.$route.path == `/user/page/${val.mem_id}`) {
           Toast("您已经在自己的主页了");
@@ -515,7 +571,6 @@ export default {
       }
 
       getHome(obj).then((res) => {
-
         Toast.clear();
         if (type == 2) {
           if (res.data.length < 0) {
@@ -525,23 +580,23 @@ export default {
         }
 
         if (res.data.length > 0) {
-          if (type == 2) {//下拉刷新时初始化数据
+          if (type == 2) {
+            //下拉刷新时初始化数据
             this.waterfulData = {
               leftSideData: [],
               rightSideData: [],
               leftLength: 0,
-              rightLength: 0
-            }
-            this.activeNav[this.activeIndex].size = 10;
-            this.activeNav[this.activeIndex].num = 1;
+              rightLength: 0,
+            };
+            this.activeNav[this.activeIndex].size = 2;
           }
           // 页面渲染完延时关闭
           this.activeNav[this.activeIndex].num > 1
             ? this.activeNav[this.activeIndex].pageData.push(...res.data)
             : (this.activeNav[this.activeIndex].pageData = res.data);
           //瀑布流处理数据函数
-            this.handleWaterfulData(res.data)
-        }  else {
+          this.handleWaterfulData(res.data);
+        } else {
           this.activeNav[this.activeIndex].finished = true;
           this.activeNav[this.activeIndex].downLoading = false;
         }
@@ -557,7 +612,7 @@ export default {
         img.src = imgUrl;
         img.onload = () => {
           this.computeImgHeightVal(data[i]);
-        }
+        };
       }
     },
     //分类瀑布流数据
@@ -724,8 +779,6 @@ export default {
           .catch((err) => {
             localStorage.removeItem("LoginToken");
             sessionStorage.removeItem("codeState");
-
-            this.$toast("登录失败,请重新登录");
           });
       } else {
         return false;
@@ -876,19 +929,18 @@ export default {
                   article.graphic_intro || "来自" + article.mem_name + "的分享",
               };
             } else {
-
               if (article.graphic_width / article.graphic_height < 1) {
-                
                 var toUrl = `article/full_screen_play/${article.gid}`;
               } else {
-
                 var toUrl = `videoDetail/${article.gid}`;
               }
 
               var form = {
                 title: article.graphic_name,
                 link:
-                  window.location.href + toUrl +`?goindex=true&key=` +
+                  window.location.href +
+                  toUrl +
+                  `?goindex=true&key=` +
                   res.data.mem_urlkey,
                 imgUrl:
                   article.graphic_surface_plot ||
@@ -1391,6 +1443,25 @@ export default {
         text-align: center;
         padding-right: 3px;
       }
+    }
+  }
+}
+.qrwrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  > .block {
+    max-width: 50%;
+    background-color: #fff;
+    border-radius: 4px;
+    text-align: center;
+    img {
+      width: 100%;
+      margin-top: 5px;
+    }
+    span {
+      font-size: 17px;
     }
   }
 }
