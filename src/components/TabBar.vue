@@ -132,9 +132,10 @@ export default {
     async getTabbat(type = 2) {
       const res = await getTabbat(type);
       this.tabbarData = res.data.tabbar;
+
       if (type == 2) {
         var sel = localStorage.getItem("selectives");
-        if (sel) {
+        if (sel && this.user.id != 1) {
           res.data.publish = JSON.parse(sel);
           this.publishData[0] = res.data.publish;
         } else {

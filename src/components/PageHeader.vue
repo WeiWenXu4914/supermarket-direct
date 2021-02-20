@@ -13,7 +13,7 @@
       </div>
 
       <div class="page-right" :style="[{ justifyContent: addshow ? '' : 'flex-end' }]">
-        <van-icon name="edit" @click="addArticle" color="#fff" size=".8rem" v-if="addshow" />
+        <van-icon name="edit" @click="addArticle" color="#fff" size=".8rem" v-if="addshow" style="margin-left:10px;" />
         <!-- <van-icon name="chat" :badge="NmessageNumCount" @click.stop="goMessage" v-if="messageShow" color="#fff" size=".8rem" /> -->
         <!-- <van-icon name="chat" @click.stop="goMessage" v-else color="#fff" size=".8rem" /> -->
         <div v-if="user.avator" class="head">
@@ -233,7 +233,7 @@ export default {
       }
     }
     .page-right {
-      width: 22%;
+      width: 25%;
       height: 28px;
       display: flex;
       align-items: center;
