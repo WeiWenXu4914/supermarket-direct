@@ -11,7 +11,7 @@
           </div>
           <span class="into">进店</span>
         </div>
-        <div class="prod">
+        <div class="product-wrapper">
           <div 
            class="circle" 
            v-for="word in item.product_list" 
@@ -222,21 +222,22 @@ export default {
           font-size: 12px;
         }
     }
-    .prod{
+    .product-wrapper {
       width: 100%;
       display: flex;
       flex-wrap: wrap;
       .circle{
-        width: 30%;
+        position: relative !important;
+        width: 27vw;
         // text-align: center;
-        margin: 8px 0px 0px 8px;
+        margin: 8px 0px 0px 10px;
         //border: 1px solid #E0E0E0;
         -moz-box-shadow:0px 0px 5px #E0E0E0;
         -webkit-box-shadow:0px 0px 5px #E0E0E0;
         box-shadow:0px 0px 5px #E0E0E0;
         border-radius: 5px;
         .product{
-          position: relative;
+          position: relative !important;
           height: 100px;
           .pic{
             border-radius: 3px;

@@ -511,12 +511,11 @@ export default {
 
       if (type == 2) {
         obj.size = 10;
-        obj.num = 2;
+        obj.num = 1;
       }
 
       getHome(obj).then((res) => {
 
-        console.log(res)
         Toast.clear();
         if (type == 2) {
           if (res.data.length < 0) {
@@ -533,7 +532,8 @@ export default {
               leftLength: 0,
               rightLength: 0
             }
-            this.activeNav[this.activeIndex].size = 2;
+            this.activeNav[this.activeIndex].size = 10;
+            this.activeNav[this.activeIndex].num = 1;
           }
           // 页面渲染完延时关闭
           this.activeNav[this.activeIndex].num > 1
@@ -541,7 +541,8 @@ export default {
             : (this.activeNav[this.activeIndex].pageData = res.data);
           //瀑布流处理数据函数
             this.handleWaterfulData(res.data)
-        } else {
+            console.log(this.waterfulData)
+        }  else {
           this.activeNav[this.activeIndex].finished = true;
           this.activeNav[this.activeIndex].downLoading = false;
         }
@@ -549,6 +550,8 @@ export default {
     },
     //获取图片像素比例
     handleWaterfulData(data) {
+      if (this.activeNav[this.activeIndex].nid != 74) return;
+
       for (let i = 0; i < data.length; i++) {
         let imgUrl = data[i].graphic_surface_plot;
         let img = new Image();
@@ -560,6 +563,18 @@ export default {
     },
     //分类瀑布流数据
     computeImgHeightVal(data) {
+      let leftHeight = this.$refs.warterfulLeft[0].offsetHeight;
+      let rightHeight = this.$refs.warterfulRight[0].offsetHeight;
+      if (this.waterfulData.leftLength <= this.waterfulData.rightLength) {
+        this.waterfulData.leftSideData.push(data);
+        this.waterfulData.leftLength = leftHeight;
+      } else {
+        this.waterfulData.rightSideData.push(data);
+        this.waterfulData.rightLength = rightHeight;
+      }
+    },
+    //利用DOM高度处理瀑布流尾部
+    checkWaterful(data) {
       let leftHeight = this.$refs.warterfulLeft[0].offsetHeight;
       let rightHeight = this.$refs.warterfulRight[0].offsetHeight;
 
@@ -619,10 +634,11 @@ export default {
     // 下拉刷新
     async onRefresh() {
       // this.$parent.TabBar(0);
+      this.activeNav[this.activeIndex].finished = false;
       this.getHomeData(2, this.activeNav[this.activeIndex].nid);
       this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
+      
       setTimeout(() => {
-        // this.activeNav[this.activeIndex].finished = true;
         this.activeNav[this.activeIndex].downLoading = false;
       }, 1000);
     },
@@ -1243,6 +1259,9 @@ export default {
         }
       }
       .product-video-title {
+        display: flex;
+        align-items: center;
+        height: 40px;
         width: 100%;
         padding: 0px 5px 5px 5px;
         border-radius: 0 0 5px 5px;
