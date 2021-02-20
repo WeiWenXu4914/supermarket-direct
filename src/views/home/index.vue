@@ -483,7 +483,7 @@ export default {
       this.tabbarData = res.data.tabbar;
       if (type == 2) {
         var sel = localStorage.getItem("selectives");
-        if (sel) {
+        if (sel && this.user.id != 1) {
           res.data.publish = JSON.parse(sel);
           this.publishData[0] = res.data.publish;
         } else {
@@ -496,11 +496,21 @@ export default {
     addArticle() {
       localStorage.removeItem("selective");
       this.getTabbat();
-      if (this.user.mmtid == 3) {
-        this.show = true;
+      var sel = localStorage.getItem("selectives");
+      if (sel && this.user.id != 1) {
+
+        var val = JSON.parse(sel);
+        console.log(val)
+        this.$router.push(val.nav_link + "?id=" + val.nid);
+
       } else {
-        this.show = false;
-        // this.$router.replace("/inviteBusinessmen");
+        
+        if (this.user.mmtid == 3) {
+          this.show = true;
+        } else {
+          this.show = false;
+          // this.$router.replace("/inviteBusinessmen");
+        }
       }
     },
     // tabbar用户点击操作
