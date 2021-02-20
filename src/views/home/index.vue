@@ -541,7 +541,6 @@ export default {
             : (this.activeNav[this.activeIndex].pageData = res.data);
           //瀑布流处理数据函数
             this.handleWaterfulData(res.data)
-            console.log(this.waterfulData)
         }  else {
           this.activeNav[this.activeIndex].finished = true;
           this.activeNav[this.activeIndex].downLoading = false;
