@@ -83,6 +83,7 @@ export default {
       margin: 2rem auto;
       text-align: center;
       button{
+          color: #242424;
           width: 5rem;
           height: 1rem;
           border: none;

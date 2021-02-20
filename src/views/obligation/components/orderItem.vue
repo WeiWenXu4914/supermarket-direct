@@ -362,9 +362,6 @@ export default {
                 })
                 
             })
-            .catch(() => {
-
-            });
             
         },
         //删除订单
@@ -415,10 +412,11 @@ export default {
             confirmOrder(item.order_number)
             .then((res) => {
                 if (res.code == 100) {
-                    Toast("确认成功");
+                    Toast(res.msg);
                     this.page = 1;
                     this.getDate();
                 } else {
+                    console.log(res)
                     Toast(res.msg);
                 }
             })
