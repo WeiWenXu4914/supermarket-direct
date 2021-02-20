@@ -2,7 +2,7 @@
   <div class="myaddress">
     <div class="top">
       <img src="../../components/img1/返回.png" alt @click="back()" />
-      <p class="p1">我的收货地址</p>
+      <p class="myaddress-title">我的收货地址</p>
       <p class="p2" @click="addAddress()">添加新地址</p>
     </div>
     <div v-if="isShow">
@@ -186,7 +186,8 @@ export default {
       margin-left: 0.3rem;
       margin-top: 0.1rem;
     }
-    .p1 {
+    .myaddress-title {
+      margin-top: 0 !important;
       margin-left: 2.5rem;
       color: #2f2f2f;
       font-size: 0.5rem;
