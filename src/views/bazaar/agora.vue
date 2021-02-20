@@ -34,7 +34,7 @@
             ref="content-item"
             @scroll="handleScroll($event, index)"
           >
-            <content-item :cindex="item.pbcid" :key="new Date()"></content-item>
+            <content-item :cindex="item.pbcid"></content-item>
           </div>
         </div>
         <!-- </van-tab>

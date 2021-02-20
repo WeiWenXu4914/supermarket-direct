@@ -124,6 +124,10 @@ export default {
 
         },
         submit() {
+            const reg = /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、\s]/;
+            if (reg.test(this.description) && this.description.length === 1) {
+                Toast("申请说明不得单独提交特殊字符")
+            }
 
             if(this.reason == '') {
                 Toast.fail("请选择申请原因");
@@ -153,69 +157,6 @@ export default {
                 Toast("请求出错");
             })
         }
-        // submit() {
-        //     if(this.reason == '') {
-        //         Toast.fail("请选择申请原因");
-        //     } else if(this.description == '') {
-        //         Toast.fail("请填写申请说明");
-        //     } else {
-
-        //         //上传的数据
-        //         let obj = {
-        //                 oid: this.orderData.oid,
-        //                 reason: this.reason,
-        //                 amount: this.money,
-        //                 description: this.description,
-        //                 pics: this.imgList
-        //             };
-
-        //         if(this.functionType == '退款') {
-        //             obj.class = 1;
-        //             afterSalesService(obj)
-        //             .then((res) => {//提示消息不出现？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？---------------------------------
-        //                 if(res.msg == '订单不存在') {
-        //                     Toast("订单不存在,请核对订单信息");
-        //                 } else {
-        //                     Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
-        //                     this.$router.go(-2);
-        //                 }
-        //             })
-        //             .catch((err) => {
-        //                 Toast.fail("请求失败，请重试")
-        //             })
-        //         } else if(this.functionType == '退货退款') {
-        //             obj.class = 1;
-        //             afterSalesService(obj)
-        //             .then((res) => {
-        //                 if(res.msg == '订单不存在') {
-        //                     Toast("订单不存在,请核对订单信息");
-        //                 } else {
-        //                     Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
-        //                     this.$router.go(-2);
-        //                 }
-        //             })
-        //             .catch((err) => {
-        //                 Toast.fail("请求失败，请重试");
-        //             })
-        //         } else {
-        //             obj.class = 2;
-        //             afterSalesService(obj)
-        //             .then((res) => {
-        //                 if(res.msg == '订单不存在') {
-        //                     Toast("订单不存在,请核对订单信息");
-        //                 } else {
-        //                     Toast("请耐心等待商家处理订单，可在个人主页退款售后查看处理结果");
-        //                     this.$router.go(-2);
-        //                 }
-        //             })
-        //             .catch((err) => {
-        //                 Toast.fail("请求失败，请重试");
-        //             })
-        //         }
-
-        //     }
-        // },
-
 
     }
 }
