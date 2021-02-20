@@ -312,8 +312,6 @@ export default {
         shippingAddress()
         .then((res) => { 
           if (res.code == 100 && res.data.length > 0) {
-                
-              console.log(res)
 
               for (let i = 0; i < res.data.length; i++) {
                 if(res.data[i].by_default == 1) {

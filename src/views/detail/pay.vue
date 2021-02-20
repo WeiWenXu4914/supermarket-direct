@@ -150,7 +150,14 @@ export default {
   updated() {
     Toast.clear();
   },
-  watch: {},
+  watch: {
+    count(val) {
+      
+      if (val > this.dataMsg.pro_inventory) {
+        this.count = this.dataMsg.pro_inventory;
+      }
+    }
+  },
   async created() {
     //商品数量
     if (this.$route.query.pro_id == undefined)
