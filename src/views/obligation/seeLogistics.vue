@@ -36,7 +36,7 @@ export default {
     created() {
         this.data = JSON.parse(this.$route.query.data)
 
-        parcel(this.data.order_number)
+        parcel(this.data.logistics)
         .then((res) => {
             console.log(res)
             this.loData = res.data;
@@ -51,7 +51,6 @@ export default {
     methods: {
         status(val) {
 			let state = "";
-			console.log(val)
 			switch(parseInt(val)) {
 				case 0: state = "快递收件（揽件"; break;
 				case 1: state = "在途中"; break;
@@ -80,7 +79,7 @@ export default {
 			height: 100px;
 		}
 		.status {
-			padding: 0 10px;
+			padding: 0 3px;
 			color: #d04443;
 		}
 		.info {
