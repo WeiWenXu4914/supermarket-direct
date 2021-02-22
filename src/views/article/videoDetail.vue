@@ -87,9 +87,9 @@
     <!--更多推荐-->
     <div class="more-recommend" v-if="videoList.length !== 0">
       <div class="title">
-        <h3>更多好物推荐</h3>
+        <h3>更多好物甄选</h3>
         <!-- <span>共有 {{ videoList.length }} 个好物为您推荐 <van-icon name="arrow" class="arrow" size=".4rem"/></span> -->
-        <span>共有 {{ videoList.length }} 个好物为您推荐</span>
+        <span>共有 {{ videoList.length }} 个产品为您推荐</span>
       </div>
       <div class="video-items">
         <div class="wrapper">
@@ -261,6 +261,10 @@ export default {
   created() {
     if (this.$route.query.goindex == "true") {
       this.goindex = true;
+    }
+    if (this.$route.query.type == "pl") {
+      this.inputShow = true;
+      this.onShowd = true;
     }
     this.getData();
     this.getCommList();
@@ -885,6 +889,7 @@ export default {
   }
   .more-recommend {
     width: 100%;
+    padding-bottom: 100px;
     .title {
       display: flex;
       justify-content: space-between;
