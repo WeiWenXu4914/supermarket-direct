@@ -120,7 +120,7 @@
             <div class="button" v-else-if="data.status == 3">
                 <button @click="refund(data)">申请售后</button>
                 <button @click="toBuy">再次购买</button>
-                <button @click="appraise" v-if="data.is_mark == 0">评价商品</button>
+                <button @click="appraise(data)" v-if="data.is_mark == 0">评价商品</button>
             </div>
             <!--交易失败-->
             <div class="button" v-else>
@@ -276,7 +276,8 @@ export default {
         },
         //提醒发货
         urgeSent() {
-            sendDelivery(this.data.order_number)
+            console.log(this.data.oid)
+            sendDelivery(this.data.oid)
             .then((res) => {
                 console.log(res)
                 Toast(res.msg);
