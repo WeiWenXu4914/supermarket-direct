@@ -112,13 +112,13 @@
             </div>
             <!--待收货-->
             <div class="button" v-else-if="data.status == 2">
-                <button @click="refund(data)">申请退款</button>
+                <!-- <button @click="refund(data)">申请退款</button> -->
                 <button @click="seeLogistics(data)">查看物流</button>
                 <button @click="confirmReceive">确认收货</button>
             </div>
             <!--交易成功-->
             <div class="button" v-else-if="data.status == 3">
-                <button @click="refund(data)">申请售后</button>
+                <!-- <button @click="refund(data)">申请售后</button> -->
                 <button @click="toBuy">再次购买</button>
                 <button @click="appraise(data)" v-if="data.is_mark == 0">评价商品</button>
             </div>
