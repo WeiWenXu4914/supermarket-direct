@@ -1,5 +1,5 @@
 <template>
-  <div class="all">
+  <div class="all" @scroll="remember" ref="scroll-wrapper">
     <div class="header">
       <div class="top">
         <img src="../../components/img1/返回.png" class="i1" @click="back()" />
@@ -34,6 +34,11 @@
         </van-tab>
       </van-tabs>
     </div>
+    <transition name="van-fade">
+        <div class="go-top" v-show="btnShow" @click="goTop">
+            <van-icon name="arrow-up" />
+        </div>
+    </transition>
   </div>
 </template>
 
@@ -50,20 +55,59 @@ export default {
   data() {
     return {
       active: 0,
+      btnShow: false,
     };
   },
   methods: {
-    back() {
-      console.log(this.$route.query.route);
-      if (this.$route.query.route) {
-        this.$router.replace("/");
-      } else {
-        this.$router.go(-1);
-      }
-    },
-    search() {
-      this.$router.push("/order");
-    },
+      back() {
+        console.log(this.$route.query.route);
+        if (this.$route.query.route) {
+          this.$router.replace("/");
+        } else {
+          this.$router.go(-1);
+        }
+      },
+      search() {
+        this.$router.push("/order");
+      },
+        // 监听滚动事件
+        remember(e) {
+            if (e.target.scrollTop <= 150) {
+                this.btnShow = false;
+            }
+            if (e.target.scrollTop >= 400) {
+                this.btnShow = true;
+            }
+        },
+        // 回到顶部
+        goTop() {
+
+                const dom = this.$refs["scroll-wrapper"];
+                let i = 0;
+                const timeTop = setInterval(() => {
+                dom.scrollTop = this.easeInOutQuad(
+                    10 * i,
+                    dom.scrollTop,
+                    -dom.scrollTop,
+                    500
+                );
+                // dom.scrollTop -= 50
+                if (dom.scrollTop <= 0) {
+                    clearInterval(timeTop);
+                }
+                i++;
+                }, 30);
+            
+        },
+        easeInOutQuad(t, b, c, d) {
+            // 判断当前时间是否总在总时间的一半以内，是的话执行缓入函数，否则的话执行缓出函数
+            if ((t /= d / 2) < 1) {
+                return (c / 2) * t * t + b;
+            } else {
+                // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
+                return (-c / 2) * (--t * (t - 2) - 1) + b;
+            }
+        },
   },
 };
 </script>
@@ -75,10 +119,30 @@ export default {
 }
 .all {
   background-color: #f6f6f6;
+  height: 100vh;
+  overflow: scroll;
+  .go-top {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      background: #fff;
+      box-shadow: 0 0 2px #eee;
+      right: 17px;
+      bottom: 70px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      -moz-box-shadow: 0px 0px 3px #333333;
+      -webkit-box-shadow: 0px 0px 3px #333333;
+      box-shadow: 0px 0px 3px #333333;
+  }
   .header {
     .top {
       display: flex;
-      margin-top: 0.3rem;
+      padding-top: 0.3rem;
       padding-bottom: 0.3rem;
       background-color: #ffffff;
       .i1 {

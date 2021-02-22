@@ -91,7 +91,6 @@
             </div>
         <!-- </van-list> -->
 
-        
         <van-empty description="无订单" class="state" v-if="dataListItem.length === 0 ? true : false" />
     </div>
 </template>
@@ -140,40 +139,6 @@ export default {
                     data
                 }
             })
-            return;
-            let number = null;
-            
-            await getLogistic(item.olog_id)
-            .then((res) => {
-                console.log(res)
-                if(res.code == 100) {
-                    number = res.data.logistics;
-
-                    var textareaEl = document.createElement('textarea');
-                    textareaEl.setAttribute('readonly', 'readonly');
-                    textareaEl.value = number;
-                    document.body.appendChild(textareaEl);
-                    textareaEl.select();
-                    document.execCommand('Copy');
-                    document.body.removeChild(textareaEl);
-                    console.log("复制成功");
-                } else {
-                    Toast(res.msg);
-                    return;
-                }
-            })
-            .catch(() => {
-                Toast("请求出错");
-                return;
-            })
-
-            Dialog.alert({
-                title: `您的订单号为:${number}`,
-                message: `\n您可以到对应快递公司进行查询\n已自动复制到您的粘贴板`,
-                theme: 'round-button',
-            }).then(() => {
-            // on close
-            });
         },
         //进店购买
         toBuy(val) {
@@ -469,6 +434,46 @@ export default {
                 clearTimeout(timer)
             },1000);
             
+        },
+        // 监听滚动事件
+        remember(e) {
+            console.log(e)
+            if (e.target.scrollTop <= 150) {
+                this.btnShow = false;
+            }
+            if (e.target.scrollTop >= 400) {
+                this.btnShow = true;
+            }
+        },
+        // 回到顶部
+        goTop() {
+            // if (this.$refs["scroll-wrapper"]) {
+            //     // const dom = this.$refs["scroll-wrapper"][this.activeIndex];
+            //     const dom = this.$refs["scroll-wrapper"];
+            //     let i = 0;
+            //     const timeTop = setInterval(() => {
+            //     dom.scrollTop = this.easeInOutQuad(
+            //         10 * i,
+            //         dom.scrollTop,
+            //         -dom.scrollTop,
+            //         500
+            //     );
+            //     // dom.scrollTop -= 50
+            //     if (dom.scrollTop <= 0) {
+            //         clearInterval(timeTop);
+            //     }
+            //     i++;
+            //     }, 30);
+            // }
+        },
+        easeInOutQuad(t, b, c, d) {
+            // 判断当前时间是否总在总时间的一半以内，是的话执行缓入函数，否则的话执行缓出函数
+            if ((t /= d / 2) < 1) {
+                return (c / 2) * t * t + b;
+            } else {
+                // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
+                return (-c / 2) * (--t * (t - 2) - 1) + b;
+            }
         },
     }
 }
