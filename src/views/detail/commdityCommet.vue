@@ -8,10 +8,12 @@
             </div> -->
             <div v-for="(item,index) in dataList" :key="index">
                  <div class="e2">
-                    <img :src="item.mem_head_portrait" alt class="i1" />
-                    <p>{{ item.mem_name }}</p>
+                    <div>
+                      <img :src="item.mem_head_portrait" alt class="i1" />
+                      <span>{{ item.mem_name }}</span>
+                    </div>
                     <van-rate 
-                        v-model="rareValue" 
+                        v-model="item.num" 
                         :size="15" 
                         color="#ffd21e" 
                         void-icon="star" 
@@ -85,20 +87,30 @@ export default {
     }
     .e2 {
       position: relative;
+      width: 100vw;
+      height: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       .i1 {
-        width: 1.1rem;
-        margin: 0.5rem 0rem 0rem 0.5rem;
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        
       }
-      p {
-        color: #606060;
-        position: absolute;
-        font-size: 0.5rem;
-        left: 2rem;
-        top: 0.8rem;
-        display: inline-block;
+      div {
+          display: flex;
+          align-items: center;
+          margin-left: 15px;
+      }
+      span {
+          color: #606060;
+          font-size: 0.4rem;
+          line-height: 0.8rem;
+          padding-left: 10px;
       }
       .i2 {
-        position: absolute;
+        // position: absolute;
         margin-right: 0.3rem;
         right: 0.2rem;
         top: 0.9rem;

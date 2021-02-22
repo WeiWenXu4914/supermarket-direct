@@ -281,7 +281,7 @@ export default {
     },
     onComm() {
       this.$router.push({
-        path: `/article/detail/${this.videoItem.gid}`,
+        path: `/videoDetail/${this.videoItem.gid}`,
         query: { type: "pl" },
       });
     },

@@ -816,7 +816,10 @@ const routes = [
         path: '/searchNew',
         name: 'searchNew',
         component: () =>
-            import ('@/views/search/searchNew')
+            import ('@/views/search/searchNew'),
+        meta: { 
+            iskeepAlive: true
+        }
     },
     {
         path: '/search/result',
