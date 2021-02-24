@@ -15,7 +15,7 @@
          ref="password"
          v-model="form.pass"
         >
-        <button class="forget-password" @click="$router.push('/editPass')">设置密码</button>
+        <button class="forget-password" @click="$router.replace('/editPass')">设置密码</button>
         <img src="./img/not_see.svg" v-show="isShow" @click="changePasswor">
         <img src="./img/can_see.svg" v-show="!isShow" @click="changePasswor">
       </div>
@@ -24,11 +24,11 @@
     <div class="bottom-msg" v-show="isInput">
         <span class="other">其他登录方式</span>
           <div class="way-wrapper">
-            <div class="login-way" @click="$router.push('/wlogin')">
+            <div class="login-way" @click="$router.replace('/wlogin')">
               <img src="./img/weChat_logo.svg" alt="">
               <span>微信登录</span>
             </div>
-            <div class="login-way" @click="$router.push('/plogin')">
+            <div class="login-way" @click="$router.replace('/plogin')">
               <img src="./img/phone_logo.svg" alt="">
               <span>手机验证</span>
             </div>
@@ -71,7 +71,6 @@ export default {
   },
   watch: {
       fullHeight :function(newVal,oldVal) {
-
           if(newVal > oldVal) {
             this.isInput = true;
           } else {
@@ -83,7 +82,7 @@ export default {
   methods: {
     ...mapMutations(["setUser", "delUser"]),
     Login() {
-      this.$router.push("/Login");
+      this.$router.replace("/Login");
     },
     refister() {
       //开启加载
@@ -105,7 +104,14 @@ export default {
               };
               this.setUser(user);
               
-              this.$router.push("/");
+              const url = window.localStorage.beforeLoginUrl;
+              console.log(url)
+              if (url) {
+                window.localStorage.removeItem('beforeLoginUrl');
+                this.$router.replace(url.replace(/#\//,""))
+              } else {
+                this.$router.replace('/');
+              }
               Notify({ type: "success", message: "登陆成功", duration: 1000 });
           }else{
             Notify({ type: "success", message: res.msg, duration: 1000 });

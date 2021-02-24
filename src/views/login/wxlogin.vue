@@ -84,7 +84,16 @@ export default {
             if (data.code === 2) {
               //this.data = data.loginToken;
               localStorage.setItem("LoginToken", data.loginToken);
-              location.href = data.url+'&timestamp=' + Math.random();
+
+              const url = window.localStorage.beforeLoginUrl;
+              if (url) {
+                window.localStorage.removeItem('beforeLoginUrl');
+                window.location.href = url;
+                this.$router.replace(url.replace(/#\//,""))
+              } else {
+                this.$router.replace('/');
+              }
+
             } else if (data.code === 200) {
               localStorage.removeItem("LoginToken");
               localStorage.removeItem("Token");

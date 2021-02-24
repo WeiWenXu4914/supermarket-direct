@@ -64,11 +64,11 @@
     <div class="bottom-msg" v-show="isInput">
         <span class="other">其他登录方式</span>
           <div class="way-wrapper">
-            <div class="login-way" @click="$router.push('/wlogin')">
+            <div class="login-way" @click="$router.replace('/wlogin')">
               <img class="weChat" src="./img/weChat_logo.svg" alt="">
               <span>微信登录</span>
             </div>
-            <div class="login-way" @click="$router.push('/passLogin')">
+            <div class="login-way" @click="$router.replace('/passLogin')">
               <img src="./img/password_login.svg" alt="">
               <span>密码登录</span>
             </div>
@@ -277,31 +277,13 @@ export default {
               //关闭加载
               this.loginLoading = false;
 
-              if (window.localStorage.commdityTaskInfo) {
-                //员工任务链接跳转
+              const url = window.localStorage.beforeLoginUrl;
 
-                let commdityTaskInfo = JSON.parse(
-                  window.localStorage.commdityTaskInfo
-                );
-
-                this.$router.push({
-                  path: "/commdityPay",
-                  query: {
-                    res: commdityTaskInfo.res,
-                    taskKey: commdityTaskInfo.taskKey,
-                  },
-                });
-              } else if(window.localStorage.commdityForwardInfo) {
-                let commdityForwardInfo = JSON.parse(window.localStorage.commdityForwardInfo);
-                this.$router.push({
-                  path: "/commdityPay",
-                  query: {
-                    res: commdityForwardInfo.res,
-                    forward: commdityForwardInfo.taskKey,
-                  },
-                });
+              if (url) {
+                window.localStorage.removeItem('beforeLoginUrl');
+                this.$router.replace(url.replace(/#\//,""))
               } else {
-                this.$router.push("/");
+                this.$router.replace('/');
               }
 
               Notify({ type: "success", message: res.msg, duration: 1000 });
@@ -347,7 +329,7 @@ export default {
       }
     },
     passLogin() {
-      this.$router.push('/passLogin')
+      this.$router.replace('/passLogin')
     },
     settime() {
       if (this.settimeCode == 60) {

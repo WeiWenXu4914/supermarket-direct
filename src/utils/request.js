@@ -6,7 +6,6 @@
 import store from '@/store';
 import { Dialog, Toast } from "vant";
 import router from '../router/index'
-
 // import router from '../router'
 const nAxios = window.axios.create({
   baseURL: 'http://api.lejiagx.cn/public/index.php/'
@@ -37,14 +36,16 @@ nAxios.interceptors.response.use(
       localStorage.removeItem("LeHome-user-auth");
       localStorage.removeItem("Authorization");
 
+      window.localStorage.beforeLoginUrl = window.location.hash;
+
       Toast.clear();
       Dialog.confirm({
         title: '登陆',
         message: res.data.msg,
       }).then(() => {
-        router.push('/login');
+        router.replace('/login');
       }).catch(() => {
-        // router.push('/');
+        window.history.back()
       });
 
     }else if (!(res.data.code == 100 || res.data.code == 101 ||res.data.code == 2 || res.data.code == 1 || res.data.code == 202)) {

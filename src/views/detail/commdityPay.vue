@@ -302,6 +302,8 @@ export default {
     };
   },
   created() {
+    if (!window.localStorage["LeHome-user-auth"]) return;
+
     this.getEntProductDetail();
     this.$store.state.commodityNum = 1;
 
