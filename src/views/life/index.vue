@@ -68,12 +68,18 @@
                         </span> -->
                   </div>
                   <div class="msg">
-                    <span v-if="val.ent_detailed_site != '无'"
+                    <!-- <span v-if="val.ent_detailed_site != '无'"
                       >{{ val.ent_detailed_site }}
                     </span>
                     <span v-if="val.ent_introduction != '无'"
                       >| {{ val.ent_introduction }}</span
-                    >
+                    > -->
+                    <template v-if="val.ent_detailed_site != '无'">
+                      {{ val.ent_detailed_site }}
+                    </template> 
+                    <template v-if="val.ent_introduction != '无'">
+                      | {{ val.ent_introduction }}
+                    </template> 
                   </div>
                   <div class="star">
                     <div class="star-rate">
@@ -423,6 +429,13 @@ export default {
         color: rgba(61, 61, 61, 1);
         opacity: 1;
         margin-top: 5px;
+        letter-spacing: 0;
+        overflow: hidden;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        font-size:12px;
         span {
           margin: 0px;
         }
