@@ -2,7 +2,7 @@
     <div class="getAddress">
       
       <!--地址（旧）-->
-        <div class="adress" @click="toEditAddress" v-show="!way">
+        <!-- <div class="adress" @click="toEditAddress" v-show="!way">
             <img src="../../../components/img1/dingwei.png" alt />
             <div v-show="isNull">
                 <span class="name">{{ address.contact_name }}</span>
@@ -14,10 +14,10 @@
                 <span class="addressNull">请添加默认收货地址</span>
                 <p class="left"><van-icon name="arrow" size=".4rem" color="#ccc"/></p>
             </div>
-        </div>
+        </div> -->
         
         <!--地址新-->
-        <div class="adress2" v-show="way">
+        <div class="adress2">
 
             <!-- <div class="recive-address">
                 <h4>收货地址</h4>

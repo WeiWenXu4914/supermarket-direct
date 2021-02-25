@@ -104,7 +104,7 @@ export default {
     padding: 0 15px;
     .card {
       width: 168px;
-      height: 242px;
+      padding-bottom: 5px;
       background: rgba(255, 255, 255, 1);
       opacity: 1;
       border-radius: 3px;

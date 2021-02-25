@@ -479,57 +479,6 @@ export default {
     if (window.__wxjs_is_wkwebview === true) {
       URL = window.location.href.split('#')[0] || window.location.href
     }
-    console.log(this.merchantInfo)
-    // wexinConfig(URL)
-    // .then((res) => {
-      
-    //   wx.config({
-    //     debug: false, 
-    //     appId: res.data.appId,
-    //     timestamp: res.data.timestamp,
-    //     nonceStr: res.data.nonceStr,
-    //     signature: res.data.signature,
-    //     jsApiList: [
-    //       'checkJsApi',
-    //       'onMenuShareTimeline',
-    //       'onMenuShareAppMessage',
-    //       'onMenuShareQQ',
-    //       'onMenuShareWeibo',
-    //       'onMenuShareQZone',
-    //       'hideMenuItems',
-    //       'showMenuItems',
-    //       'hideAllNonBaseMenuItem',
-    //       'showAllNonBaseMenuItem',
-    //       'translateVoice',
-    //       'startRecord',
-    //       'stopRecord',
-    //       'onVoiceRecordEnd',
-    //       'playVoice',
-    //       'onVoicePlayEnd',
-    //       'pauseVoice',
-    //       'stopVoice',
-    //       'uploadVoice',
-    //       'downloadVoice',
-    //       'chooseImage',
-    //       'previewImage',
-    //       'uploadImage',
-    //       'downloadImage',
-    //       'getNetworkType',
-    //       'openLocation',
-    //       'getLocation',
-    //       'hideOptionMenu',
-    //       'showOptionMenu',
-    //       'closeWindow',
-    //       'scanQRCode',
-    //       'chooseWXPay',
-    //       'openProductSpecificView',
-    //       'addCard',
-    //       'chooseCard',
-    //       'openCard'
-    //   ] // 必填，需要使用的JS接口列表
-    //   });
-    // })
-    // wx.error(function(res){});
   
   },
 };
