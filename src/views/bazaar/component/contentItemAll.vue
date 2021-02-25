@@ -65,12 +65,6 @@ export default {
     }
   },
   methods: {
-    handleScroll() {
-     // 这是一个示例代码，打印出监听滚动的组件滚动距离
-     var scrollTop = this.$refs.viewBox.scrollTop;
-     console.log(scrollTop);
-     
-    },
     getData() {
       let obj = {
         page: 1,
@@ -146,7 +140,9 @@ export default {
 <style lang="less">
 .content-container-all {
   // margin-bottom: 15px;
+  height: calc(100vh - 43px);
   background-color: #F0F0F0;
+  overflow: hidden;
   .shoptitle{
     width: 94%;
     margin: 0px auto;

@@ -1,5 +1,5 @@
 <template>
-  <div class="merchantsHomeClass">
+  <div class="merchantsHomeClass" ref="scroll-wrapper" @scroll="remember($event)">
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <div :class="[SkShow ? 'container' : 'containers']" v-if="flag">
         <transition transition name="van-slide-down">
@@ -42,7 +42,6 @@
           sticky
           @click="changeFun"
           @change="changeFun"
-          @scroll="remember($event)"
           :style="[{ marginTop: searchShow ? '60px' : '' }]"
           v-if="tabbarList.length > 0"
         >
@@ -149,6 +148,11 @@
         </div>
       </div>
     </transition>
+    <transition name="van-fade">
+        <div class="go-top" v-show="btnShow" @click="goTop">
+            <van-icon name="arrow-up" />
+        </div>
+    </transition>
   </div>
 </template>
 
@@ -220,6 +224,7 @@ export default {
       activeKey: 0,
       forwardMark: false,
       isLoading: false,
+      btnShow: false,
     };
   },
   watch: {
@@ -344,13 +349,19 @@ export default {
       });
     },
     remember(e) {
+      console.log(e)
       this.SkShow = !e.isFixed;
+      if (e.target.scrollTop <= 150) {
+          this.btnShow = false;
+      }
+      if (e.target.scrollTop >= 400) {
+          this.btnShow = true;
+      }
     },
     // 获取企业信息
     getPageData() {
       var id = JSON.parse(this.$Utils.demoResponse(this.$route.query.res));
       getEnterpriseHomepage(id.entid).then((res) => {
-        console.log(res)
         setTimeout(function () {
           Toast.clear();
         }, 200);
@@ -415,6 +426,37 @@ export default {
         }
       });
     },
+    // 回到顶部
+        goTop() {
+
+                const dom = this.$refs["scroll-wrapper"];
+                console.log(dom)
+                
+                let i = 0;
+                const timeTop = setInterval(() => {
+                dom.scrollTop = this.easeInOutQuad(
+                    10 * i,
+                    dom.scrollTop,
+                    -dom.scrollTop,
+                    500
+                );
+                // dom.scrollTop -= 50
+                if (dom.scrollTop <= 0) {
+                    clearInterval(timeTop);
+                }
+                i++;
+                }, 30);
+            
+        },
+        easeInOutQuad(t, b, c, d) {
+            // 判断当前时间是否总在总时间的一半以内，是的话执行缓入函数，否则的话执行缓出函数
+            if ((t /= d / 2) < 1) {
+                return (c / 2) * t * t + b;
+            } else {
+                // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
+                return (-c / 2) * (--t * (t - 2) - 1) + b;
+            }
+        },
   },
   mounted: function () {},
 };
@@ -422,6 +464,26 @@ export default {
 
 <style scoped lang='less'>
 .merchantsHomeClass {
+  height: 100vh;
+  overflow: scroll;
+  .go-top {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      background: #fff;
+      box-shadow: 0 0 2px #eee;
+      right: 17px;
+      bottom: 70px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      -moz-box-shadow: 0px 0px 3px #333333;
+      -webkit-box-shadow: 0px 0px 3px #333333;
+      box-shadow: 0px 0px 3px #333333;
+  }
   .slide-fade-enter-active {
     transition: all 0.5s ease;
   }

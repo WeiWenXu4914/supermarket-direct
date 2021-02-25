@@ -178,7 +178,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  height: auto;
+  height: 44px;
   background: #07C160;
   display: flex;
   align-items: center;

@@ -1,6 +1,6 @@
 <template>
   <div class="content-container-item">
-    <div v-show="items.length === 0 ? false : true">  
+    <template v-show="items.length === 0 ? false : true">  
       <div class="shoptitle" v-for="(item,index) in items" :key="index">
         <div class="title1" @click="intoStore(item.entid)">
           <div class="right">
@@ -39,7 +39,7 @@
         </p>
       </div>
 
-    </div>
+    </template>
     <div v-show="items.length === 0 ? true : false">
       <van-empty description="无商品信息" />
     </div>
@@ -146,6 +146,7 @@ export default {
 <style lang="less">
 .content-container-item {
   // margin-bottom: 15px;
+  height: calc(100vh - 43px);
   background-color: #F0F0F0;
   .shoptitle{
     width: 94%;
