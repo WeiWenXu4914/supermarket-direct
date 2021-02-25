@@ -29,11 +29,11 @@
     <div class="bottom-msg">
         <span class="other">其他登录方式</span>
           <div class="way-wrapper">
-            <div class="login-way" @click="$router.push('/passLogin')">
+            <div class="login-way" @click="$router.replace('/passLogin')">
               <img src="./img/password_login.svg" alt="">
               <span>密码登录</span>
             </div>
-            <div class="login-way" @click="$router.push('/plogin')">
+            <div class="login-way" @click="$router.replace('/plogin')">
               <img src="./img/phone_logo.svg" alt="" class="weChat">
               <span>手机验证</span>
             </div>
