@@ -1,10 +1,11 @@
 <template>
   <div class="detailPay" @scroll="scroll($event)">
-    <div class="navigator">
-      <div class="back" @click="back"><img src="./img/back.svg" alt=""></div>
-      <div class="function" @click="PacmanModify"><img src="./img/forward.svg" alt=""></div>
-    </div>
+    
     <div class="lunbo">
+      <div class="navigator">
+        <div class="back" @click="back"><img src="./img/back.svg" alt=""></div>
+        <div class="function" @click="PacmanModify"><img src="./img/forward.svg" alt=""></div>
+      </div>
       <van-swipe @change="onChange" autoplay="3000">
         <van-swipe-item
           v-for="(item, index) in proDetail.pro_carousel"
@@ -362,7 +363,6 @@ export default {
   methods: {
     //修改组件input框状态
     cancel() {
-      console.log("aaa")
     },
     //限制输入数量
     countNum() {
@@ -716,7 +716,7 @@ export default {
   width: 100%;
   background-color: rgb(247, 247, 247);
   .navigator {
-    position: fixed;
+    position: absolute;
     display: flex;
     top: 0;
     margin-top: 10px;
@@ -782,6 +782,7 @@ export default {
     }
   }
   .lunbo {
+    position: relative;
     width: 100%;
     .custom-indicator {
       position: absolute;
@@ -1071,7 +1072,6 @@ export default {
   .pro_desc {
     width: 100%;
     height: auto;
-    font-size: 0;
     img {
       width: 100%;
       height: auto;

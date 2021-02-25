@@ -489,6 +489,7 @@ export default {
   //margin-top: 50px;
   padding: 15px 15px 5px 15px;
   .is-show-time {
+    margin-left: 20px;
     width: 80%;
     padding: 2px 5px;
     background-color: #fff;

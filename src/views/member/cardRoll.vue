@@ -29,23 +29,23 @@ export default {
       value: '',
       list: [
         { type: '优惠劵', num: 0, icon: require('./images/优惠券.png'), path: '/discount' },
-        { type: '会员卡', num: 0, icon: require('./images/hyk.png'), path: '/member/card' }
+        // { type: '会员卡', num: 0, icon: require('./images/hyk.png'), path: '/member/card' }
       ]
     }
   },
   computed: {},
   created () {
-    this.myCard()
+    // this.myCard()
     this.myCoupon()
   },
   methods: {
     onClick (path) {
       if (path) this.$router.push(path)
     },
-    async myCard () {
-      const res = await myCard()
-      this.list[1].num = res?.data?.length
-    },
+    // async myCard () {
+    //   const res = await myCard()
+    //   this.list[1].num = res?.data?.length
+    // },
     async myCoupon () {
       const res = await myCoupon()
       this.list[0].num = res?.data?.length
