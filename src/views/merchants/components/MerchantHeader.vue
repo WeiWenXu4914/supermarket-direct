@@ -74,9 +74,11 @@
     >
       <!-- <img v-for="(image, index) in merchantInfo.images" :key="index" :src="image" /> -->
     </div>
+    
     <div class="time">
       <div class="time_left">
-        <div class="time_text">
+        <button @click="isShowTime = !isShowTime" v-if="!isShowTime" class="is-show-time">查看营业时间</button>
+        <div class="time_text" v-else>
           <span class="time_title">营业时间：</span>
           <span
             class="time_con"
@@ -100,12 +102,12 @@
         <div class="time_site">
           <div>
             <span class="time_title">店铺地址：</span>
-            <span class="time_con">{{ merchantInfo.ent_city+ merchantInfo.ent_district + merchantInfo.ent_detailed_site }}</span>
+            <span class="time_con">{{ merchantInfo.ent_city }} {{ merchantInfo.ent_district }} {{ merchantInfo.ent_detailed_site }}</span>
           </div>
           <!-- <img src="../img/site.svg" alt="" @click="openMap"> -->
         </div>
       </div>
-      <div class="phone" @click="callPhone(merchantInfo.service_phone)">
+      <div class="phone" @click="callPhone(merchantInfo.service_phone)" v-if="merchantInfo.mem_attention == '已关注'">
         <van-icon name="phone" color="#D04443" />
       </div>
     </div>
@@ -248,7 +250,8 @@ export default {
       imgUrl:'',
       doanText:'保存',
       doanLoading:false,
-      doanDisabled:false
+      doanDisabled:false,
+      isShowTime: false,
     };
   },
   computed : {
@@ -536,6 +539,13 @@ export default {
 #shops-head-root {
   //margin-top: 50px;
   padding: 15px 15px 5px 15px;
+  .is-show-time {
+    width: 80%;
+    padding: 2px 5px;
+    background-color: #fff;
+    color: rgba(208, 68, 67, 1);
+    border: 1px solid rgba(208, 68, 67, 1);
+  }
   .shops-head {
     display: flex;
     justify-content: space-between;
