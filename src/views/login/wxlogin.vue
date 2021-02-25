@@ -70,6 +70,7 @@ export default {
       });
     },
     login(url) {
+      
       if (!this.radios) {
         this.$toast("请先同意注册协议");
         return false;
@@ -82,16 +83,10 @@ export default {
           .then((res) => {
             const data = res.data;
             if (data.code === 2) {
-              //this.data = data.loginToken;
-              localStorage.setItem("LoginToken", data.loginToken);
-
               const url = window.localStorage.beforeLoginUrl;
-              if (url) {
-                window.localStorage.removeItem('beforeLoginUrl');
-                this.$router.replace(url.replace(/#\//,""))
-              } else {
-                this.$router.replace('/');
-              }
+
+              localStorage.setItem("LoginToken", data.loginToken);
+              window.location.href = data.url;
 
             } else if (data.code === 200) {
               localStorage.removeItem("LoginToken");
