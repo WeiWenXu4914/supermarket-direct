@@ -88,7 +88,6 @@ export default {
               const url = window.localStorage.beforeLoginUrl;
               if (url) {
                 window.localStorage.removeItem('beforeLoginUrl');
-                window.location.href = url;
                 this.$router.replace(url.replace(/#\//,""))
               } else {
                 this.$router.replace('/');
@@ -110,27 +109,7 @@ export default {
         this.$toast("请在微信打开");
       }
     },
-    loginBtn() {
-      var LoginToken = localStorage.getItem("LoginToken");
-      var Token = localStorage.getItem("Token");
-      // 不存在登陆token
-      if (LoginToken == null || LoginToken == undefined) {
-        if (Token) {
-          // 已经登录,跳转页面
-          window.location.href = "http://www.baidu.com";
-        } else {
-          // 获取登陆token
-          var url = "http://apis.lejiagx.cn/api/wechatLogin";
-          this.login(url);
-        }
-      } else {
-        // 存在直接获取用户token
-        // 获取用户token
-        var url =
-          "http://apis.lejiagx.cn/api/wechatLogin?loginToken=" + LoginToken;
-        this.login(url);
-      }
-    },
+    
   },
 };
 </script>
