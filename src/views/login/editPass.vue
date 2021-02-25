@@ -1,6 +1,7 @@
 <template>
   <div class="login">
-    <div class="title3">修改密码</div>
+    <!-- <div class="title3">修改密码</div> -->
+    <img class="login-user-login" src="./img/logo.jpg" alt="">
     <div class="tel">
       <van-cell-group>
         <van-field
@@ -38,20 +39,28 @@
       </van-field>
     </div>
     <div class="log">
-      <div class="wx" @click="passLogin">
+      <!-- <div class="wx" @click="passLogin">
         <span>密码登录</span>
-      </div>
+      </div> -->
       <div class="but">
-        <button @click="login" :disabled="loginLoading">修改</button>
+        <button @click="login" :disabled="loginLoading">设置密码</button>
       </div>
     </div>
     <van-loading v-show="loginLoading" color="#1989fa" size="36px" vertical
       >登录中...</van-loading
     >
-    <div class="wxLogin">
-      <div class="wx" @click="$router.push('/wlogin')">
-        <img src="../../assets/icons/wechat.png" alt="" />
-      </div>
+    <div class="bottom-msg" v-show="isInput">
+        <span class="other">其他登录方式</span>
+          <div class="way-wrapper">
+            <div class="login-way" @click="$router.replace('/wlogin')">
+              <img class="weChat" src="./img/weChat_logo.svg" alt="">
+              <span>微信登录</span>
+            </div>
+            <div class="login-way" @click="$router.replace('/passLogin')">
+              <img src="./img/password_login.svg" alt="">
+              <span>密码登录</span>
+            </div>
+        </div>
     </div>
   </div>
 </template>
@@ -77,7 +86,8 @@ export default {
       settimeCode: 60,
       settimeText: "获取验证码",
       isDis: false,
-      showPass: 'password'
+      showPass: 'password',
+      isInput: true,
     };
   },
   created() {
@@ -319,6 +329,57 @@ export default {
   width: 90%;
   margin: 0 auto;
   text-align: left;
+  .login-user-login {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+    border: 1px solid #F8F8F8;
+    border-radius: 50%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+  .bottom-msg {
+    position: relative;
+    padding: 30px 0 0 0;
+    bottom: 0;
+    width: calc(100vw - 20%);
+    margin: 0 auto;
+    margin-top: 100px;
+    border-top: 1px solid #F2F2F2;
+    .other {
+      position: absolute;
+      padding: 0 15px;
+      font-size: 12px;
+      color: #999999;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      background-color: #fff;
+    }
+    .way-wrapper {
+      display: flex;
+      justify-content: space-evenly;
+      .login-way {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 12px;
+        color: #999999;
+        img {
+          width: 45px;
+          height: 45px;
+        }
+        .weChat {
+          width: 40px;
+          height: 40px;
+          margin: 2px 0 3px 0;
+        }
+        span {
+          padding-top: 5px;
+        }
+      }
+    }
+  }
   .FormLabel_agreement {
     display: flex;
     margin-top: 20px;
@@ -384,23 +445,13 @@ export default {
   .log {
     margin-top: 30px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .wx {
-      display: flex;
-      align-items: center;
-      img {
-        width: 35px;
-        margin-right: 10px;
-      }
-      span {
-        margin-left: 7px;
-        font-size: 14px;
-      }
-    }
+    // align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
     .but {
+      margin-left: 200px;
       button {
-        width: 100px;
         height: 35px;
         background-color: #D04443;
         color: #fff;

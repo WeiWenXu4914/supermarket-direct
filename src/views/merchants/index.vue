@@ -349,7 +349,6 @@ export default {
       });
     },
     remember(e) {
-      console.log(e)
       this.SkShow = !e.isFixed;
       if (e.target.scrollTop <= 150) {
           this.btnShow = false;
@@ -430,7 +429,6 @@ export default {
         goTop() {
 
                 const dom = this.$refs["scroll-wrapper"];
-                console.log(dom)
                 
                 let i = 0;
                 const timeTop = setInterval(() => {
