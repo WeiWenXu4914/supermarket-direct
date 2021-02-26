@@ -77,28 +77,6 @@
     
     <div class="time">
       <div class="time_left">
-        <button @click="isShowTime = !isShowTime" v-if="!isShowTime" class="is-show-time">查看营业时间</button>
-        <div class="time_text" v-else>
-          <span class="time_title">营业时间：</span>
-          <span
-            class="time_con"
-            v-for="(item, index) in merchantInfo.ent_business_days"
-            :key="index"
-          >
-            {{ item }}
-          </span>
-          <br />
-          <span
-            class="time_time"
-            v-if="
-              merchantInfo.ent_business_hours != null ||
-              merchantInfo.ent_proofing_time != null
-            "
-          >
-            {{ merchantInfo.ent_business_hours }} -
-            {{ merchantInfo.ent_proofing_time }}
-          </span>
-        </div>
         <div class="time_site">
           <div>
             <span class="time_title">店铺地址：</span>
@@ -110,6 +88,28 @@
       <div class="phone" @click="callPhone(merchantInfo.service_phone)" v-if="merchantInfo.mem_attention == '已关注'">
         <van-icon name="phone" color="#D04443" />
       </div>
+    </div>
+    <button @click="isShowTime = !isShowTime" v-if="!isShowTime" class="is-show-time">查看营业时间</button>
+    <div class="time_text" v-else>
+      <span class="time_title">营业时间：</span>
+      <span
+        class="time_con"
+        v-for="(item, index) in merchantInfo.ent_business_days"
+        :key="index"
+      >
+        {{ item }}
+      </span>
+      <!-- <br /> -->
+      <span
+        class="time_time"
+        v-if="
+          merchantInfo.ent_business_hours != null ||
+          merchantInfo.ent_proofing_time != null
+        "
+      >
+        {{ merchantInfo.ent_business_hours }} -
+        {{ merchantInfo.ent_proofing_time }}
+      </span>
     </div>
     <div class="qrcode-item-back" v-show="idCardShow">
       <div class="qrcode-item">
@@ -487,14 +487,19 @@ export default {
 <style lang='less' scoped>
 #shops-head-root {
   //margin-top: 50px;
-  padding: 15px 15px 5px 15px;
+  padding: 15px;
+  .time_text {
+    padding: 6px 0;
+    
+  }
   .is-show-time {
-    margin-left: 20px;
-    width: 80%;
-    padding: 2px 5px;
-    background-color: #fff;
-    color: rgba(208, 68, 67, 1);
-    border: 1px solid rgba(208, 68, 67, 1);
+      margin-left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      padding: 2px 5px;
+      background-color: #fff;
+      color: rgba(208, 68, 67, 1);
+      border: 1px solid rgba(208, 68, 67, 1);
   }
   .shops-head {
     display: flex;
@@ -828,24 +833,18 @@ export default {
     }
   }
   .time {
+    display: flex;
     width: 100%;
-    min-height: 60px;
     margin-top: 10px;
-    overflow: auto;
     .time_left {
-      float: left;
-      width: 84%;
-      height: 100%;
       .time_text {
         width: 100%;
-        min-height: 50%;
-        height: auto;
-        // background:#1ee;
+        // min-height: 50%;
       }
       .time_site {
         display: flex;
         width: 100%;
-        height: 50%;
+        // height: 50%;
         align-items: center;
         img {
           widows: 30px;

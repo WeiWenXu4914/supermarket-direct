@@ -376,6 +376,7 @@ export default {
       },
     },
     mounted() {
+      if (!window.localStorage["LeHome-user-auth"]) return;
       this.getUserSite();
       this.getServiceSite();
       //地区字典
