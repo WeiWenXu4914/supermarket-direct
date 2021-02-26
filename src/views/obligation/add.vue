@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       title: '添加收货地址',
-      checked: true,
+      checked: false,
       tel:null,
       text:"",
       value: "",
@@ -90,23 +90,27 @@ export default {
     //地区字典
     this.areaList = province_list;
     //是否为编辑页
+    this.state = this.$route.query.add;
+    if(this.state == 1){
+        this.checked = true;
+    }
     if(this.$route.query.data) {
 
       this.data = JSON.parse(this.$route.query.data);
-      
-      this.title = '收货地址'
 
+      this.title = '收货地址'
+      console.log(this.state)
       if(this.data.by_default == 1){
         this.checked = true;
       }
-
+      
       this.text = this.data.contact_name;
       this.tel = this.data.contact_number;
       this.detailArea = this.data.detailed_site;
       this.value = [ this.data.province, this.data.city, this.data.district].join('/');
 
     }
-    this.state = this.$route.query.add;
+    
 
   },
   methods: {

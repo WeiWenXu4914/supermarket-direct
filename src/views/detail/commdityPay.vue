@@ -2,7 +2,7 @@
   <div class="detailPay" @scroll="scroll($event)">
     
     <div class="lunbo">
-      <div class="navigator">
+      <div class="navigator-detail-pay">
         <div class="back" @click="back"><img src="./img/back.svg" alt=""></div>
         <div class="function" @click="PacmanModify"><img src="./img/forward.svg" alt=""></div>
       </div>
@@ -374,7 +374,7 @@ export default {
       if (e.target.tagName == "IMG") {
         ImagePreview({
           images: [e.target.src],
-          showIndex: false,
+          showIndex: 9999,
           closeOnPopstate: true, //页面回退关闭预览
           closeable: true,
         });
@@ -715,14 +715,15 @@ export default {
 .detailPay {
   width: 100%;
   background-color: rgb(247, 247, 247);
-  .navigator {
+  .navigator-detail-pay {
     position: absolute;
+    z-index: 1;
     display: flex;
     top: 0;
     margin-top: 10px;
     width: 100%;
     justify-content: space-between;
-    z-index: 9999;
+    z-index: 1 !important;
     div {
       position: relative;
       width: 24px;
