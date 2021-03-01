@@ -34,7 +34,6 @@
 
 <script>
 import { searchInput } from "../actions";
-import { Toast, Empty } from "vant";
 export default {
   props: ["searchValue", "active2"],
   data() {
@@ -43,13 +42,20 @@ export default {
       loading: false,
     };
   },
-  watch: {},
-  created() {
-    this.getData();
+  watch: {
+    searchValue() {
+        if(this.active2 == 1) {
+            this.getData();
+        }
+    },
+    active2() {
+        if(this.active2 == 1) {
+            this.getData();
+        }
+    }
   },
   methods: {
     getData() {
-      
       if (this.searchValue != "") {
         this.loading = true;
         searchInput(this.searchValue)

@@ -8,11 +8,13 @@
     <div class="content" v-if="list.length > 0">
       <div class="item" v-for="(val, inx) in list" :key="inx">
         <div class="left" @click="userHandle(val)">
-          <van-image :src="val.mem_attention_item.mem_head_portrait" round>
-            <template v-slot:loading>
-              <van-loading type="spinner" size="20" />
-            </template>
-          </van-image>
+          <template v-if="val.mem_attention_item.mem_head_portrait">
+            <van-image :src="val.mem_attention_item.mem_head_portrait" round>
+              <template v-slot:loading>
+                <van-loading type="spinner" size="20" />
+              </template>
+            </van-image>
+          </template>
           <!-- <img :src="val.mem_attention_item.mem_head_portrait"/> -->
           <span>{{val.mem_attention_item.mem_name}}</span>
         </div>

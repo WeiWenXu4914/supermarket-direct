@@ -1231,6 +1231,7 @@ export default {
   .html-class {
     width: 100%;
     /deep/ p {
+      margin: 0 auto;
       font-size: 17px;
       font {
         text-indent: 2em;

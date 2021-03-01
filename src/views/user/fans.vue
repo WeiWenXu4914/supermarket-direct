@@ -9,7 +9,9 @@
     <div class="content" v-if="list.length > 0"> 
       <div class="item" v-for="(val, inx) in list" :key="inx">
         <div class="left" @click="userHandle(val)">
-          <img :src="val.mem_attention_item.mem_head_portrait" />
+          <template v-if="val.mem_attention_item.mem_head_portrait">
+            <img :src="val.mem_attention_item.mem_head_portrait" />
+          </template>
           <span>{{ val.mem_attention_item.mem_name }}</span>
         </div>
         <div class="right" @click="onFocus(val)">{{ val.mem_attention }}</div>

@@ -102,7 +102,6 @@ export default {
         .then((res) => {
           this.items = res.data.class;
           this.dataList = res.data.list;
-          console.log(res);
           if (res) {
             Toast.clear();
           }
@@ -124,7 +123,6 @@ export default {
         // 回到顶部
         goTop() {
             const dom = this.$refs["scroll-wrapper"][0];
-            console.log(dom)
              let i = 0;
             const timeTop = setInterval(() => {
             dom.scrollTop = this.easeInOutQuad(

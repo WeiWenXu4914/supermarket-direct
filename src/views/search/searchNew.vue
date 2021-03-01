@@ -30,21 +30,6 @@
       <van-tab title="取货地址">
         <SiteResult :searchValue="resultValue" :active4="active" />
       </van-tab>
-      <!-- <van-tab title="关注">
-        <AttentionResult :searchValue="resultValue" :active4="active" />
-      </van-tab> -->
-      <!-- <van-tab title="收藏">
-                内容
-            </van-tab>
-            <van-tab title="评论">
-                内容
-            </van-tab>
-            <van-tab title="点赞">
-                内容
-            </van-tab>
-            <van-tab title="转发">
-                内容
-            </van-tab> -->
     </van-tabs>
   </div>
 </template>
@@ -75,11 +60,6 @@ export default {
   created() {
     this.getSearchHistory();
   },
-  // watch: {
-  //   'resultValue': function() {
-  //     this.getSearchHistory();
-  //   }
-  // },
   methods: {
     onSearch() {
       this.resultValue = this.value;
