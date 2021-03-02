@@ -184,7 +184,7 @@ export default {
     },
     // 是否显示添加面板
     addArticle() {
-      this.$router.push("/agora").catch(() => {});
+      this.$router.push("/productList");
       // localStorage.removeItem('selective');
       // this.getTabbat();
       // if (this.user.mmtid == 3) {

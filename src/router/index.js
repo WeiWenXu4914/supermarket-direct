@@ -52,13 +52,13 @@ const routes = [
                     iskeepAlive: true
                 } 
             },
-            { 
-                path: '/agora', 
-                name: 'agora', 
-                component: Agora, 
-                meta: { 
-                    iskeepAlive: true 
-                } 
+            {//商城产品列表
+                path: '/productList',
+                component: () => 
+                    import('@/views/bazaar/productList'),
+                meta: {
+                    iskeepAlive: true
+                }
             },
         ]
     },

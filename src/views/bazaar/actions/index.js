@@ -11,3 +11,9 @@ export const getLejiaProductList = (num,val) => {
 export const phoneList = (query) => {
   return request('/api/phoneList', 'post', query)
 }
+/**
+ * 生活服务
+ */
+export const productList = (query) => {
+  return request('/api/productListNew', 'post', query)
+}

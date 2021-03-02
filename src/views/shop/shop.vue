@@ -56,11 +56,11 @@
         placeholder="请选择企业类型"
         @click="showPicker = true"
         style="
-          width: 95%;
+          width: 90%;
           color: #292929;
           text-align: center;
           padding-bottom: 0.3rem;
-          margin: 0.3rem 0rem 0rem 0rem;
+          margin: 0.3rem 0rem 0rem 0.4rem;
         "
       />
       <van-popup v-model="showPicker" position="bottom">
@@ -362,6 +362,8 @@ export default {
     }
   }
   .btn {
+    position: relative !important;
+    margin-top: 50px;
     button {
       width: 90%;
       height: 1.3rem;

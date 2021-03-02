@@ -176,6 +176,7 @@ export default {
 .page-wrapper {
   width: 100%;
   position: fixed;
+  z-index: 3;
   top: 0;
   left: 0;
   height: 44px;

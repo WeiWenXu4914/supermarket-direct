@@ -45,7 +45,7 @@
         v-if="videoItemVal.mmt_id == 3 && videoItemVal.memid != 1"
         @click="userHandle"
       >
-        <van-button color="#D04443" size="mini">进店</van-button>
+        <van-button color="#D04443" size="mini" v-if="$route.path != '/merchants/produce'">进店</van-button>
       </div>
     </div>
 
