@@ -130,7 +130,6 @@ export default {
   },
   watch: {
       fullHeight :function(newVal,oldVal) {
-
           if(newVal > oldVal) {
             this.isInput = true;
           } else {
@@ -516,6 +515,13 @@ export default {
         }
       }
     }
+  }
+  @media screen and (min-width: 500px) and (max-width: 1980px) {
+      .bottom-msg {
+        position: relative;
+        margin-left: 50%;
+        transform: translateX(-50%);
+      }
   }
 }
 </style>

@@ -144,6 +144,7 @@ export default {
       }
     }
   }
+
   .bottom-msg {
     position: fixed;
     padding: 30px 0 40px 0;
@@ -196,5 +197,13 @@ export default {
       }
     }
   }
+  @media screen and (min-width: 500px) and (max-width: 1980px) {
+      .bottom-msg {
+        position: relative;
+        margin-left: 50%;
+        transform: translateX(-50%);
+      }
+  }
 }
+
 </style>
