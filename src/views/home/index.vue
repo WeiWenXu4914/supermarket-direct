@@ -729,14 +729,11 @@ export default {
       //   });
       // }
 
-      var LoginToken = localStorage.getItem("LoginToken");
-      var Token = localStorage.getItem("Token");
-      var codeState = JSON.parse(sessionStorage.getItem("codeState"));
-      var url = "http://api.lejiagx.cn/public/index.php/api/wechatUser";
+      if (this.$route.query.wechatLoginConfig) {
 
-      if (LoginToken != null || LoginToken != undefined) {
-        localStorage.removeItem("Token");
-        // 获取用户token
+        var codeState = JSON.parse(this.$Utils.demoResponse(this.$route.query.wechatLoginConfig));
+
+        var url = "http://api.lejiagx.cn/public/index.php/api/wechatUser";
         this.login(codeState, url);
       }
     },
@@ -763,6 +760,9 @@ export default {
               this.$parent.TabBar(2);
               localStorage.removeItem("LoginToken");
               sessionStorage.removeItem("codeState");
+
+              var host = location.host
+              location.href = 'http://'+host+'/#/';
 
               // if (
               //   !data.userSession.mem_phone ||

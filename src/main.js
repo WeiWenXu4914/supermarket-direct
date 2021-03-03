@@ -60,8 +60,9 @@ if (href.includes("cn/?code")) { //上线8080  测试 8080
 
 	var urlLeft = url.substring(0, jingPosit);
 
-	location.href = urlLeft+'#/?timestamp=' + Math.random();
-	// window.location = urlLeft + "#/";
+	var res = Utils.demoRequest(JSON.stringify(obj));
+
+	location.href = urlLeft+'#/?timestamp=' + Math.random()+'&wechatLoginConfig='+res;
 
 }
 
