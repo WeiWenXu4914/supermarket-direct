@@ -3,7 +3,7 @@
         <page-header ref="pageHeader" :isAddShow="false" />
         
         <div class="content-wrapper">
-            <Goods-item 
+            <Goods-item
              v-for="item in dataList" 
              :key="item.proid" 
              class="goods-item"
@@ -46,10 +46,15 @@ export default {
             finished: false,
             getDataStatus: false,
             btnShow: false,
+            scrollTop: "",
         }
     },
     created() {
         this.getData()
+    },
+    activated() {
+        const dom = this.$refs["goods-product-list"];
+        dom.scrollTop = this.scrollTop;
     },
     methods: {
         getData() {
@@ -68,6 +73,7 @@ export default {
             let contentHeight = e.target.scrollHeight;
             let clientHeight = e.target.clientHeight;
             let scorllTop = e.target.scrollTop;
+            this.scrollTop = scorllTop;
             if (scorllTop + clientHeight == contentHeight && !this.getDataStatus) {
                 this.loading = true;
                 this.query.offset++;

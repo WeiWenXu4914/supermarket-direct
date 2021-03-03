@@ -2,10 +2,6 @@
     <div>
         <title-view title="商品评价" :border="false" class="title"></title-view>
         <div class="eva">
-            <!-- <div class="e1">
-                <p class="p1">评价{{ dataList.length }}</p>
-                <p class="p2" @click="toAllCommet()">查看全部 <van-icon class="icon" name="arrow" /></p>
-            </div> -->
             <div v-for="(item,index) in dataList" :key="index">
                  <div class="e2">
                     <div>
@@ -26,9 +22,16 @@
                     <p>{{ item.mem_comment_text }}</p>
                 </div>
                 <div class="e4">
-                    <template v-for="img in item.mem_comment_imgs">
-                      <img :src="img" :key="img">
-                    </template>
+                    <div v-for="img in item.mem_comment_imgs" :key="img">
+                      <van-image
+                        :src="img"
+                        width="2.5rem"
+                        height="2.5rem"
+                        lazy-load
+                        fit="cover"
+                        @click="showImg($event)"
+                      />
+                    </div>
                 </div>
             </div>
     </div>
@@ -37,6 +40,7 @@
 
 <script>
 import titleView from '../../components/public_views/titleView';
+import { ImagePreview } from 'vant';
 export default {
     components: {
         titleView
@@ -49,6 +53,18 @@ export default {
     },
     created() {
         this.dataList = JSON.parse(this.$route.query.dataList);
+    },
+    methods: {
+      showImg(e) {
+        if (e.target.tagName == "IMG") {
+          ImagePreview({
+            images: [e.target.src],
+            showIndex: 9999,
+            closeOnPopstate: true, //页面回退关闭预览
+            closeable: true
+          });
+        }
+      },
     }
 }
 </script>
@@ -61,7 +77,7 @@ export default {
 }
 .eva {
     background-color: #ffffff;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     padding-top: 30px;
     .e1 {
       display: flex;
@@ -106,7 +122,7 @@ export default {
       span {
           color: #606060;
           font-size: 0.4rem;
-          line-height: 0.8rem;
+          // line-height: 0.8rem;
           padding-left: 10px;
       }
       .i2 {

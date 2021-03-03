@@ -210,9 +210,16 @@
           <p>{{ item.mem_comment_text }}</p>
         </div>
         <div class="e4">
-          <template v-for="img in item.mem_comment_imgs">
-            <img :src="img" alt="" :key="img">
-          </template>
+          <div v-for="img in item.mem_comment_imgs" :key="img">
+            <van-image
+              :src="img"
+              width="2.5rem"
+              height="2.5rem"
+              lazy-load
+              fit="cover"
+              @click="showImg($event)"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -1229,7 +1236,12 @@ export default {
     }
   }
   .html-class {
-    width: 100%;
+    width: 100vw;
+    /deep/ h2{
+      img {
+        width: 100%;
+      }
+    }
     /deep/ p {
       margin: 0 auto;
       font-size: 17px;

@@ -79,6 +79,14 @@
           size="large"
         />
       </div>
+
+      <!-- <div class="product-parameters">
+        <span class="label">参数</span>
+        <div>
+          <span class="describe">品牌 质地...</span>
+          <van-icon name="arrow" class="arrow"/>
+        </div>
+      </div> -->
     </div>
 
     <div style="width: 100%; height: 2.75rem"></div>
@@ -679,6 +687,7 @@ export default {
     .van-field__label {
       padding-left: 3px;
       width: 60px;
+      margin-right: 0;
     }
   }
   .btn {
@@ -809,6 +818,28 @@ export default {
     padding: 10px 0;
     border-radius: 10px;
     background-color: #fff;
+    .product-parameters {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      .label {
+        color: #646566;
+        font-size: 16px;
+        margin: 0 25px 0 18px;
+      }
+      div {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        color: #ccc;
+        .arrow {
+          margin-right: 15px;
+          font-size: 15px;
+        }
+      }
+    }
     .price-pay-message {
       // margin-top: 0.2rem;
       background-color: #ffffff;
