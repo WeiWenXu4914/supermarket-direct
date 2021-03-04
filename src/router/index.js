@@ -36,14 +36,14 @@ const routes = [
                     iskeepAlive: true 
                 } 
             },
-            { 
-                path: '/life', 
-                name: 'life', 
-                component: Life, 
-                meta: {
-                    iskeepAlive: true,
-                }
-            },
+            // { 
+            //     path: '/life', 
+            //     name: 'life', 
+            //     component: Life, 
+            //     meta: {
+            //         iskeepAlive: true,
+            //     }
+            // },
             { 
                 path: '/activity', 
                 name: 'activity', 
@@ -56,6 +56,14 @@ const routes = [
                 path: '/productList',
                 component: () => 
                     import('@/views/bazaar/productList'),
+                meta: {
+                    iskeepAlive: true
+                }
+            },
+            {
+                path: '/life',
+                component: () => 
+                    import('@/views/enterprise/index'),
                 meta: {
                     iskeepAlive: true
                 }

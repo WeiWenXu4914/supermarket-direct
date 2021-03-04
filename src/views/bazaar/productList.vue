@@ -63,7 +63,7 @@ export default {
             .then((res) => {
                 this.dataList = this.dataList.concat(res.data);
                 this.loading = false;
-                if (res.data < this.query.length) {
+                if (res.data.length < this.query.length) {
                     this.finished = true;
                 }
                 this.getDataStatus = false;
