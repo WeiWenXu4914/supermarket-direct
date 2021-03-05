@@ -12,11 +12,11 @@
                 <van-tab :title="item.province" v-for="(item,index) in category" :key="index">
                     <van-tabs 
                      type="card"
-                     v-model="cityActive" 
-                     @change="changeTab"
+                     v-model="cityActive"
                      color="#07c160"
                      background="#fff"
                      class="second-tab"
+                     @click="changeTab"
                     >
                         <van-tab :title="city" v-for="(city,index) in item.city" :key="index">
                             <enterprise
