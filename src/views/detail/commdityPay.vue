@@ -213,7 +213,7 @@
           <p>{{ item.mem_comment_text }}</p>
         </div>
         <div class="e4">
-          <div v-for="img in item.mem_comment_imgs" :key="img">
+          <div v-for="img in item.mem_comment_imgs" :key="img" class="img-wrapper">
             <van-image
               :src="img"
               width="2.5rem"
@@ -637,6 +637,8 @@ export default {
         });
         queryVal.cou_id = this.couponApply;
       }
+      //起售数量
+      queryVal.leastCount = this.leastCount;
 
       this.$router.push({
         path: "/pay",
@@ -679,12 +681,6 @@ export default {
     },
     toEditAddress() {
       this.$router.push({path:'/myaddress',query: { add: 1 } })
-      return;
-        if(this.setBydefault == true){
-          this.$router.push({path:'/myaddress',query: { add: 1 } })
-        }else{
-          this.$router.push({path:'/add',query: { add: 1 } })
-        }
     },
     PacmanModify() {
       
@@ -1056,6 +1052,11 @@ export default {
         height: 2.5rem;
         // margin-top: 0.5rem;
         margin-left: 0.3rem;
+      }
+      .img-wrapper {
+        display: inline-block;
+        margin-left: 15px;
+        padding-bottom: 10px;
       }
     }
   }

@@ -3,40 +3,31 @@
         <page-header :isAddShow="false"></page-header>
 
         <div class="content">
-            <van-tabs 
-             type="line"
-             v-model="active"
-             title-active-color="#07c160"
-             @change="changeTab"
+            <tabs 
+             @activeIndex="reciveIndex"
+             :navData="category"
             >
-                <van-tab :title="item.province" v-for="(item,index) in category" :key="index">
-                    <van-tabs 
-                     type="card"
-                     v-model="cityActive"
-                     color="#07c160"
-                     background="#fff"
-                     class="second-tab"
-                     @click="changeTab"
+                <div v-for="(item,index) in category" :key="index" v-show="index === active">
+                    <tabs 
+                    type="card"
+                    :navData="item.city"
+                    @activeIndex="reciveIndexChild"
                     >
-                        <van-tab :title="city" v-for="(city,index) in item.city" :key="index">
-                            <enterprise
-                             v-for="data in dataList"
-                             :key="data.entid"
-                             :data="data"
-                            />
+                        <enterprise
+                         v-for="data in dataList"
+                         :key="data.entid"
+                         :data="data"
+                        />
 
-                            <touch-bottom
-                             class="touch-bottom"
-                             :loading="loading"
-                             :finished="finished"
-                            />
-                        </van-tab>
-                    </van-tabs>
-                </van-tab>
-            </van-tabs>
+                        <touch-bottom
+                         class="touch-bottom"
+                         :loading="loading"
+                         :finished="finished"
+                        />
+                    </tabs>
+                </div>
+            </tabs>
         </div>
-
-        
 
         <transition name="van-fade">
             <div class="go-top" v-show="btnShow" @click="goTop">
@@ -51,11 +42,13 @@ import PageHeader from "@/components/PageHeader";
 import { enterpriseDisClass, enterpriseClass } from "./api/request";
 import enterprise from "./components/enterprise";
 import touchBottom from "@/components/touchBottom";
+import tabs from "./components/tabs";
 export default {
     components: {
         PageHeader,
         enterprise,
-        touchBottom
+        touchBottom,
+        tabs
     },
     
     data() {
@@ -89,13 +82,16 @@ export default {
         async getClassData() {
             const res = await enterpriseDisClass()
             this.category = res.data;
+            console.log(this.category)
         },
         async getData() {
             this.getDataStatus = true;
             this.query.ent_province = this.category[this.active].province;
             this.query.ent_city = this.category[this.active].city[this.cityActive];
+
             const res = await enterpriseClass(this.query)
             this.dataList = this.dataList.concat(res.data);
+
             this.loading = false;
             if (res.data.length < this.query.size) {
                 this.finished = true;
@@ -152,6 +148,23 @@ export default {
                 return (-c / 2) * (--t * (t - 2) - 1) + b;
             }
         },
+        reciveIndex(index) {
+            this.query.num = 0;
+            this.active = index;
+            this.cityActive = 0;
+            this.loading = true;
+            this.finished = false;
+            this.dataList = [];
+            this.getData()
+        },
+        reciveIndexChild(index) {
+            this.query.num = 0;
+            this.cityActive = index;
+            this.loading = true;
+            this.finished = false;
+            this.dataList = [];
+            this.getData();
+        }
     }
 }
 </script>

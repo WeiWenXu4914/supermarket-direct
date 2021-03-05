@@ -101,10 +101,16 @@
         产品参数
       </div>
       <div class="parameter-content">
-        <div class="parameter-item" v-for="item in parmaeterData.attr_param" :key="item.canName">
+        <!-- <div class="parameter-item" v-for="item in parmaeterData.attr_param" :key="item.canName">
           <span class="label">{{ item.canName }}：</span>
           <span class="content">{{ item.canCont }}</span>
-        </div>
+        </div> -->
+        <template v-for="item in parmaeterData.attr_param">
+          <div class="parameter-item" :key="item.canName" v-if="item.canCont">
+            <span class="label">{{ item.canName }}：</span>
+            <span class="content">{{ item.canCont }}</span>
+          </div>
+        </template>
       </div>
       <div class="parameter-bottom">
         <van-button color="linear-gradient(to right, #ff6034, #ee0a24)" class="button" @click="parametersStatus = false">
@@ -190,7 +196,7 @@ export default {
     if (this.$route.query.pay_num == undefined)
       return Toast("请返回选择购买数量");
     this.count = this.$route.query.pay_num;
-
+    this.leastCount = this.$route.query.leastCount;
     //配送状态
     if (this.$store.state.commodityState) {
       this.active = 1;
@@ -267,7 +273,6 @@ export default {
       productAttr(this.dataMsg.proid)
       .then((res) => {
         this.parmaeterData = res.data;
-        console.log(this.parmaeterData)
       })
     },
     setMonery(val, type) {
@@ -535,6 +540,7 @@ export default {
       .label {
         color: #000;
         padding: 0 20px;
+        white-space: nowrap;
       }
       .content {
         flex-grow: 1;
