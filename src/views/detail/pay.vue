@@ -264,7 +264,7 @@ export default {
   },
   methods: {
     getParmeters() {
-      productAttr(this.entid)
+      productAttr(this.dataMsg.proid)
       .then((res) => {
         this.parmaeterData = res.data;
         console.log(this.parmaeterData)
