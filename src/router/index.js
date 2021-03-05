@@ -1086,7 +1086,7 @@ const routes = [
         path: '/seeLogistics',
         component: () => 
             import('@/views/obligation/seeLogistics')
-    },
+    }
 ]
 
 const router = new VueRouter({
