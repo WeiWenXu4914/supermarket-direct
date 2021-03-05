@@ -36,14 +36,6 @@ const routes = [
                     iskeepAlive: true 
                 } 
             },
-            // { 
-            //     path: '/life', 
-            //     name: 'life', 
-            //     component: Life, 
-            //     meta: {
-            //         iskeepAlive: true,
-            //     }
-            // },
             { 
                 path: '/activity', 
                 name: 'activity', 

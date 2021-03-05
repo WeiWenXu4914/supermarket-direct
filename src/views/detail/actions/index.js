@@ -111,3 +111,7 @@ export function entSelfPickupSite(id) {
 export function searchSuperMarketList(obj) {
     return request('/api/searchSuperMarketList', 'get', obj);
 }
+//商品参数
+export function productAttr(id) {
+    return request(`/api/productAttr?pro_id=${id}`, 'get',);
+}

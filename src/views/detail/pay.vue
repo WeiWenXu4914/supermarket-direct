@@ -6,16 +6,6 @@
     </header>
 
     <div class="navigator-address">
-      <!-- <div class="navigator">
-        <button
-         v-for="(item,index) in menuList"
-         :key="index"
-         :class="active === index ? 'active' : ''"
-         @click="changeWay(index)"
-        >
-          {{ item.dw_name }}
-        </button>
-      </div> -->
       <div class="content">
         <my-address
           :showMsg="active"
@@ -45,7 +35,7 @@
             </div>
           </div>
           <div class="right">
-            <van-stepper v-model="count" />
+            <van-stepper v-model="count" :min="leastCount" :max="dataMsg.pro_inventory"/>
           </div>
         </div>
       </div>
@@ -80,13 +70,13 @@
         />
       </div>
 
-      <!-- <div class="product-parameters">
-        <span class="label">参数</span>
+      <div class="product-parameters" @click="parametersStatus = true">
+        <span class="label">参数：</span>
         <div>
-          <span class="describe">品牌 质地...</span>
+          <span class="describe">保质期 质地...</span>
           <van-icon name="arrow" class="arrow"/>
         </div>
-      </div> -->
+      </div>
     </div>
 
     <div style="width: 100%; height: 2.75rem"></div>
@@ -101,6 +91,27 @@
     <van-overlay :show="isPaying">
       <span class="overlay-text">正在为您进入支付环境</span>
     </van-overlay>
+
+    <van-popup
+     position="bottom" 
+     round 
+     v-model="parametersStatus"
+    >
+      <div class="parameter-title">
+        产品参数
+      </div>
+      <div class="parameter-content">
+        <div class="parameter-item" v-for="item in parmaeterData.attr_param" :key="item.canName">
+          <span class="label">{{ item.canName }}：</span>
+          <span class="content">{{ item.canCont }}</span>
+        </div>
+      </div>
+      <div class="parameter-bottom">
+        <van-button color="linear-gradient(to right, #ff6034, #ee0a24)" class="button" @click="parametersStatus = false">
+          返回
+        </van-button>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -115,6 +126,7 @@ import {
   orderDel,
   orderState,
   DeliveryWay,
+  productAttr
 } from "./actions/index";
 export default {
   components: {
@@ -126,6 +138,7 @@ export default {
       dataMsg: "",
       price: 0, //单价
       count: 1,
+      leastCount: 1,
       textValue: "",
       wxMsg: {},
       //下单编号/时间
@@ -144,6 +157,8 @@ export default {
       couMoney: "",
       cou_id: "",
       isPaying: false, //是否正在支付
+      parametersStatus: false,
+      parmaeterData: {}
     };
   },
   beforeCreate() {
@@ -160,9 +175,11 @@ export default {
   },
   watch: {
     count(val) {
-      
       if (val > this.dataMsg.pro_inventory) {
         this.count = this.dataMsg.pro_inventory;
+      }
+      if (val < this.leastCount) {
+        this.count = this.leastCount;
       }
     }
   },
@@ -207,6 +224,8 @@ export default {
       .catch((res) => {
         Toast.fail("获取菜单失败");
       });
+
+    this.getParmeters();
   },
   computed: {
     totalPrice() {
@@ -244,6 +263,13 @@ export default {
     },
   },
   methods: {
+    getParmeters() {
+      productAttr(this.dataMsg.proid)
+      .then((res) => {
+        this.parmaeterData = res.data;
+        console.log(this.parmaeterData)
+      })
+    },
     setMonery(val, type) {
       if (val == "") {
         return "0.00";
@@ -485,6 +511,49 @@ export default {
   min-height: 100vh;
   // background: linear-gradient(to bottom,#F50 0%,#FF7D01 10%,#FBD870 20%,#F2F2F2 30%);
   background-color: #f2f2f2;
+  .parameter-title {
+    font-size: 18px;
+    width: 100%;
+    color: #393A3C;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .parameter-content {
+    height: 60vh;
+    width: 100%;
+    overflow: scroll;
+    .parameter-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+      min-height: 60px;
+      .label {
+        color: #000;
+        padding: 0 20px;
+      }
+      .content {
+        flex-grow: 1;
+        color: #757575;
+      }
+    }
+  }
+  .parameter-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 70px;
+    .button {
+      
+      width: 80%;
+      border-radius: 50px;
+    }
+  }
   > header {
     display: flex;
     position: relative;
@@ -822,10 +891,11 @@ export default {
       display: flex;
       width: 100%;
       justify-content: space-between;
+      padding-bottom: 10px;
       .label {
         color: #646566;
         font-size: 16px;
-        margin: 0 25px 0 18px;
+        margin: 0 11px 0 18px;
       }
       div {
         flex-grow: 1;
