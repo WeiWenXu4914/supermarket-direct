@@ -6,16 +6,6 @@
     </header>
 
     <div class="navigator-address">
-      <!-- <div class="navigator">
-        <button
-         v-for="(item,index) in menuList"
-         :key="index"
-         :class="active === index ? 'active' : ''"
-         @click="changeWay(index)"
-        >
-          {{ item.dw_name }}
-        </button>
-      </div> -->
       <div class="content">
         <my-address
           :showMsg="active"
@@ -45,7 +35,7 @@
             </div>
           </div>
           <div class="right">
-            <van-stepper v-model="count" />
+            <van-stepper v-model="count" :min="leastCount" :max="dataMsg.pro_inventory"/>
           </div>
         </div>
       </div>
@@ -148,6 +138,7 @@ export default {
       dataMsg: "",
       price: 0, //单价
       count: 1,
+      leastCount: 1,
       textValue: "",
       wxMsg: {},
       //下单编号/时间
@@ -186,6 +177,9 @@ export default {
     count(val) {
       if (val > this.dataMsg.pro_inventory) {
         this.count = this.dataMsg.pro_inventory;
+      }
+      if (val < this.leastCount) {
+        this.count = this.leastCount;
       }
     }
   },
@@ -544,7 +538,7 @@ export default {
       }
       .content {
         flex-grow: 1;
-        color: #686868;
+        color: #757575;
       }
     }
   }

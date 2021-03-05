@@ -36,6 +36,9 @@
       <div class="price">
         <p class="s1">￥</p>
         <p class="s2">{{ proDetail.pro_price }}</p>
+        <div class="init-count" v-if="leastCount > 1">
+           <span>{{ leastCount }}</span> 件起售
+        </div>
       </div>
       <div class="product-desc">
         <h3>{{ proDetail.pro_name }}</h3>
@@ -306,7 +309,8 @@ export default {
       countAll: 0, //全部库存数量 -1
       address: {},
       forwardMark: false,
-      isSiteNull: false
+      isSiteNull: false,
+      leastCount: 1,
     };
   },
   created() {
@@ -349,11 +353,12 @@ export default {
   watch: {
     countChoose: function (newVal, oldVal) {
       this.proDetail.pro_inventory = this.countAll - this.countChoose;
-      if (parseInt(this.countAll) - parseInt(this.countChoose) < 0) {
+
+      if (parseInt(this.countAll) - parseInt(this.countChoose) < parseInt(this.leastCount)) {
         this.proDetail.pro_inventory = 0;
-        this.countChoose = this.countAll;
+        this.countChoose = this.leastCount;
       } else if (this.countChoose == "" && parseInt(this.countChoose) === 0) {
-        this.countChoose = 1;
+        this.countChoose = this.leastCount;
       }
     },
   },
@@ -373,8 +378,8 @@ export default {
     },
     //限制输入数量
     countNum() {
-      if (this.countChoose == 0) {
-        this.countChoose = 1;
+      if (this.countChoose <= this.leastCount) {
+        this.countChoose = this.leastCount;
       }
     },
     showImg(e) {
@@ -463,7 +468,7 @@ export default {
 
         this.proDetail = res.data[0];
 
-        if (this.proDetail.pro_inventory == 0) {
+        if (this.proDetail.pro_inventory < this.leastCount) {
           Toast("该商品已无库存，请挑选其他商品");
           this.canNotPay = true;
         }
@@ -477,6 +482,9 @@ export default {
         if (res.data[0].is_collect == 1) {
           this.collctionState = true;
         }
+
+        //初始化购买数量
+        this.countChoose = this.leastCount;
         setTimeout(function () {
           Toast.clear();
         }, 200);
@@ -574,23 +582,22 @@ export default {
 
       this.countChoose++;
       this.proDetail.pro_inventory--;
-      // let total = this.countChoose * ((this.proDetail.pro_price * 100) / 100);
-      // this.price = total < 0 ? 0 : total.toFixed(2);
     },
     // 下单商品数量减少
     decreaseNum() {
-      if (this.countChoose > 1) {
+      if (this.countChoose > this.leastCount) {
         this.countChoose--;
         this.countChoose = parseInt(this.countChoose);
         this.proDetail.pro_inventory++;
-        // this.price = total < 0 ? 0 : total.toFixed(2);
+      } else {
+        Toast(`此商品${this.leastCount}件起售`)
       }
     },
     // 关闭面板
     closeChoose() {
       this.numShow = false;
       this.couponApply = false;
-      this.countChoose = 1;
+      this.countChoose = this.leastCount;
     },
     // 立即下单
     confirmNum() {
@@ -830,6 +837,19 @@ export default {
         color: #d04443;
         font-size: 0.7rem;
         font-weight: bold;
+      }
+      .init-count {
+        transform: translateY(-10%);
+        display: inline-block;
+        margin-left: 20px;
+        font-size: 14px;
+        color: #d04443;
+        padding: 2px 5px;
+        border: 1px solid #d04443;
+        span {
+          color: red;
+          font-size: 16px;
+        }
       }
       button {
         border: 1px solid #d04443;
