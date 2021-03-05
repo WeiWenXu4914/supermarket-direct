@@ -11,10 +11,12 @@
             >
                 <van-tab :title="item.province" v-for="(item,index) in category" :key="index">
                     <van-tabs 
-                    type="card" 
-                    v-model="cityActive" 
-                    @change="changeTab"
-                    background="#fff"
+                     type="card"
+                     v-model="cityActive" 
+                     @change="changeTab"
+                     color="#07c160"
+                     background="#fff"
+                     class="second-tab"
                     >
                         <van-tab :title="city" v-for="(city,index) in item.city" :key="index">
                             <enterprise
@@ -170,6 +172,11 @@ export default {
             margin: 0;
             border-left: none;
             border-right: 0;
+        }
+        .second-tab {
+            .van-tab--active {
+                font-size: 15px;
+            }
         }
     }
     .go-top {
