@@ -76,17 +76,23 @@ export default {
         .then((res) => {
             if(res) {
                 this.dataList = res.data;     
-                Toast.loading({
-                    duration: 1
-                });
+                console.log(this.dataList)
             }
+            Toast.loading({
+                duration: 1
+            });
         })
         .catch((err) => {
             Toast.fail("获取信息失败，请重试");
+            Toast.loading({
+                duration: 1
+            });
         })
     },
     methods: {
         toDetail(val) {
+            console.log(val)
+
             if(val.type == 2) {//换货
                 this.$router.push({
                     path: '/exchangeReject',
@@ -112,7 +118,8 @@ export default {
                         path: '/afterSaleRefundOnly',
                         query: {
                             ora_id: val.ora_id,
-                            type: val.type    // type 0退款 1 退款退货  2.换货
+                            type: val.type,    // type 0退款 1 退款退货  2.换货
+                            order_number: val.order_number
                         }
                     });
                 }else {//其他状态处理
@@ -122,7 +129,8 @@ export default {
                         query: {
                             ora_id: val.ora_id,
                             state: val.state, 
-                            type: val.type    
+                            type: val.type,
+                            order_number: val.order_number    
                         }
                     });
                 }

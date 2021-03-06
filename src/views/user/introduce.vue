@@ -24,6 +24,9 @@ export default {
       val: ''
     }
   },
+  created() {
+    this.val = this.$route.query.data;
+  },
   methods: {
     // 修改个人介绍
     async pushIntors () {

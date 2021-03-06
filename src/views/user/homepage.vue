@@ -284,7 +284,13 @@ export default {
     goUserIntro(type) {
       if (this.showHandle) {
         if (type == 2) {
-          this.$router.push("/user/introduce");
+          console.log("aaa")
+          this.$router.push({
+            path: "/user/introduce",
+            query: {
+              data: this.userInner.userInfo.mem_intros
+            }
+          });
         } else {
           var obj = {
             memid: 1,

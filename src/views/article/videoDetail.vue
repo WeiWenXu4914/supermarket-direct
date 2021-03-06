@@ -13,6 +13,7 @@
     <div class="video-area">
       <video
         ref="video"
+        @canplay="canplay"
         :class="videoStyle"
         :src="dataAll.graphic_video_path"
         :poster="dataAll.graphic_surface_plot"
@@ -279,6 +280,12 @@ export default {
     },
   },
   methods: {
+    canplay() {
+      let ua = navigator.userAgent;
+      if ( !ua.match(/iPhone/i) ) {
+        this.$refs.video.play();
+      }
+    },
     toStore() {
       let obj = {
         entid: this.dataAll.rel_id,
@@ -511,7 +518,7 @@ export default {
               this.dataAll.mem_attention_state == 0 ? false : true;
             this.isCollection =
               this.dataAll.mem_collect == "已收藏" ? true : false;
-            this.$refs.video.play();
+            // this.$refs.video.play();
 
             this.userIndex();
           } else {

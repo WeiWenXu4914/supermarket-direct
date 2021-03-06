@@ -146,12 +146,12 @@
               </div>
               <div class="item-con">评价</div>
             </div>
-            <!-- <div class="item" @click="toAllAfterSale">
+            <div class="item" @click="toAllAfterSale">
             <div class="item-img">
               <img src="./img/售后.png" alt="" />
             </div>
             <div class="item-con">退款/售后</div>
-          </div> -->
+          </div>
           </div>
         </div>
       </div>
@@ -299,12 +299,6 @@
 
 <script>
 import * as libao from "../../assets/lottie/libao.json";
-// animationData.assets.forEach((item) => {
-//   item.u = '';
-//   if (item.w && item.h) {
-//       item.p = require(`../../assets/lottie/images/${item.p}`);
-//   }
-// }); // 获取静态资源
 import PageTitle from "@/components/PageTitle";
 import zu from "./img/组 1.png";
 import { userInfo, userIndex, userHome } from "./actions";

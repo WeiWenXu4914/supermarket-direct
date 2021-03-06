@@ -36,6 +36,7 @@
       <div class="price">
         <p class="s1">￥</p>
         <p class="s2">{{ proDetail.pro_price }}</p>
+        <span class="original-price" v-if="linePrice">￥{{ linePrice }}</span>
         <div class="init-count" v-if="leastCount > 1">
            <span>{{ leastCount }}</span> 件起售
         </div>
@@ -311,6 +312,7 @@ export default {
       forwardMark: false,
       isSiteNull: false,
       leastCount: 1,
+      linePrice: 5,
     };
   },
   created() {
@@ -342,15 +344,15 @@ export default {
     
     
   },
-  beforeCreate() {
-		Toast.loading({
-			message: '加载中...',
-			forbidClick: true,
-			loadingType: 'spinner',
-			overlay: true,
-			duration:0
-		});
-  },
+  // beforeCreate() {
+	// 	Toast.loading({
+	// 		message: '加载中...',
+	// 		forbidClick: true,
+	// 		loadingType: 'spinner',
+	// 		overlay: true,
+	// 		duration:0
+	// 	});
+  // },
   watch: {
     countChoose: function (newVal, oldVal) {
       this.proDetail.pro_inventory = this.countAll - this.countChoose;
@@ -466,10 +468,12 @@ export default {
           Toast("商品未上架或已删除");
           this.$router.go(-1);
         }
-        
+
         this.proDetail = res.data[0];
         //初始化起售数量
         this.leastCount = this.proDetail.leastCount;
+        this.linePrice = this.proDetail.linePrice;
+
         if (this.proDetail.pro_inventory < this.leastCount) {
           Toast("该商品已无库存，请挑选其他商品");
           this.canNotPay = true;
@@ -836,7 +840,16 @@ export default {
         font-size: 0.7rem;
         font-weight: bold;
       }
+      .original-price {
+        margin-left: 5px;
+        color: gray;
+        font-size: 16px;
+        text-decoration: line-through;
+      }
       .init-count {
+        position: absolute;
+        right: 20px;
+        top: 20px;
         transform: translateY(-10%);
         display: inline-block;
         margin-left: 20px;

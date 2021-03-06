@@ -27,7 +27,7 @@
 <script>
 import PageHeader from "@/components/PageHeader";
 import GoodsItem from './component/GoodsItem';
-import { productList } from "./actions/index";
+import { productList, AppProductClass } from "./actions/index";
 import touchBottom from "@/components/touchBottom";
 export default {
     components: {
@@ -131,7 +131,7 @@ export default {
         // padding-bottom: 120px;
         width: 100vw;
         .goods-item {
-            margin-top: 6px;
+            margin-top: 5px;
         }
         .goods-item:nth-of-type(odd) {
             margin-left: 5px;
