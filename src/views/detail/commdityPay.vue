@@ -340,6 +340,7 @@ export default {
       this.getproductCouponMem();
     }
     
+    
   },
   beforeCreate() {
 		Toast.loading({
@@ -465,9 +466,10 @@ export default {
           Toast("商品未上架或已删除");
           this.$router.go(-1);
         }
-
+        
         this.proDetail = res.data[0];
-
+        //初始化起售数量
+        this.leastCount = this.proDetail.leastCount;
         if (this.proDetail.pro_inventory < this.leastCount) {
           Toast("该商品已无库存，请挑选其他商品");
           this.canNotPay = true;
