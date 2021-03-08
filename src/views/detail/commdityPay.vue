@@ -520,7 +520,10 @@ export default {
           this.countAll = this.proDetail.pro_inventory;
         }
 
-        this.proDetailL = res.data[0].pro_carousel.length;
+        if(res.data[0].pro_carousel_id != "") {
+          this.proDetailL = res.data[0].pro_carousel.length;
+        }
+        
         this.price = parseFloat(res.data[0].pro_price).toFixed(2);
         if (res.data[0].is_collect == 1) {
           this.collctionState = true;
