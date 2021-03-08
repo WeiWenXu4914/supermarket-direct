@@ -1,15 +1,21 @@
 <template>
     <div class="goods-product-list" @scroll="scrollListener" ref="goods-product-list">
         <page-header ref="pageHeader" :isAddShow="false" />
-        
-        <div class="content-wrapper">
-            <Goods-item
-             v-for="item in dataList" 
-             :key="item.proid" 
-             class="goods-item"
-             :data="item"
-            />
-        </div>
+
+        <pro-tabs 
+         :navData="navData" 
+         type="card"
+         @activeTab="changeTab"
+        >
+            <div class="content-wrapper">
+                <Goods-item
+                v-for="item in dataList" 
+                :key="item.proid" 
+                class="goods-item"
+                :data="item"
+                />
+            </div>
+        </pro-tabs>
 
         <touch-bottom
          :loading="loading"
@@ -29,28 +35,32 @@ import PageHeader from "@/components/PageHeader";
 import GoodsItem from './component/GoodsItem';
 import { productList, AppProductClass } from "./actions/index";
 import touchBottom from "@/components/touchBottom";
+import proTabs from "./component/proTabs";
 export default {
     components: {
         GoodsItem,
         PageHeader,
-        touchBottom
+        touchBottom,
+        proTabs,
     },
     data() {
         return {
             dataList: [],
             query: {
                 offset: 1,
-                length: 20
+                length: 20,
             },
             loading: false,
             finished: false,
             getDataStatus: false,
             btnShow: false,
             scrollTop: "",
+            navData: ['全部商品'],
         }
     },
-    created() {
-        this.getData()
+    async created() {
+        await this.getNavData();
+        this.getData();
     },
     activated() {
         const dom = this.$refs["goods-product-list"];
@@ -69,22 +79,37 @@ export default {
                 this.getDataStatus = false;
             })
         },
+        async getNavData() {
+            const res = await AppProductClass();
+            this.navData.push(...res.data);
+        },
+        changeTab(item) {
+            this.query.classid = item.classid;
+            this.query.offset = 1;
+            this.dataList = [];
+            this.loading = true;
+            this.finished = false;
+            this.getData();
+        },
         scrollListener(e) {
-            let contentHeight = e.target.scrollHeight;
-            let clientHeight = e.target.clientHeight;
-            let scorllTop = e.target.scrollTop;
-            this.scrollTop = scorllTop;
-            if (scorllTop + clientHeight == contentHeight && !this.getDataStatus) {
-                this.loading = true;
-                this.query.offset++;
-                this.getData();
-            }
             if (e.target.scrollTop <= 150) {
                 this.btnShow = false;
             }
             if (e.target.scrollTop >= 400) {
                 this.btnShow = true;
             }
+
+
+            let contentHeight = e.target.scrollHeight;
+            let clientHeight = e.target.clientHeight;
+            let scorllTop = e.target.scrollTop;
+            this.scrollTop = scorllTop;
+            if (scorllTop + clientHeight == contentHeight && !this.getDataStatus && !this.finished) {
+                this.loading = true;
+                this.query.offset++;
+                this.getData();
+            }
+            
         },
         goTop() {
             const dom = this.$refs["goods-product-list"];
@@ -127,8 +152,6 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        margin-top: 44px;
-        // padding-bottom: 120px;
         width: 100vw;
         .goods-item {
             margin-top: 5px;

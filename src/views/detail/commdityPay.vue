@@ -387,7 +387,7 @@ export default {
   // },
   watch: {
     countChoose: function (newVal, oldVal) {
-      this.proDetail.pro_inventory = this.countAll - this.countChoose;
+      this.proDetail.pro_inventory = parseInt(this.countAll) - parseInt(this.countChoose);
 
       if (parseInt(this.countAll) - parseInt(this.countChoose) < parseInt(this.leastCount)) {
         this.proDetail.pro_inventory = 0;
@@ -413,13 +413,6 @@ export default {
       productAttr(this.proDetail.proid)
       .then((res) => {
         this.parmaeterData = res.data;
-        console.log(this.parmaeterData)
-        // this.parmaeterData.attr_param.forEach((item,index) => {
-        //   if (!item.canCont) {
-        //     this.parmaeterData.attr_param.splice(index, 1)
-        //   }
-        // })
-        console.log(this.parmaeterData)
       })
     },
     //限制输入数量
@@ -767,6 +760,7 @@ export default {
   mounted() {
     document.addEventListener("scroll", this.scroll);
     this.getAddress();
+
   },
 };
 </script>

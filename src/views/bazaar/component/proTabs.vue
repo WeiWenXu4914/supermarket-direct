@@ -1,14 +1,14 @@
 <template>
-    <div class="privite-tabs-com-enterprise">
+    <div class="privite-tabs-com">
         <div class="tabs-wrapper-card" v-if="type == 'card'" ref="tabs-wrapper-card">
             <div 
              v-for="(item,index) in navData" 
              :key="item"
              ref="tabs-wrapper-card-item"
-             @click="changeTab(index,'card')"
+             @click="changeTab(index,item,'card')"
              :class="[active == index ? 'active-style' : '', navData.length < 2 ? 'item-less' : '']"
              class="item-nav">
-                {{ item.province || item}}
+                {{ item.pro_class_name || item}}
             </div>
         </div>
         <div class="tabs-wrapper-text" v-else ref="tabs-wrapper-text">
@@ -16,13 +16,12 @@
              v-for="(item,index) in navData" 
              :key="item"
              ref="tabs-wrapper-text-item"
-             @click="changeTab(index,'text')"
+             @click="changeTab(index,item,'text')"
              :class="[active == index ? 'active-style' : '']"
              class="item-nav">
-                {{ item.province || item}}
+                {{ item.pro_class_name || item}}
             </div>
         </div>
-        
         <slot></slot>
     </div>
 </template>
@@ -36,9 +35,10 @@ export default {
         }
     },
     methods: {
-        changeTab(index, type) {
+        changeTab(index, item,type) {
+            if (index === this.index) return;
             this.active = index;
-            this.$emit('activeIndex', this.active);
+            this.$emit('activeTab', item);
 
             this.caculateScrollPosition(index,type);
         },
@@ -46,7 +46,7 @@ export default {
             const dom = this.$refs[`tabs-wrapper-${type}-item`][index];
             const domWrapper = this.$refs[`tabs-wrapper-${type}`];
             // domWrapper.scrollLeft = dom.offsetLeft - dom.offsetWidth;
-            let marginLeft = dom.offsetLeft - dom.offsetWidth * 1.5;
+            let marginLeft = dom.offsetLeft - dom.offsetWidth * 2;
             domWrapper.scrollLeft = marginLeft;
         }
     }
@@ -54,9 +54,9 @@ export default {
 </script>
 
 <style lang="less">
-.privite-tabs-com-enterprise {
+.privite-tabs-com {
     width: 100%;
-    height: calc(100vh - 44px);
+    margin-top: 44px;
     .tabs-wrapper-text {
         display: flex;
         width: 100%;
@@ -80,7 +80,7 @@ export default {
         padding: 7px 0;
         border-top: 1px solid #E3E3E3;
         border-bottom: 1px solid #E3E3E3;
-        background-color: #F0EFF4;
+        background-color: #fff;
         .item-nav {
             white-space: nowrap;
             font-size: 15px;
@@ -90,8 +90,10 @@ export default {
             color: #666666;
         }
         .active-style {
-            background-color: #07c160;
+            // background-color: #07c160;
+            background-color: #00ae9d;
             white-space: nowrap;
+            padding: 3px 14px;
             color: #fff;
         }
     }
