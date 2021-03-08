@@ -57,7 +57,7 @@ export default {
             cityActive: 0,
             category: [],
             query: {
-                num: 0,
+                num: 1,
                 size: 10,
                 ent_province: "",
                 ent_city: ""
@@ -149,7 +149,7 @@ export default {
             }
         },
         reciveIndex(index) {
-            this.query.num = 0;
+            this.query.num = 1;
             this.active = index;
             this.cityActive = 0;
             this.loading = true;
@@ -158,7 +158,7 @@ export default {
             this.getData()
         },
         reciveIndexChild(index) {
-            this.query.num = 0;
+            this.query.num = 1;
             this.cityActive = index;
             this.loading = true;
             this.finished = false;
