@@ -69,14 +69,6 @@
           size="large"
         />
       </div>
-
-      <div class="product-parameters" @click="parametersStatus = true">
-        <span class="label">参数：</span>
-        <div>
-          <span class="describe">保质期 质地...</span>
-          <van-icon name="arrow" class="arrow"/>
-        </div>
-      </div>
     </div>
 
     <div style="width: 100%; height: 2.75rem"></div>
@@ -92,32 +84,6 @@
       <span class="overlay-text">正在为您进入支付环境</span>
     </van-overlay>
 
-    <van-popup
-     position="bottom" 
-     round 
-     v-model="parametersStatus"
-    >
-      <div class="parameter-title">
-        产品参数
-      </div>
-      <div class="parameter-content">
-        <!-- <div class="parameter-item" v-for="item in parmaeterData.attr_param" :key="item.canName">
-          <span class="label">{{ item.canName }}：</span>
-          <span class="content">{{ item.canCont }}</span>
-        </div> -->
-        <template v-for="item in parmaeterData.attr_param">
-          <div class="parameter-item" :key="item.canName" v-if="item.canCont">
-            <span class="label">{{ item.canName }}：</span>
-            <span class="content">{{ item.canCont }}</span>
-          </div>
-        </template>
-      </div>
-      <div class="parameter-bottom">
-        <van-button color="linear-gradient(to right, #ff6034, #ee0a24)" class="button" @click="parametersStatus = false">
-          返回
-        </van-button>
-      </div>
-    </van-popup>
   </div>
 </template>
 
@@ -231,7 +197,6 @@ export default {
         Toast.fail("获取菜单失败");
       });
 
-    this.getParmeters();
   },
   computed: {
     totalPrice() {
@@ -269,12 +234,6 @@ export default {
     },
   },
   methods: {
-    getParmeters() {
-      productAttr(this.dataMsg.proid)
-      .then((res) => {
-        this.parmaeterData = res.data;
-      })
-    },
     setMonery(val, type) {
       if (val == "") {
         return "0.00";
@@ -555,7 +514,6 @@ export default {
     width: 100%;
     height: 70px;
     .button {
-      
       width: 80%;
       border-radius: 50px;
     }
