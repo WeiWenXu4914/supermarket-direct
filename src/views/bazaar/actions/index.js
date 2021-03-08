@@ -12,8 +12,15 @@ export const phoneList = (query) => {
   return request('/api/phoneList', 'post', query)
 }
 /**
- * 生活服务
+ * 商品列表
  */
 export const productList = (query) => {
   return request('/api/productListNew', 'post', query)
+}
+
+/**
+ * 商品分类
+ */
+ export const AppProductClass = (query) => {
+  return request('/api/AppProductClass', 'post', query)
 }

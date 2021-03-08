@@ -32,6 +32,15 @@ export default {
         padding: 14px 0 0px 0;
         margin-left: 5%;
     }
+    .van-card__title {
+        width: 180px;
+        height: auto;
+        overflow: auto;
+        max-height: 50px;
+    }
+    .van-multi-ellipsis--l2 {
+        overflow: auto;
+    }
     .commodity {
         
         background-color: #fff;

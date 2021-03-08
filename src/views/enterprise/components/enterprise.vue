@@ -3,7 +3,6 @@
         <div class="content-item" @click="userHandle">
             <van-image
              :src="data.ent_logo"
-             v-if="data.ent_name"
              class="image"
              width="55"
              height="55"
@@ -59,21 +58,26 @@ export default {
 .enterprise-list {
     width: 100vw;
     height: min-content;
-    .image {
-        margin-left: 10px;
-    }
+    
     .content-item {
         display: flex;
-        width: 100%;
+        width: 100vw;
+        overflow: hidden;
         height: min-content;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #ccc;
+        .image {
+            min-width: 55px;
+            height: 55px;
+            margin-left: 10px;
+        }
         .message-right {
             flex: 1;
             display: flex;
             align-items: center;
+            width: 248px;
             justify-content: space-between;
             .enterprise-message {
                 width: 80%;

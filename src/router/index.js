@@ -6,8 +6,6 @@ const Layout = () =>
     import ('@/views/Layout')
 const Home = () =>
     import ('@/views/home')
-const Life = () =>
-    import ('@/views/life')
 const Activity = () =>
     import ('@/views/activity')
 const Mall = () =>

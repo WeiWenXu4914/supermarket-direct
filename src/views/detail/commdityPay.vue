@@ -36,6 +36,7 @@
       <div class="price">
         <p class="s1">￥</p>
         <p class="s2">{{ proDetail.pro_price }}</p>
+        <span class="original-price" v-if="linePrice">￥{{ linePrice }}</span>
         <div class="init-count" v-if="leastCount > 1">
            <span>{{ leastCount }}</span> 件起售
         </div>
@@ -64,6 +65,12 @@
       <span>送至</span>
       <span v-if="address.city">{{ address.province }} {{ address.city }} {{ address.district }} {{ address.detailed_site }}</span>
       <span v-else>请添加默认地址</span>
+      <van-icon class="icon" name="arrow" :color="isSiteNull ? 'red' : ''"/>
+    </div>
+    <!--地址-->
+    <div @click="parametersStatus = true" :class="isSiteNull ? 'tipWarn' : 'address'" v-if="parmaeterData.attr_param">
+      <span>参数</span>
+      <span>规格参数 保质期 质地 ...</span>
       <van-icon class="icon" name="arrow" :color="isSiteNull ? 'red' : ''"/>
     </div>
     <!--商品详情图片-->
@@ -272,6 +279,30 @@
         </div>
       </div>
     </transition>
+
+    <van-popup
+     position="bottom" 
+     round 
+     v-model="parametersStatus"
+    >
+      <div class="parameter-title">
+        产品参数
+      </div>
+      <div class="parameter-content" v-if="parmaeterData.attr_param">
+        <template v-for="item in parmaeterData.attr_param">
+          <div class="parameter-item" :key="item.canName" v-if="item.canCont">
+            <span class="label">{{ item.canName }}：</span>
+            <span class="content">{{ item.canCont }}</span>
+          </div>
+        </template>
+      </div>
+      <div class="parameter-bottom">
+        <van-button color="linear-gradient(to right, #ff6034, #ee0a24)" class="button" @click="parametersStatus = false">
+          返回
+        </van-button>
+      </div>
+    </van-popup>
+
   </div>
 </template>
 
@@ -284,6 +315,7 @@ import {
   memberCollect,
   memberCommentList,
   shippingAddress,
+  productAttr,
 } from "./actions/index.js";
 import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon, ImagePreview } from "vant";
 import { wxJSSDK } from "@/utils/wxshare.js";
@@ -311,6 +343,9 @@ export default {
       forwardMark: false,
       isSiteNull: false,
       leastCount: 1,
+      linePrice: null,
+      parametersStatus: false,
+      parmaeterData: {},
     };
   },
   created() {
@@ -340,17 +375,16 @@ export default {
       this.getproductCouponMem();
     }
     
-    
   },
-  beforeCreate() {
-		Toast.loading({
-			message: '加载中...',
-			forbidClick: true,
-			loadingType: 'spinner',
-			overlay: true,
-			duration:0
-		});
-  },
+  // beforeCreate() {
+	// 	Toast.loading({
+	// 		message: '加载中...',
+	// 		forbidClick: true,
+	// 		loadingType: 'spinner',
+	// 		overlay: true,
+	// 		duration:0
+	// 	});
+  // },
   watch: {
     countChoose: function (newVal, oldVal) {
       this.proDetail.pro_inventory = this.countAll - this.countChoose;
@@ -374,8 +408,19 @@ export default {
     },
   },
   methods: {
-    //修改组件input框状态
-    cancel() {
+    //产品参数
+    getParmeters() {
+      productAttr(this.proDetail.proid)
+      .then((res) => {
+        this.parmaeterData = res.data;
+        console.log(this.parmaeterData)
+        // this.parmaeterData.attr_param.forEach((item,index) => {
+        //   if (!item.canCont) {
+        //     this.parmaeterData.attr_param.splice(index, 1)
+        //   }
+        // })
+        console.log(this.parmaeterData)
+      })
     },
     //限制输入数量
     countNum() {
@@ -466,10 +511,13 @@ export default {
           Toast("商品未上架或已删除");
           this.$router.go(-1);
         }
-        
+
         this.proDetail = res.data[0];
+        this.getParmeters();
         //初始化起售数量
         this.leastCount = this.proDetail.leastCount;
+        this.linePrice = this.proDetail.linePrice;
+
         if (this.proDetail.pro_inventory < this.leastCount) {
           Toast("该商品已无库存，请挑选其他商品");
           this.canNotPay = true;
@@ -730,6 +778,50 @@ export default {
 .detailPay {
   width: 100%;
   background-color: rgb(247, 247, 247);
+  .parameter-title {
+    font-size: 18px;
+    width: 100%;
+    color: #393A3C;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .parameter-content {
+    height: 60vh;
+    width: 100%;
+    overflow: scroll;
+    .parameter-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+      min-height: 60px;
+      .label {
+        color: #000;
+        padding: 0 20px;
+        white-space: nowrap;
+      }
+      .content {
+        margin-top: 0;
+        flex-grow: 1;
+        color: #757575;
+      }
+    }
+  }
+  .parameter-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 70px;
+    .button {
+      width: 80%;
+      border-radius: 50px;
+    }
+  }
   .navigator-detail-pay {
     position: absolute;
     z-index: 1;
@@ -839,7 +931,16 @@ export default {
         font-size: 0.7rem;
         font-weight: bold;
       }
+      .original-price {
+        margin-left: 5px;
+        color: gray;
+        font-size: 16px;
+        text-decoration: line-through;
+      }
       .init-count {
+        position: absolute;
+        right: 20px;
+        top: 20px;
         transform: translateY(-10%);
         display: inline-block;
         margin-left: 20px;
