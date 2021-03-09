@@ -1,11 +1,11 @@
 <template>
     <div class="privite-tabs-com-enterprise">
-        <div class="tabs-wrapper-card" v-if="type == 'card'" ref="tabs-wrapper-card">
+        <div class="tabs-wrapper-card" v-if="type == 'card'" ref="tabs-wrapper-card" v-show="navData">
             <div 
-             v-for="(item,index) in navData" 
+             v-for="(item,index) in navData"
              :key="item"
              ref="tabs-wrapper-card-item"
-             @click="changeTab(index,'card')"
+             @click="changeTab(index,'card', item)"
              :class="[active == index ? 'active-style' : '', navData.length < 2 ? 'item-less' : '']"
              class="item-nav">
                 {{ item.province || item}}
@@ -16,7 +16,7 @@
              v-for="(item,index) in navData" 
              :key="item"
              ref="tabs-wrapper-text-item"
-             @click="changeTab(index,'text')"
+             @click="changeTab(index,'text', item)"
              :class="[active == index ? 'active-style' : '']"
              class="item-nav">
                 {{ item.province || item}}
@@ -36,10 +36,9 @@ export default {
         }
     },
     methods: {
-        changeTab(index, type) {
+        changeTab(index, type, item) {
             this.active = index;
             this.$emit('activeIndex', this.active);
-
             this.caculateScrollPosition(index,type);
         },
         caculateScrollPosition(index, type) {
@@ -63,6 +62,7 @@ export default {
         height: 45px;
         align-items: center;
         overflow: scroll;
+        border-bottom: 1px solid #E3E3E3;
         .item-nav {
             white-space: nowrap;
             font-size: 15px;
@@ -78,7 +78,7 @@ export default {
         overflow: scroll;
         display: flex;
         padding: 7px 0;
-        border-top: 1px solid #E3E3E3;
+        // border-top: 1px solid #E3E3E3;
         border-bottom: 1px solid #E3E3E3;
         background-color: #F0EFF4;
         .item-nav {

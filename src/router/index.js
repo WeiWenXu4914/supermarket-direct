@@ -495,7 +495,10 @@ const routes = [
         path: '/all',
         name: 'all',
         component: () =>
-            import('../views/obligation/all')
+            import('../views/obligation/all'),
+        meta: {
+            iskeepAlive: true
+        }
     },
     {//订单详情
         path: '/orderDetail',

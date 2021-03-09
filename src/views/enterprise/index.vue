@@ -55,7 +55,7 @@ export default {
         return {
             active: 0,
             cityActive: 0,
-            category: [],
+            category: ['全部商企'],
             query: {
                 num: 1,
                 size: 10,
@@ -81,13 +81,19 @@ export default {
     methods: {
         async getClassData() {
             const res = await enterpriseDisClass()
-            this.category = res.data;
+            this.category.push(...res.data);
             console.log(this.category)
         },
         async getData() {
             this.getDataStatus = true;
-            this.query.ent_province = this.category[this.active].province;
-            this.query.ent_city = this.category[this.active].city[this.cityActive];
+            
+            if (this.active !== 0) {
+                this.query.ent_province = this.category[this.active].province;
+                this.query.ent_city = this.category[this.active].city[this.cityActive];
+            } else {
+                this.query.ent_province = "";
+                this.query.ent_city = "";
+            }
 
             const res = await enterpriseClass(this.query)
             this.dataList = this.dataList.concat(res.data);

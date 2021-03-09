@@ -52,10 +52,14 @@ export default {
   created() {
     this.active = this.$route.query.state;
   },
+  activated() {
+    this.$refs["scroll-wrapper"].scrollTop = this.scrollTop; 
+  },
   data() {
     return {
       active: 0,
       btnShow: false,
+      scrollTop: "",
     };
   },
   methods: {
@@ -78,6 +82,7 @@ export default {
             if (e.target.scrollTop >= 400) {
                 this.btnShow = true;
             }
+            this.scrollTop = e.target.scrollTop;
         },
         // 回到顶部
         goTop() {
