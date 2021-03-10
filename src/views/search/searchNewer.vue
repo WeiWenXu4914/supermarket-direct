@@ -252,7 +252,7 @@ export default {
         }
         .last-rank-list {
             box-sizing: content-box;
-            padding-right: 50px;
+            padding-right: 15px;
         }
     }
 }

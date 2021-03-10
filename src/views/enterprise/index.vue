@@ -43,6 +43,7 @@ import { enterpriseDisClass, enterpriseClass } from "./api/request";
 import enterprise from "./components/enterprise";
 import touchBottom from "@/components/touchBottom";
 import tabs from "./components/tabs";
+import { Toast } from 'vant';
 export default {
     components: {
         PageHeader,
@@ -71,8 +72,14 @@ export default {
         }
     },
     async created() {
-        await this.getClassData();
+        Toast.loading({
+            message: '加载中...',
+            loadingType: 'loading',
+            duration: 0
+        });
+        this.getClassData();
         this.getData();
+        
     },
     activated() {
         const dom = this.$refs["goods-product-list"];
@@ -103,6 +110,7 @@ export default {
                 this.finished = true;
             }
             this.getDataStatus = false;
+            Toast.clear()
         },
         changeTab() {
             this.loading = true;

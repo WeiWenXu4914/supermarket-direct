@@ -103,9 +103,9 @@ export default {
                 margin-right: 15px;
                 background-color: #fff;
                 border: none;
-                color: rgba(245, 23, 36, 1);
+                color: #00ae9d;
                 padding: 3px 8px;
-                box-shadow: 0 0 2px red;
+                box-shadow: 0 0 1px #00ae9d;
             }
         }
     }

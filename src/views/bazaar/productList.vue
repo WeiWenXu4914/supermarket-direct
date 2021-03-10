@@ -36,6 +36,7 @@ import GoodsItem from './component/GoodsItem';
 import { productList, AppProductClass } from "./actions/index";
 import touchBottom from "@/components/touchBottom";
 import proTabs from "./component/proTabs";
+import { Toast } from 'vant';
 export default {
     components: {
         GoodsItem,
@@ -59,7 +60,12 @@ export default {
         }
     },
     async created() {
-        await this.getNavData();
+        Toast.loading({
+            message: '加载中...',
+            loadingType: 'loading',
+            duration: 0
+        });
+        this.getNavData();
         this.getData();
     },
     activated() {
@@ -77,6 +83,7 @@ export default {
                     this.finished = true;
                 }
                 this.getDataStatus = false;
+                Toast.clear()
             })
         },
         async getNavData() {

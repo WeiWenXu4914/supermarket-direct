@@ -68,6 +68,7 @@ export default {
   },
   computed: {},
   created () {
+    
     this.getPageData()
   },
   methods: {

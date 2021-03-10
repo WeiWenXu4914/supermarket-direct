@@ -52,7 +52,8 @@
                           class="product-video-plot"
                           @click="goDetail(items)"
                         >
-                          <img :src="items.graphic_surface_plot" alt="" />
+                          <img class="icon" src="./img/video_play.svg" alt="">
+                          <img class="poster" :src="items.graphic_surface_plot" alt="" />
                         </div>
                         <div
                           class="product-video-title"
@@ -99,7 +100,8 @@
                           class="product-video-plot"
                           @click="goDetail(items)"
                         >
-                          <img :src="items.graphic_surface_plot" alt="" />
+                          <img class="icon" src="./img/video_play.svg" alt="">
+                          <img class="poster" :src="items.graphic_surface_plot" alt="" />
                         </div>
                         <div
                           class="product-video-title"
@@ -1308,11 +1310,25 @@ export default {
     }
     .product-video {
       width: 90%;
-      margin: 15px auto;
+      margin: 10px auto;
+      // border-radius: 3px;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 4px;
+      box-shadow: 1px 1px 3px #ccc;
       .product-video-plot {
+        position: relative;
         width: 100%;
         height: auto;
-        img {
+        .icon {
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          opacity: 0.6;
+        }
+        .poster {
           width: 100%;
           max-height: 250px;
           object-fit: fill;
@@ -1325,7 +1341,7 @@ export default {
         height: 40px;
         width: 100%;
         padding: 0px 5px 5px 5px;
-        border-radius: 0 0 5px 5px;
+        // border-radius: 0 0 5px 5px;
         font-size: 14px;
         font-weight: 500;
       }
@@ -1336,7 +1352,7 @@ export default {
         align-items: center;
         justify-content: space-between;
         padding: 5px;
-        border-radius: 0 0 5px 5px;
+        // border-radius: 0 0 5px 5px;
         .user-avtor {
           width: 20px;
           height: 20px;
