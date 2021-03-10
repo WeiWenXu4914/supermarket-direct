@@ -144,6 +144,9 @@ export default {
       font-family: Source Han Sans CN;
       font-weight: 700;
       color: rgba(33, 33, 33, 1);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       span {
         display: inline-block;
         width: 38px;
