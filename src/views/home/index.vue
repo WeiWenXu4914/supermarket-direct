@@ -228,7 +228,7 @@
                         />
                       </template>
 
-                      <template v-else-if="item.nid === 75">
+                      <template v-else-if="item.nid === 146">
                         <van-card
                           :num="items.pro_inventory"
                           :price="priceTransform(items.pro_price)"
@@ -236,6 +236,7 @@
                           :title="items.pro_name"
                           :thumb="items.pro_thumbnail"
                           @click="goProductDetail(items)"
+                          style="margin-bottom:10px;"
                         >
                           <template #footer>
                             <van-button size="mini">去购买</van-button>
