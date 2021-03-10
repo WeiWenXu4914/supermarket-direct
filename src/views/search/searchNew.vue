@@ -1,5 +1,5 @@
 <template>
-  <div class="all-search">
+  <div class="all-search" @scroll="scrollListener" ref="goods-product-list">
     <div class="search-header">
       <van-icon 
        name="arrow-left" 
@@ -23,7 +23,7 @@
             </span>
         </div>
     </div> -->
-    <van-tabs v-model="active" @click="onSearch" @change="onSearch" type="card">
+    <van-tabs v-model="active" @click="onSearch" @change="onSearch" type="card" color="#f50">
       <van-tab title="商品">
         <GoodsResult :searchValue="resultValue" :active2="active" />
       </van-tab>
@@ -35,6 +35,12 @@
       </van-tab>
 
     </van-tabs>
+
+    <transition name="van-fade">
+        <div class="go-top" v-show="btnShow" @click="goTop">
+            <van-icon name="arrow-up" />
+        </div>
+    </transition>
   </div>
 </template>
 
@@ -54,7 +60,9 @@ export default {
       value: "",
       resultValue: "",
       active: 0,
-      searchHistory: []
+      searchHistory: [],
+      btnShow: false,
+      scrollTop: "",
     };
   },
   created() {
@@ -65,6 +73,10 @@ export default {
       this.value = this.$route.params.value;
     }
     this.onSearch();
+
+    
+    const dom = this.$refs["goods-product-list"];
+    dom.scrollTop = this.scrollTop;
   },
   methods: {
     onSearch() {
@@ -126,13 +138,53 @@ export default {
     toSearch(val) {
       this.value = val;
       this.onSearch();
-    }
+    },
+    scrollListener(e) {
+
+        if (e.target.scrollTop <= 150) {
+            this.btnShow = false;
+        }
+        if (e.target.scrollTop >= 400) {
+            this.btnShow = true;
+        }
+
+        this.scrollTop = e.target.scrollTop;     
+    },
+    goTop() {
+            const dom = this.$refs["goods-product-list"];
+            let i = 0;
+            const timeTop = setInterval(() => {
+            dom.scrollTop = this.easeInOutQuad(
+                10 * i,
+                dom.scrollTop,
+                -dom.scrollTop,
+                500
+            );
+            // dom.scrollTop -= 50
+            if (dom.scrollTop <= 0) {
+                clearInterval(timeTop);
+            }
+              i++;
+            }, 30);
+            
+      },
+      easeInOutQuad(t, b, c, d) {
+            // 判断当前时间是否总在总时间的一半以内，是的话执行缓入函数，否则的话执行缓出函数
+            if ((t /= d / 2) < 1) {
+                return (c / 2) * t * t + b;
+            } else {
+                // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
+                return (-c / 2) * (--t * (t - 2) - 1) + b;
+            }
+      },
   },
 };
 </script>
 
 <style lang="less">
 .all-search {
+  overflow: scroll;
+  height: 100vh;
   .tags {
     position: relative;
     width: 100%;
@@ -194,6 +246,27 @@ export default {
             border: none;
             background: linear-gradient(to top right, #e93c3b, #FF9002);
         }
+        .search-button:active {
+          background: #FF9002;
+        }
+    }
+    .go-top {
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        background: #fff;
+        box-shadow: 0 0 2px #eee;
+        right: 17px;
+        bottom: 70px;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+        -moz-box-shadow: 0px 0px 3px #333333;
+        -webkit-box-shadow: 0px 0px 3px #333333;
+        box-shadow: 0px 0px 3px #333333;
     }
 }
 </style>

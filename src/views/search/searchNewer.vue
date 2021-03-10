@@ -47,11 +47,13 @@
              message="好物甄选"
              :dataList="dataListVideos"
             />
-            <rankList
-             title="新入商企"
-             message="强势入驻"
-             :dataList="dataListEnterprise"
-            />
+            <div class="last-rank-list">
+                <rankList
+                title="新入商企"
+                message="强势入驻"
+                :dataList="dataListEnterprise"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -205,6 +207,9 @@ export default {
             border: none;
             background: linear-gradient(to top right, #e93c3b, #FF9002);
         }
+        .search-button:active {
+            background-color: #FF9002;
+        }
     }
     .search-history {
         width: 94vw;
@@ -233,6 +238,9 @@ export default {
             background-color: #F8F8F8;
             border-radius: 20px;
         }
+        .history-item:active {
+            background-color: #ccc;
+        }
     }
     .rank-list-wrapper {
         display: flex;
@@ -241,6 +249,10 @@ export default {
         margin-top: 15px;
         .search-rank-list {
             display: inline-block;
+        }
+        .last-rank-list {
+            box-sizing: content-box;
+            padding-right: 50px;
         }
     }
 }

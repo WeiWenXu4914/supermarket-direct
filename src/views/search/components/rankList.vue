@@ -107,6 +107,9 @@ export default {
             color: #935F38;
         }
     }
+    .rank-item:active {
+        background: #ccc;
+    }
     .rank-item {
         width: 94%;
         margin: 0 auto;
