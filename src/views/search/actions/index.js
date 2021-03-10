@@ -23,3 +23,18 @@ export const myAllSearch =(val,type) => {
 export function SuperMarketList(val) {
     return request('/api/SuperMarketList', 'post', { detailed_site: val });
 }
+
+//自提地址
+export function orderRanking() {
+    return request('/api/orderRanking', 'post');
+}
+
+//自提地址
+export function graphicRanking() {
+    return request('/api/graphicRanking', 'post');
+}
+
+//自提地址
+export function enterpriseRanking() {
+    return request('/api/enterpriseRanking', 'post');
+}

@@ -1,35 +1,39 @@
 <template>
   <div class="all-search">
-    <form action="/">
-      <van-search
-        v-model="value"
-        show-action
-        placeholder="请输入搜索关键词"
-        maxlength="15"
-        @search="onSearch"
-        @cancel="onCancel"
+    <div class="search-header">
+      <van-icon 
+       name="arrow-left" 
+       class="arrow-left-icon"
+       size=".5rem"
+       @click="onCancel"
       />
-    </form>
-    <div class="tags" v-show="searchHistory.length !== 0">
+      <van-search
+        class="search"
+        v-model="value"
+        placeholder="请输入搜索关键词"
+        @search="onSearch"
+      />
+      <button class="search-button" @click="onSearch">搜索</button>
+    </div>
+      
+    <!-- <div class="tags" v-show="searchHistory.length !== 0">
         <div class="content">
             <span v-for="(item,index) in searchHistory" :key="index" class="item" @click.stop="toSearch(item)">
                 {{ item }} <van-icon class="close-icon" name="cross" size="0.2rem" @click.stop="deleteHistory(index)"/>
             </span>
         </div>
-    </div>
-    <van-tabs v-model="active" @click="onSearch">
-      <van-tab title="文章">
-        <ArticleResult :searchValue="resultValue" :active1="active" />
-      </van-tab>
+    </div> -->
+    <van-tabs v-model="active" @click="onSearch" @change="onSearch" type="card">
       <van-tab title="商品">
         <GoodsResult :searchValue="resultValue" :active2="active" />
+      </van-tab>
+      <van-tab title="文章">
+        <ArticleResult :searchValue="resultValue" :active1="active" />
       </van-tab>
       <van-tab title="商企">
         <StoreResult :searchValue="resultValue" :active3="active" />
       </van-tab>
-      <van-tab title="取货地址">
-        <SiteResult :searchValue="resultValue" :active4="active" />
-      </van-tab>
+
     </van-tabs>
   </div>
 </template>
@@ -39,15 +43,11 @@ import { Toast, Icon } from "vant";
 import ArticleResult from "./components/ArticleResult";
 import GoodsResult from "./components/GoodsResult";
 import StoreResult from "./components/StoreResult";
-import AttentionResult from "./components/AttentionResult";
-import SiteResult from "./components/SiteResult";
 export default {
   components: {
     ArticleResult,
     GoodsResult,
     StoreResult,
-    AttentionResult,
-    SiteResult
   },
   data() {
     return {
@@ -60,6 +60,12 @@ export default {
   created() {
     this.getSearchHistory();
   },
+  activated() {
+    if (this.$route.params.value) {
+      this.value = this.$route.params.value;
+    }
+    this.onSearch();
+  },
   methods: {
     onSearch() {
       this.resultValue = this.value;
@@ -68,19 +74,26 @@ export default {
     },
     onCancel() {
       this.$router.go(-1);
+      this.value = "";
     },
     //将搜索结果存到本地
     savaLocal(value) {
-      
       let searchHistory = []
-      if (window.localStorage.searchHistory === undefined && this.resultValue != "") {
+      if (window.localStorage.searchHistory === undefined && this.resultValue) {
         let searchHistoryResNull = []
 
         searchHistory[0] = value;
         searchHistoryResNull = JSON.stringify(searchHistory);
         window.localStorage.searchHistory = searchHistoryResNull;
         
-      } else if (this.resultValue != "") {
+      } else if (this.searchHistory.indexOf(this.resultValue) !== -1) {
+        const index = this.searchHistory.indexOf(this.resultValue);
+        const value = this.searchHistory[index]
+        this.searchHistory.splice(index,1);
+        this.searchHistory.push(value);
+        window.localStorage.searchHistory = JSON.stringify(this.searchHistory);
+        this.getSearchHistory();
+      } else if (this.resultValue) {
 
         let localHistory = JSON.parse(window.localStorage.searchHistory);
         let finalyValue = []
@@ -161,5 +174,26 @@ export default {
     font-weight: bolder;
     color: #131313;
   }
+  .search-header {
+        display: flex;
+        align-items: center;
+        width: 100vw;
+        .arrow-left-icon {
+            padding: 0 0px 0 10px;
+        }
+        .search {
+            flex-grow: 1;
+            // width: 70%;
+        }
+        .search-button {
+            margin-right: 10px;
+            width: 60px;
+            height: 27px;
+            border-radius: 18px;
+            color: #fff;
+            border: none;
+            background: linear-gradient(to top right, #e93c3b, #FF9002);
+        }
+    }
 }
 </style>

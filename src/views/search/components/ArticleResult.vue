@@ -7,28 +7,20 @@
         >
             <template v-if="items.gc_id === 1">
                 <article-item
+                    class="wrapper"
                     v-if="items.gc_id === 1"
                     :article="items"
                 ></article-item>
             </template>
             <template v-else-if="items.gc_id === 2">
-                <video-item :videoItem="items"></video-item>
+                <video-item :videoItem="items" class="wrapper"></video-item>
             </template>
-            <template v-else-if="items.gc_id === 3">
-                <rent-item v-if="items.gc_id === 3" :rentItem="items"></rent-item>
-            </template>
-            <template v-else-if="items.gc_id === 4">
-                <job-item v-if="items.gc_id === 4" :jobItem="items"></job-item>
-            </template>
-            <template v-else-if="items.gc_id === 6">
-                <adv-item v-if="items.gc_id === 6" :advItem="items"></adv-item>
-            </template>
+            
         </div>
 
         <van-empty image="search" description="无相关内容，请切换搜索关键词试试" v-if="resultList.length == 0 && !loading"/>
 
         <van-loading color="#1989fa" vertical style="position:absolute;top:5rem;left:50%;transform:translateX(-50%);" v-show="loading"/>
-
 
     </div>
 </template>
@@ -64,12 +56,12 @@ export default {
     },
     watch: {
         'searchValue': function () {
-            if(this.active1 == 0) {
+            if(this.active1 == 1) {
                 this.getData();
             }
         },
         'active1': function () {
-            if(this.active1 == 0) {
+            if(this.active1 == 1) {
                 this.getData();
             }
         }
@@ -113,5 +105,8 @@ export default {
 .article-result-item {
     width: 92%;
     margin: 0 auto;
+    .wrapper {
+        margin-top: 15px;
+    }
 }
 </style>

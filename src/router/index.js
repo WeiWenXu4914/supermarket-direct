@@ -1087,6 +1087,15 @@ const routes = [
         path: '/seeLogistics',
         component: () => 
             import('@/views/obligation/seeLogistics')
+    },
+    {//最新搜索
+        path: '/searchNewer',
+        name: "searchNewer",
+        component: () => 
+            import('@/views/search/searchNewer'),
+        meta: {
+            iskeepAlive: true
+        }
     }
 ]
 

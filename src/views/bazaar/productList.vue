@@ -155,6 +155,7 @@ export default {
         width: 100vw;
         .goods-item {
             margin-top: 5px;
+            box-shadow: 1px 1px 3px #ccc;
         }
         .goods-item:nth-of-type(odd) {
             margin-left: 5px;
