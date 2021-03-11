@@ -8,7 +8,7 @@
         </div> -->
         <div class="seach">
           <van-icon name="search" color="#8D8D8D" size="17" />
-          <span>您喜欢的内容</span>
+          <span>此项目正在试运行</span>
         </div>
       </div>
 
@@ -215,7 +215,7 @@ export default {
       }
       .seach {
         width: 60%;
-        color: #8D8D8D;
+        color: #07C160;
         padding-left: 15px;
         // line-height: 42px;
         display: flex;
