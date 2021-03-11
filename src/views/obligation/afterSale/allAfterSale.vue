@@ -19,24 +19,24 @@
                         <div class="center">
                             <p class="p1">{{ item.pro_name }}</p>
                             <!-- <p class="p2" v-if="item.dw_name == '自提' ? false : true">包邮</p> -->
-                            <p class="p2" v-if="item.state === 4 ? false : true">{{ item.type_name }}</p>
-                            <p class="p2" v-else>已取消售后申请</p>
+                            <!-- <p class="p2" v-if="item.state === 1 ? false : true">{{ item.type_name }}</p> -->
+                            <!-- <p class="p2" v-else>已取消售后申请</p> -->
                         </div>
                         <div class="right">
                             <p class="p1">￥</p>
                             <p class="p2">{{ item.pro_price }}</p>
-                            <p class="p3">x{{ item.product_count }}</p>
+                            <!-- <p class="p3">x{{ item.product_count }}</p> -->
                         </div>
                     </div>
                     <van-button 
-                    plain 
-                    hairline 
-                    type="primary" 
-                    size="small" 
-                    color="#D04443"
-                    @click="toDetail(item)" 
-                    class="button"
-                    v-if="item.state === 4 ? false : true"
+                     plain 
+                     hairline 
+                     type="primary" 
+                     size="small" 
+                     color="#D04443"
+                     @click="toDetail(item)" 
+                     class="button"
+                     v-if="item.state === 4 ? false : true"
                     >
                         查看详情
                     </van-button>
@@ -78,9 +78,7 @@ export default {
                 this.dataList = res.data;     
                 console.log(this.dataList)
             }
-            Toast.loading({
-                duration: 1
-            });
+            Toast.clear()
         })
         .catch((err) => {
             Toast.fail("获取信息失败，请重试");
@@ -196,6 +194,15 @@ export default {
                     }
                 }
                 .center {
+                    width: 220px;
+                    height: 55px;
+                    text-overflow: -o-ellipsis-lastline;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    line-clamp: 2;
+                    -webkit-box-orient: vertical;
                     .p1 {
                         font-size: 0.44rem;
                         font-family: Source Han Sans CN;

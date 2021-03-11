@@ -126,21 +126,21 @@ export default {
     width: 55px;
     margin-right: 10px;
     img {
-      height: 100%;
-      width: 100%;
+      height: 55px;
+    width: 55px;  
     }
   }
   .center {
     .title {
       display: flex;
       flex-direction: column;
-      height: 55px;
+      width: 100%;
       justify-content: space-between;
     }
     .name {
+      width: 240px;
+      display: block;
       font-size: 15px;
-      height: 15px;
-      line-height: 15px;
       font-family: Source Han Sans CN;
       font-weight: 700;
       color: rgba(33, 33, 33, 1);
