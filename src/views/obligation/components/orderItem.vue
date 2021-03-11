@@ -68,7 +68,7 @@
                     <button type="default" class="red" @click="toBuy(item)">进店购买</button>
                 </div>
                 <div class="allBtn" v-else-if="item.status == 2 && item.dw_id == 3">
-                    <button @click="toRefund(item)">申请退款</button>
+                    <!-- <button @click="toRefund(item)">申请退款</button> -->
                     <button @click="seeLogistics(item)">查看物流</button>
                     <button @click="confirmReceive(item,index)">确认收货</button>
                 </div>
