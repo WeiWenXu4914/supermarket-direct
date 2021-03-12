@@ -124,6 +124,7 @@ export default {
 
         },
         submit() {
+
             const reg = /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、\s]/;
             if (reg.test(this.description) && this.description.length === 1) {
                 Toast("申请说明不得单独提交特殊字符")
@@ -141,21 +142,37 @@ export default {
             this.imgList = [...new Set(this.imgList)];
             
             const obj = {
-                order_number: this.orderData.order_number,
                 reason: this.reason + "&&&" + this.description,
                 proof_pics:  this.imgList
             }
 
-            orderRefund(obj)
-            .then((res) => {
-                Toast(res.msg);
-                setTimeout(() => {
-                    this.$router.go(-1);
-                },1500)
-            })
-            .catch((err) => {
-                Toast("请求出错");
-            })
+            if (this.functionType === "退货退款") {
+                obj.oid = this.orderData.oid;
+                afterSalesService(obj)
+                .then((res) => {
+                    Toast(res.msg);
+                    setTimeout(() => {
+                        this.$router.go(-1);
+                    },1500)
+                })
+                .catch((err) => {
+                    Toast("请求出错");
+                })
+            } else {
+                obj.order_number = this.orderData.order_number;
+                orderRefund(obj)
+                .then((res) => {
+                    Toast(res.msg);
+                    setTimeout(() => {
+                        this.$router.go(-1);
+                    },1500)
+                })
+                .catch((err) => {
+                    Toast("请求出错");
+                })
+            }
+
+
         }
 
     }

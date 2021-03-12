@@ -83,7 +83,7 @@
                 <div class="allBtn" v-else-if="item.status == 3">
                     <!--目前交易成功订单无法删除-->
                     <!-- <van-button type="default" @click="dellOrder(item)">删除订单</van-button> -->
-                    <!-- <button type="default" @click="toChooseType(item)">申请售后</button> -->
+                    <button type="default" @click="toChooseType(item)">申请售后</button>
                     <!-- <button type="default" @click="toRefund(item)">申请退款</button> -->
                     <button type="default" @click="toBuy(item)">再次购买</button>
                     <button type="default" class="appraise" @click="appraise(item)" v-if="item.is_mark == 0">评价</button>
@@ -290,8 +290,7 @@ export default {
         },
         //售后类型选择
         toChooseType(val) {
-            Toast("请您到线下店铺协调");
-            return;
+
             let orderInfo = JSON.stringify(val)
             this.$router.push({
                 path: '/chooseType',

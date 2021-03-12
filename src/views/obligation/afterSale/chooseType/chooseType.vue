@@ -68,15 +68,8 @@ export default {
                         type: '退货退款'
                     }
                 })
-            } else {
-                this.$router.push({
-                    path: '/afterSale',
-                    query: {
-                        orderInfo: this.orderInfo,
-                        type: '换货'
-                    }
-                })
             }
+   
 
         }
     }

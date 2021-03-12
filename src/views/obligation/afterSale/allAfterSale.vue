@@ -76,7 +76,6 @@ export default {
         .then((res) => {
             if(res) {
                 this.dataList = res.data;     
-                console.log(this.dataList)
             }
             Toast.clear()
         })
@@ -89,26 +88,30 @@ export default {
     },
     methods: {
         toDetail(val) {
-            console.log(val)
+            console.log(val,"111")
 
-            if(val.type == 2) {//换货
-                this.$router.push({
-                    path: '/exchangeReject',
-                    query: {
-                        ora_id: val.ora_id,
-                        state: val.state, //申请状态：0->待处理；1->退换中；进入售后服务详情接口 2->已完成；进入成功页面 3->已拒绝 进入拒绝页面
-                        type: val.type // type 0退款  1 退款退货  2.换货
-                    }
-                });
-            }else if(val.type == 1) {//退货退款
-                this.$router.push({
-                    path: '/afterSaleRefund',
-                    query: {
-                        ora_id: val.ora_id,
-                        state: val.state, 
-                        type: val.type    
-                    }
-                })
+            if(val.type == 1) {//退货退款
+                if(val.state == 0) {// 0 -> 待处理  此页面为设计图单独页面
+                    this.$router.push({
+                        path: '/afterSaleRefundOnly',
+                        query: {
+                            ora_id: val.ora_id,
+                            type: val.type,    // type 0退款 1 退款退货  2.换货
+                            order_number: val.order_number
+                        }
+                    });
+                }else {//其他状态处理
+
+                    this.$router.push({
+                        path: '/afterSaleRefund',
+                        query: {
+                            ora_id: val.ora_id,
+                            state: val.state, 
+                            type: val.type,
+                            order_number: val.order_number    
+                        }
+                    });
+                }
             } else {//退款
 
                 if(val.state == 0) {// 0 -> 待处理  此页面为设计图单独页面

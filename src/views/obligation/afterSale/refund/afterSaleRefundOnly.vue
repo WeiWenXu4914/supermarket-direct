@@ -31,17 +31,17 @@
             </div>
         </div>
         <div class="time">
-        <div class="tem">
-            <p class="p1">售后类型：仅退款</p>
-            <p>退款金额：￥{{ dataList.order_paynum }}</p>
-            <p class="line"></p>
-        </div>
-        <div class="tem">
-            <p class="p1">申请原因：{{ dataList.reason }}</p>
-            <p>申请说明：{{ dataList.descriptionReason }}</p>
-            <p>订单编号：{{ dataList.order_number }}</p>
-            <p>申请时间：{{ dataList.create_time }}</p>
-        </div>
+          <div class="tem">
+              <p class="p1">售后类型：{{ dataList.type == 1 ? "退款退货" : "仅退款" }}</p>
+              <p>退款金额：￥{{ dataList.order_paynum }} </p>
+              <p class="line"></p>
+          </div>
+          <div class="tem">
+              <p class="p1">申请原因：{{ dataList.reason }}</p>
+              <p>申请说明：{{ dataList.descriptionReason }}</p>
+              <p>订单编号：{{ dataList.order_number }}</p>
+              <p>申请时间：{{ dataList.create_time }}</p>
+          </div>
         </div>
             <div class="history">
                 <p class="p1">商家联系方式：<a :href="'tel:'+dataList.mem_phone">{{ dataList.mem_phone }}</a></p>
@@ -50,7 +50,6 @@
           <p class="p1">图片凭证:</p>
           <div class="photo">
               <img :src="item" alt v-for="(item,index) in dataList.proof_pics" :key="index"/>
-              
           </div>
         </div>
         <div class="bottom">
@@ -69,11 +68,7 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="btn">
-            <van-button type="primary" class="b1">申请客服介入</van-button>
-            <van-button type="primary" class="b2" @click="revoke">撤销申请</van-button>
-            <van-button type="primary" class="b3">修改申请</van-button>
-        </div> -->
+
     </div>
 </template>
 
@@ -117,6 +112,8 @@ export default {
           this.dataList.reason = reason.split("&&&")[0];
           this.dataList.descriptionReason = reason.split("&&&")[1];
 
+          this.dataList.proof_pics = []
+          console.log(this.dataList)
         } else {
           Toast(res.msg);
         }
@@ -276,7 +273,7 @@ export default {
   }
   .wait {
     width: 90%;
-    height: 2.5rem;
+    height: 1.8rem;
     background-color: #d04443;
     display: flex;
     margin: 0.5rem 0rem 0rem 0.5rem;
@@ -285,7 +282,7 @@ export default {
       color: #ffffff;
       font-size: 0.45rem;
       font-weight: 500;
-      margin: 0.9rem 0rem 0rem 0.3rem;
+      margin: 0.6rem 0rem 0rem 0.3rem;
     }
     .p2 {
       color: #ffffff;
