@@ -1096,6 +1096,11 @@ const routes = [
         meta: {
             iskeepAlive: true
         }
+    },
+    {
+        path: '/afterSaleConfirm',
+        component: () =>
+            import('@/views/obligation/afterSale/refund_return/afterSaleConfirm')
     }
 ]
 
