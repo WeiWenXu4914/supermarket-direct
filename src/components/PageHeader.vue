@@ -12,8 +12,26 @@
         </div>
       </div>
 
-      <div class="page-right" :style="[{ justifyContent: addshow ? '' : 'flex-end' }]">
-        <van-icon name="edit" @click="addArticle" color="#fff" size=".8rem" v-if="addshow" style="margin-left:10px;" />
+      <div
+        class="page-right"
+        :style="[{ justifyContent: addshow ? '' : 'flex-end' }]"
+      >
+        <van-icon
+          name="edit"
+          @click="addArticle"
+          color="#fff"
+          size=".8rem"
+          v-if="addshow"
+          style="margin-left: 10px"
+        />
+        <van-icon
+          name="scan"
+          @click="scanAudit"
+          color="#fff"
+          size=".8rem"
+          v-if="user.mmtid == 4 || user.id == 1"
+          style="margin-left: 10px; margin-right: 10px"
+        />
         <!-- <van-icon name="chat" :badge="NmessageNumCount" @click.stop="goMessage" v-if="messageShow" color="#fff" size=".8rem" /> -->
         <!-- <van-icon name="chat" @click.stop="goMessage" v-else color="#fff" size=".8rem" /> -->
         <div v-if="user.avator" class="head">
@@ -48,6 +66,49 @@
         </div>
       </span> -->
     </div>
+    <van-popup
+      v-model="scanQrAudit"
+      position="bottom"
+      closeable
+      round
+      :style="{ height: '97%' }"
+    >
+      <div class="scanQrAudit-class" v-if="SupermarketList != ''">
+        <van-cell
+          title="联系方式"
+          :label="SupermarketList.contact_number"
+          size="large"
+          value="请认真核对信息"
+        />
+        <van-cell
+          title="自提点名称"
+          :label="SupermarketList.contact_name"
+          size="large"
+        />
+        <van-cell title="自提地址" :label="statusInfoSite()" size="large" />
+        <van-cell title="门店照片" size="large" />
+        <div class="scanQrAudit-img">
+          <van-image
+            width="98%"
+            height="auto"
+            lazy-load
+            :src="SupermarketList.pickup_photos"
+          />
+        </div>
+
+        <van-cell title="营业执照" size="large" />
+        <div class="scanQrAudit-img">
+          <van-image
+            width="98%"
+            height="auto"
+            lazy-load
+            :src="SupermarketList.business_license"
+          />
+        </div>
+
+        <van-button type="info" size="large" @click="passStatus">通过</van-button>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -56,6 +117,8 @@ import { mapState, mapMutations } from "vuex";
 import { wxMapGetAddress } from "@/utils/wxshare.js";
 import { getLngLatLocation } from "@/utils/map.js";
 import { getMessage, TencentArticl01 } from "@/api/index";
+import { wexinConfig, inviterInfo, passInviter } from "./actions";
+import wx from "weixin-js-sdk";
 import axios from "axios";
 export default {
   name: "page-header",
@@ -78,7 +141,9 @@ export default {
       local: {},
       messageShow: false,
       NmessageNumCount: 1,
-      addshow: false
+      addshow: false,
+      SupermarketList: "",
+      scanQrAudit: false,
     };
   },
   watch: {},
@@ -92,11 +157,89 @@ export default {
     if (this.user.mmtid == 3 && this.isAddShow) {
       this.addshow = true;
     }
+    wexinConfig(URL).then((res) => {
+      wx.config({
+        debug: false,
+        appId: res.data.appId,
+        timestamp: res.data.timestamp,
+        nonceStr: res.data.nonceStr,
+        signature: res.data.signature,
+        jsApiList: [
+          "checkJsApi",
+          "onMenuShareTimeline",
+          "onMenuShareAppMessage",
+          "onMenuShareQQ",
+          "onMenuShareWeibo",
+          "onMenuShareQZone",
+          "hideMenuItems",
+          "showMenuItems",
+          "hideAllNonBaseMenuItem",
+          "showAllNonBaseMenuItem",
+          "translateVoice",
+          "startRecord",
+          "stopRecord",
+          "onVoiceRecordEnd",
+          "playVoice",
+          "onVoicePlayEnd",
+          "pauseVoice",
+          "stopVoice",
+          "uploadVoice",
+          "downloadVoice",
+          "chooseImage",
+          "previewImage",
+          "uploadImage",
+          "downloadImage",
+          "getNetworkType",
+          "openLocation",
+          "getLocation",
+          "hideOptionMenu",
+          "showOptionMenu",
+          "closeWindow",
+          "scanQRCode",
+          "chooseWXPay",
+          "openProductSpecificView",
+          "addCard",
+          "chooseCard",
+          "openCard",
+        ], // 必填，需要使用的JS接口列表
+      });
+    });
+    wx.error(function (res) {});
     // this.initLocal();
     this.getMessage();
   },
   methods: {
     ...mapMutations(["delUser", "setUserMap"]),
+    scanAudit() {
+      var _this = this;
+      wx.scanQRCode({
+        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+        success: function (res) {
+          var result = res.resultStr;
+          console.log(result);
+          inviterInfo(result).then((res) => {
+            _this.SupermarketList = res.data;
+            _this.scanQrAudit = true;
+          });
+        },
+      });
+    },
+    statusInfoSite() {
+      return (
+        this.SupermarketList.province +
+        this.SupermarketList.city +
+        this.SupermarketList.district +
+        this.SupermarketList.detailed_site
+      );
+    },
+    passStatus() {
+      passInviter(this.SupermarketList.mem_phone).then(res=>{
+        console.log(res)
+        this.$toast(res.msg);
+        this.scanQrAudit = false;
+      })
+    },
     // 初始化用户定位
     async initLocal() {
       if (this.userMapLoacl) this.local = this.userMapLoacl.local;
@@ -167,7 +310,7 @@ export default {
     },
     addArticle() {
       this.$emit("addArticle");
-    }
+    },
   },
 };
 </script>
@@ -180,7 +323,7 @@ export default {
   top: 0;
   left: 0;
   height: 44px;
-  background: #07C160;
+  background: #07c160;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -214,8 +357,7 @@ export default {
         }
       }
       .seach {
-        width: 60%;
-        color: #07C160;
+        color: #07c160;
         padding-left: 15px;
         // line-height: 42px;
         display: flex;
@@ -234,7 +376,6 @@ export default {
       }
     }
     .page-right {
-      width: 25%;
       height: 28px;
       display: flex;
       align-items: center;
@@ -309,6 +450,18 @@ export default {
         height: 35px;
         border-radius: 100%;
       }
+    }
+  }
+  .scanQrAudit-class {
+    width: 100%;
+    height: 100%;
+    border: 1px red solid;
+    overflow: auto;
+    padding-bottom: 120px;
+    margin-top: 40px;
+    .scanQrAudit-img {
+      width: 100%;
+      text-align: center;
     }
   }
 }
