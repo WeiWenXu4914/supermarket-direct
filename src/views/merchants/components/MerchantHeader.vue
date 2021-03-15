@@ -67,13 +67,6 @@
         <van-icon name="qr" size="15" />
       </div>
     </div>
-    <div
-      class="image-group"
-      v-html="merchantInfo.ent_style"
-      @click="getpreview($event)"
-    >
-      <!-- <img v-for="(image, index) in merchantInfo.images" :key="index" :src="image" /> -->
-    </div>
     
     <div class="time">
       <div class="time_left">
@@ -85,11 +78,11 @@
           <!-- <img src="../img/site.svg" alt="" @click="openMap"> -->
         </div>
       </div>
-      <div class="phone" @click="callPhone(merchantInfo.service_phone)" v-if="merchantInfo.mem_attention == '已关注'">
+      <!-- <div class="phone" @click="callPhone(merchantInfo.service_phone)" v-if="merchantInfo.mem_attention == '已关注'">
         <van-icon name="phone" color="#D04443" />
-      </div>
+      </div> -->
     </div>
-    <button @click="isShowTime = !isShowTime" v-if="!isShowTime" class="is-show-time">查看营业时间</button>
+    <!-- <button @click="isShowTime = !isShowTime" v-if="!isShowTime" class="is-show-time">查看营业时间</button>
     <div class="time_text" v-else>
       <span class="time_title">营业时间：</span>
       <span
@@ -99,7 +92,6 @@
       >
         {{ item }}
       </span>
-      <!-- <br /> -->
       <span
         class="time_time"
         v-if="
@@ -110,7 +102,7 @@
         {{ merchantInfo.ent_business_hours }} -
         {{ merchantInfo.ent_proofing_time }}
       </span>
-    </div>
+    </div> -->
     <div class="qrcode-item-back" v-show="idCardShow">
       <div class="qrcode-item">
         <div class="qrcode-top" ref="entIdcard" v-if="imgUrl == ''">
