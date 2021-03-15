@@ -21,7 +21,7 @@
          :loading="loading"
          :finished="finished"
         />
-
+        <div class="fixed">{{ scrollTop }}</div>
         <transition name="van-fade">
             <div class="go-top" v-show="btnShow" @click="goTop">
                 <van-icon name="arrow-up" />
@@ -111,7 +111,7 @@ export default {
             let clientHeight = e.target.clientHeight;
             let scorllTop = e.target.scrollTop;
             this.scrollTop = scorllTop;
-            if (scorllTop + clientHeight == contentHeight && !this.getDataStatus && !this.finished) {
+            if (scorllTop + clientHeight + 100 >= contentHeight && !this.getDataStatus && !this.finished) {
                 this.loading = true;
                 this.query.offset++;
                 this.getData();
@@ -155,6 +155,12 @@ export default {
     height: 100vh;
     overflow: scroll;
     background-color: #EEE;
+    .fixed {
+        position: fixed;
+        top: 100px;
+        left: 40px;
+        background-color: #ccc;
+    }
     .content-wrapper {
         display: flex;
         flex-wrap: wrap;

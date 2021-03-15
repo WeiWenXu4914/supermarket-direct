@@ -9,7 +9,7 @@ import { Controller } from '_swiper@6.4.10@swiper';
 import router from '../router/index'
 // import router from '../router'
 const nAxios = window.axios.create({
-  baseURL: 'http://userapi.lejiagx.cn/'
+  baseURL: 'https://api.lejiagx.cn/public/index.php'
 });
 // 请求拦截器配置
 nAxios.interceptors.request.use(

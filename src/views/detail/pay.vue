@@ -331,6 +331,7 @@ export default {
         name: this.$refs.myAddress.name,
         phone: this.$refs.myAddress.phone,
       };
+      console.log(this.totalPrice,"111")
       //服务站点
       if(this.$refs.myAddress.tipChooseSite == "请选择服务站点" && !this.$refs.myAddress.pickResult.msid) {
         Toast("请选择服务站点");
