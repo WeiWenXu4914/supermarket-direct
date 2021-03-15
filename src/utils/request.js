@@ -5,6 +5,7 @@
 // import axios from 'axios';
 import store from '@/store';
 import { Dialog, Toast } from "vant";
+import { Controller } from '_swiper@6.4.10@swiper';
 import router from '../router/index'
 // import router from '../router'
 const nAxios = window.axios.create({
@@ -31,22 +32,22 @@ nAxios.interceptors.response.use(
     //token过期跳转到登录首页
     if (res.data.code == 2) {
 
-      // localStorage.removeItem("LoginToken");
-      // localStorage.removeItem("Token");
-      // localStorage.removeItem("LeHome-user-auth");
-      // localStorage.removeItem("Authorization");
+      localStorage.removeItem("LoginToken");
+      localStorage.removeItem("Token");
+      localStorage.removeItem("LeHome-user-auth");
+      localStorage.removeItem("Authorization");
 
-      // window.localStorage.beforeLoginUrl = window.location.hash;
+      window.localStorage.beforeLoginUrl = window.location.hash;
 
-      // Toast.clear();
-      // Dialog.confirm({
-      //   title: '登陆',
-      //   message: res.data.msg,
-      // }).then(() => {
-      //   router.replace('/login');
-      // }).catch(() => {
-      //   window.history.back()
-      // });
+      Toast.clear();
+      Dialog.confirm({
+        title: '登陆',
+        message: res.data.msg,
+      }).then(() => {
+        router.replace('/login');
+      }).catch(() => {
+        window.history.back()
+      });
 
     }else if (!(res.data.code == 100 || res.data.code == 101 ||res.data.code == 2 || res.data.code == 1 || res.data.code == 202)) {
 
