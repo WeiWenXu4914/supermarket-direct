@@ -21,7 +21,6 @@
          :loading="loading"
          :finished="finished"
         />
-        <div class="fixed">{{ scrollTop }}</div>
         <transition name="van-fade">
             <div class="go-top" v-show="btnShow" @click="goTop">
                 <van-icon name="arrow-up" />
