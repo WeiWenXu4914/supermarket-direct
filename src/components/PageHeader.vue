@@ -106,7 +106,9 @@
           />
         </div>
 
-        <van-button type="info" size="large" @click="passStatus">通过</van-button>
+        <van-button type="info" size="large" @click="passStatus"
+          >通过</van-button
+        >
       </div>
     </van-popup>
   </div>
@@ -154,7 +156,7 @@ export default {
     },
   },
   created() {
-    if (this.user.mmtid == 3 && this.isAddShow) {
+    if (this.user.mmtid == 3) {
       this.addshow = true;
     }
     wexinConfig(URL).then((res) => {
@@ -234,11 +236,11 @@ export default {
       );
     },
     passStatus() {
-      passInviter(this.SupermarketList.mem_phone).then(res=>{
-        console.log(res)
+      passInviter(this.SupermarketList.mem_phone).then((res) => {
+        console.log(res);
         this.$toast(res.msg);
         this.scanQrAudit = false;
-      })
+      });
     },
     // 初始化用户定位
     async initLocal() {
@@ -376,6 +378,7 @@ export default {
       }
     }
     .page-right {
+      min-width: 100px;
       height: 28px;
       display: flex;
       align-items: center;
