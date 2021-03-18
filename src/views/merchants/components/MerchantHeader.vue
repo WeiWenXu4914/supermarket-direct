@@ -67,13 +67,16 @@
         <van-icon name="qr" size="15" />
       </div>
     </div>
-    
+
     <div class="time">
       <div class="time_left">
         <div class="time_site">
           <div>
             <span class="time_title">店铺地址：</span>
-            <span class="time_con">{{ merchantInfo.ent_city }} {{ merchantInfo.ent_district }} {{ merchantInfo.ent_detailed_site }}</span>
+            <span class="time_con"
+              >{{ merchantInfo.ent_city }} {{ merchantInfo.ent_district }}
+              {{ merchantInfo.ent_detailed_site }}</span
+            >
           </div>
           <!-- <img src="../img/site.svg" alt="" @click="openMap"> -->
         </div>
@@ -109,7 +112,11 @@
           <div class="qrcode-user">
             <div class="qrcode-user-item">
               <div class="qrcode-user-head" @click="userHandle">
-                <img :src="merchantInfo.ent_logo_base64" width="70px" height="70px" />
+                <img
+                  :src="merchantInfo.ent_logo_base64"
+                  width="70px"
+                  height="70px"
+                />
               </div>
               <div
                 class="qrcode-user-name"
@@ -169,7 +176,11 @@
               <div class="time_site">
                 <span class="time_title">店铺地址：</span>
                 <span class="time_con">
-                  {{ merchantInfo.ent_city + merchantInfo.ent_district + merchantInfo.ent_detailed_site }}</span
+                  {{
+                    merchantInfo.ent_city +
+                    merchantInfo.ent_district +
+                    merchantInfo.ent_detailed_site
+                  }}</span
                 >
               </div>
               <div
@@ -183,12 +194,17 @@
           </div>
         </div>
         <div class="qrcode-top" v-else>
-          <img :src="imgUrl"  width="100%">
+          <img :src="imgUrl" width="100%" />
         </div>
         <div class="qrcode-btn">
           <div class="qrcode-btn-top">
             <div class="qrcode-btn-top-items" @click="toImage">
-              <van-button type="primary" :loading="doanLoading" :disabled="doanDisabled">{{ doanText }}</van-button>
+              <van-button
+                type="primary"
+                :loading="doanLoading"
+                :disabled="doanDisabled"
+                >{{ doanText }}</van-button
+              >
             </div>
             <div class="qrcode-btn-top-items" @click="showForward">
               <van-button color="#D04443">转发</van-button>
@@ -220,9 +236,9 @@ import { changeFouce as focus, forwardArticles } from "../../home/actions";
 import { getImgToBase } from "../actions";
 import { wxJSSDK } from "@/utils/wxshare.js";
 import VueQr from "vue-qr";
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations } from "vuex";
 import html2canvas from "html2canvas";
-import wx from 'weixin-js-sdk';
+import wx from "weixin-js-sdk";
 export default {
   components: {
     StarCard,
@@ -239,57 +255,57 @@ export default {
       idCardShow: false,
       href: "",
       forwardMark: false,
-      imgUrl:'',
-      doanText:'保存',
-      doanLoading:false,
-      doanDisabled:false,
+      imgUrl: "",
+      doanText: "保存",
+      doanLoading: false,
+      doanDisabled: false,
       isShowTime: false,
     };
   },
-  computed : {
-    ...mapState(['user'])
+  computed: {
+    ...mapState(["user"]),
+  },
+  created() {
+    if (this.$route.query.qrcode_entid && this.$route.query.qrcode_memid) {
+      if(this.merchantInfo.mem_attention == '未关注') {
+        this.changeFocus(this.merchantInfo.mem_attention)
+      }
+    }
   },
   methods: {
     getLocation() {
-      return new Promise((resovle,reject) => {
-        
-          wx.ready(() => {
-                  wx.getLocation({
-                      type: 'wgs84', 
-                      success: (res) => { 
-                          resovle(res);
-                      }
-              });
-          })
-
-          wx.error((res) => {
-              reject(res);
+      return new Promise((resovle, reject) => {
+        wx.ready(() => {
+          wx.getLocation({
+            type: "wgs84",
+            success: (res) => {
+              resovle(res);
+            },
           });
+        });
 
-      })
-      
-            
+        wx.error((res) => {
+          reject(res);
+        });
+      });
     },
     async openMap() {
-     
-        Toast("请稍等，正在为您打开地图");
-        await this.getLocation()
+      Toast("请稍等，正在为您打开地图");
+      await this.getLocation()
         .then((res) => {
-            wx.openLocation({
-              latitude: parseFloat(res.latitude), // 纬度，浮点数，范围为90 ~ -90
-              longitude: parseFloat(res.longitude), // 经度，浮点数，范围为180 ~ -180。
-              name: '本人地址', // 位置名
-              address: '', // 地址详情说明
-              scale: 15, // 地图缩放级别,整形值,范围从1~28。默认为最大
-              // infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
-            });
+          wx.openLocation({
+            latitude: parseFloat(res.latitude), // 纬度，浮点数，范围为90 ~ -90
+            longitude: parseFloat(res.longitude), // 经度，浮点数，范围为180 ~ -180。
+            name: "本人地址", // 位置名
+            address: "", // 地址详情说明
+            scale: 15, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            // infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+          });
         })
         .catch((err) => {
           Toast("因权限受限，无法为您打开地图");
-            console.log(err);
-        })
-
-        
+          console.log(err);
+        });
     },
     callPhone(phoneNumber) {
       window.location.href = "tel://" + phoneNumber;
@@ -304,12 +320,12 @@ export default {
       }).then((canvas) => {
         let url = canvas.toDataURL("image/png");
         this.imgUrl = url;
-        this.doanText = '由于微信限制,请长按保存';
+        this.doanText = "由于微信限制,请长按保存";
         this.doanLoading = false;
         this.doanDisabled = false;
-        setTimeout(()=>{
-          this.doanText = '保存';
-        },4000)
+        setTimeout(() => {
+          this.doanText = "保存";
+        }, 4000);
       });
     },
     getpreview(e) {
@@ -378,19 +394,19 @@ export default {
     },
     showIdcard(val) {
       Toast.loading({
-      message: "加载中...",
-      forbidClick: true,
-      loadingType: "spinner",
-      overlay: true,
-      duration: 0,
-    });
-      getImgToBase(val.ent_logo).then(res=>{
-        if(res.code == 100) {
-          this.merchantInfo.ent_logo_base64 = res.data
+        message: "加载中...",
+        forbidClick: true,
+        loadingType: "spinner",
+        overlay: true,
+        duration: 0,
+      });
+      getImgToBase(val.ent_logo).then((res) => {
+        if (res.code == 100) {
+          this.merchantInfo.ent_logo_base64 = res.data;
           this.idCardShow = true;
           Toast.clear();
         }
-      })
+      });
     },
     // 显示分享
     showForward() {
@@ -467,11 +483,10 @@ export default {
   mounted: function () {
     this.autoForward();
 
-    let URL = '';
+    let URL = "";
     if (window.__wxjs_is_wkwebview === true) {
-      URL = window.location.href.split('#')[0] || window.location.href
+      URL = window.location.href.split("#")[0] || window.location.href;
     }
-  
   },
 };
 </script>
@@ -482,16 +497,15 @@ export default {
   padding: 15px;
   .time_text {
     padding: 6px 0;
-    
   }
   .is-show-time {
-      margin-left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      padding: 2px 5px;
-      background-color: #fff;
-      color: rgba(208, 68, 67, 1);
-      border: 1px solid rgba(208, 68, 67, 1);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    padding: 2px 5px;
+    background-color: #fff;
+    color: rgba(208, 68, 67, 1);
+    border: 1px solid rgba(208, 68, 67, 1);
   }
   .shops-head {
     display: flex;

@@ -111,7 +111,7 @@ export default {
             let clientHeight = e.target.clientHeight;
             let scorllTop = e.target.scrollTop;
             this.scrollTop = scorllTop;
-            if (scorllTop + clientHeight == contentHeight && !this.getDataStatus && !this.finished) {
+            if (scorllTop + clientHeight + 100 >= contentHeight && !this.getDataStatus && !this.finished) {
                 this.loading = true;
                 this.query.offset++;
                 this.getData();
