@@ -466,9 +466,7 @@ export default {
       }
 
       const userList = res.data;
-      /*
-      * 利用哈希表键值不重复特性进行数组对象去重
-      */
+
       const map = new Map();
       for (const item of userList) {
         if (item.gc_id === 2 && !map.has(item.gid)) {
