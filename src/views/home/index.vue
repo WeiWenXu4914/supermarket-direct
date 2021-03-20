@@ -29,10 +29,25 @@
           @scroll="remember($event)"
         >
           <van-pull-refresh v-model="item.downLoading" @refresh="onRefresh">
-            <div class="my-super-attention-ent" v-if="item.nid == 47 && mySuperEntList.length > 0">
-              <div class="my-super-attention-ent-list" @click="goEntHome(superItem.mem_attention_item)" v-for="(superItem, superIndex) in mySuperEntList" :key="superIndex">
-                <img :src="superItem.mem_attention_item.ent_logo" alt="" width="50px" height="50px">
-                <span>{{ superItem.mem_attention_item.ent_name | strSub(3) }}</span>
+            <div
+              class="my-super-attention-ent"
+              v-if="item.nid == 47 && mySuperEntList.length > 0"
+            >
+              <div
+                class="my-super-attention-ent-list"
+                @click="goEntHome(superItem.mem_attention_item)"
+                v-for="(superItem, superIndex) in mySuperEntList"
+                :key="superIndex"
+              >
+                <img
+                  :src="superItem.mem_attention_item.ent_logo"
+                  alt=""
+                  width="50px"
+                  height="50px"
+                />
+                <span>{{
+                  superItem.mem_attention_item.ent_name | strSub(3)
+                }}</span>
               </div>
             </div>
             <van-list
@@ -58,8 +73,12 @@
                           class="product-video-plot"
                           @click="goDetail(items)"
                         >
-                          <img class="icon" src="./img/video_play.svg" alt="">
-                          <img class="poster" :src="items.graphic_surface_plot" alt="" />
+                          <img class="icon" src="./img/video_play.svg" alt="" />
+                          <img
+                            class="poster"
+                            :src="items.graphic_surface_plot"
+                            alt=""
+                          />
                         </div>
                         <div
                           class="product-video-title"
@@ -106,8 +125,12 @@
                           class="product-video-plot"
                           @click="goDetail(items)"
                         >
-                          <img class="icon" src="./img/video_play.svg" alt="">
-                          <img class="poster" :src="items.graphic_surface_plot" alt="" />
+                          <img class="icon" src="./img/video_play.svg" alt="" />
+                          <img
+                            class="poster"
+                            :src="items.graphic_surface_plot"
+                            alt=""
+                          />
                         </div>
                         <div
                           class="product-video-title"
@@ -242,7 +265,7 @@
                           :title="items.pro_name"
                           :thumb="items.pro_thumbnail"
                           @click="goProductDetail(items)"
-                          style="margin-bottom:10px;"
+                          style="margin-bottom: 10px"
                         >
                           <template #footer>
                             <van-button size="mini">去购买</van-button>
@@ -328,10 +351,14 @@
 
     <!-- 关注公众号 -->
     <van-overlay :show="attqrcode" @click="attqrcode = false">
-      <div class="qrwrapper" @click.stop="attqrcode = false" v-if="att_qrcode.src != ''">
+      <div
+        class="qrwrapper"
+        @click.stop="attqrcode = false"
+        v-if="att_qrcode.src != ''"
+      >
         <div class="block">
           <span>{{ att_qrcode.title }}</span>
-          <img :src="att_qrcode.src" alt="">
+          <img :src="att_qrcode.src" alt="" />
         </div>
       </div>
     </van-overlay>
@@ -356,7 +383,7 @@ import {
   wexinConfig,
   forwardArticles,
   getHomeNav,
-  getSuperAttentionEnt
+  getSuperAttentionEnt,
 } from "./actions";
 import { login, getTabbat } from "@/api";
 import { mapState, mapMutations } from "vuex";
@@ -418,10 +445,10 @@ export default {
       },
       attqrcode: false,
       att_qrcode: {
-        src: '',
-        title: '请扫码关注公众号'
+        src: "",
+        title: "请扫码关注公众号",
       },
-      mySuperEntList: []
+      mySuperEntList: [],
     };
   },
   // 组件开启缓存生效，激活组件(初始化和激活都执行)
@@ -509,13 +536,10 @@ export default {
       this.getTabbat();
       var sel = localStorage.getItem("selectives");
       if (sel && this.user.id != 1) {
-
         var val = JSON.parse(sel);
-        console.log(val)
+        console.log(val);
         this.$router.push(val.nav_link + "?id=" + val.nid);
-
       } else {
-        
         if (this.user.mmtid == 3) {
           this.show = true;
         } else {
@@ -621,16 +645,15 @@ export default {
           this.activeNav[this.activeIndex].finished = true;
           this.activeNav[this.activeIndex].downLoading = false;
         }
-        if(id == 47) {
+        if (id == 47) {
           this.getSuperAttentionEntFun();
         }
-        
       });
     },
     getSuperAttentionEntFun() {
-      getSuperAttentionEnt().then(res=>{
+      getSuperAttentionEnt().then((res) => {
         this.mySuperEntList = res.data;
-      })
+      });
     },
     //获取图片像素比例
     handleWaterfulData(data) {
@@ -721,7 +744,7 @@ export default {
       this.activeNav[this.activeIndex].finished = false;
       this.getHomeData(2, this.activeNav[this.activeIndex].nid);
       this.getHomeNav(2, this.activeNav[this.activeIndex].nid);
-      
+
       setTimeout(() => {
         this.activeNav[this.activeIndex].downLoading = false;
       }, 1000);
@@ -748,10 +771,36 @@ export default {
       //     },
       //   });
       // }
+      // if (!this.user.id && !this.$route.query.wechatLoginConfig) {
+      //   let ua = window.navigator.userAgent.toLowerCase();
+      //   if (ua.match(/MicroMessenger/i) == "micromessenger") {
+      //     axios
+      //       .post("http://api.lejiagx.cn/public/index.php/api/wechatLogin")
+      //       .then((res) => {
+      //         const data = res.data;
+      //         if (data.code === 2) {
+      //           const url = window.localStorage.beforeLoginUrl;
 
+      //           localStorage.setItem("LoginToken", data.loginToken);
+      //           window.location.href = data.url;
+      //         } else if (data.code === 200) {
+      //           localStorage.removeItem("LoginToken");
+      //           localStorage.removeItem("Token");
+      //           this.$toast(data.msg);
+      //         } else {
+      //           localStorage.removeItem("LoginToken");
+      //           localStorage.setItem("Token", data.token);
+      //         }
+      //       })
+      //       .catch((err) => {
+      //         this.$toast("登录失败,请重试");
+      //       });
+      //   }
+      // }
       if (this.$route.query.wechatLoginConfig) {
-
-        var codeState = JSON.parse(this.$Utils.demoResponse(this.$route.query.wechatLoginConfig));
+        var codeState = JSON.parse(
+          this.$Utils.demoResponse(this.$route.query.wechatLoginConfig)
+        );
 
         var url = "http://api.lejiagx.cn/public/index.php/api/wechatUser";
         this.login(codeState, url);
@@ -781,8 +830,8 @@ export default {
               localStorage.removeItem("LoginToken");
               sessionStorage.removeItem("codeState");
 
-              var host = location.host
-              location.href = 'http://'+host+'/#/';
+              var host = location.host;
+              location.href = "http://" + host + "/#/";
 
               // if (
               //   !data.userSession.mem_phone ||
@@ -1113,7 +1162,7 @@ export default {
     width: 60px;
     flex-direction: column;
     align-items: center;
-    >img {
+    > img {
       border-radius: 4px;
     }
   }

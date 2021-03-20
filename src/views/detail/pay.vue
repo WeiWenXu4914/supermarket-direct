@@ -35,7 +35,11 @@
             </div>
           </div>
           <div class="right">
-            <van-stepper v-model="count" :min="leastCount" :max="dataMsg.pro_inventory"/>
+            <van-stepper
+              v-model="count"
+              :min="leastCount"
+              :max="dataMsg.pro_inventory"
+            />
           </div>
         </div>
       </div>
@@ -83,7 +87,6 @@
     <van-overlay :show="isPaying">
       <span class="overlay-text">正在为您进入支付环境</span>
     </van-overlay>
-
   </div>
 </template>
 
@@ -130,7 +133,7 @@ export default {
       cou_id: "",
       isPaying: false, //是否正在支付
       parametersStatus: false,
-      parmaeterData: {}
+      parmaeterData: {},
     };
   },
   beforeCreate() {
@@ -153,7 +156,7 @@ export default {
       if (val < this.leastCount) {
         this.count = this.leastCount;
       }
-    }
+    },
   },
   async created() {
     //商品数量
@@ -196,7 +199,6 @@ export default {
       .catch((res) => {
         Toast.fail("获取菜单失败");
       });
-
   },
   computed: {
     totalPrice() {
@@ -299,8 +301,7 @@ export default {
       this.$refs.myAddress.getUserSite();
 
       if (
-        (this.$refs.myAddress.name == undefined &&
-          this.active == 0) ||
+        (this.$refs.myAddress.name == undefined && this.active == 0) ||
         this.$refs.myAddress.name == ""
       ) {
         Toast("请输入取货人姓名");
@@ -332,11 +333,14 @@ export default {
         phone: this.$refs.myAddress.phone,
       };
       //服务站点
-      if(this.$refs.myAddress.tipChooseSite == "请选择服务站点" && !this.$refs.myAddress.pickResult.msid) {
+      if (
+        this.$refs.myAddress.tipChooseSite == "请选择服务站点" &&
+        !this.$refs.myAddress.pickResult.msid
+      ) {
         Toast("请选择服务站点");
         return;
       }
-      
+
       if (
         this.$refs.myAddress.addressStoreList.length !== 0 &&
         this.active == 0
@@ -368,31 +372,30 @@ export default {
       }
 
       //提交订单
-      pay(orderAdd)
-        .then((res) => {
-          let obj = {
-            order_no: res.data.order_number,
-            money: parseFloat(res.data.pro_pice),
-            url: "http://apis.lejiagx.cn/api/wxpay",
-            type: 1,
-          };
+      pay(orderAdd).then((res) => {
+        let obj = {
+          order_no: res.data.order_number,
+          money: parseFloat(res.data.pro_pice),
+          url: "http://apis.lejiagx.cn/api/wxpay",
+          type: 1,
+        };
 
+        if (res.code != 100) {
+          Toast(res.msg);
+          return false;
+        }
+
+        this.isPaying = true;
+
+        wxpay(obj).then((res) => {
           if (res.code != 100) {
-            Toast(res.msg);
-            return false;
+            this.isPaying = false;
           }
 
-          this.isPaying = true;
-
-          wxpay(obj).then((res) => {
-            if (res.code != 100) {
-              this.isPaying = false;
-            }
-
-            this.wxMsg = res.data;
-            this.callpay(1, obj, this);
-          });
+          this.wxMsg = res.data;
+          this.callpay(1, obj, this);
         });
+      });
     },
     //调用微信JS api 支付
     jsApiCall(type, obj, This) {
@@ -478,7 +481,7 @@ export default {
   .parameter-title {
     font-size: 18px;
     width: 100%;
-    color: #393A3C;
+    color: #393a3c;
     height: 50px;
     line-height: 50px;
     vertical-align: middle;

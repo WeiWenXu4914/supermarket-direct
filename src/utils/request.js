@@ -44,7 +44,7 @@ nAxios.interceptors.response.use(
         title: '登陆',
         message: res.data.msg,
       }).then(() => {
-        router.replace('/login');
+        router.replace('/wlogin');
       }).catch(() => {
         window.history.back()
       });

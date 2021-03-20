@@ -115,3 +115,8 @@ export function searchSuperMarketList(obj) {
 export function productAttr(id) {
     return request(`/api/productAttr?pro_id=${id}`, 'get',);
 }
+
+//关注的超市店铺
+export const getSuperAttentionEnt = () => {
+    return request('/api/mySuperAttentionEnt', 'get')
+}
