@@ -282,7 +282,7 @@ export default {
   methods: {
     canplay() {
       let ua = navigator.userAgent;
-      if ( !ua.match(/iPhone/i) ) {
+      if (!ua.match(/iPhone/i)) {
         this.$refs.video.play();
       }
     },
@@ -385,7 +385,7 @@ export default {
 
         if (res.data.pro_id) {
           const prores = await getProductSetList(res.data.pro_id);
-          if(prores.length > 0) {
+          if (prores.length > 0) {
             this.ProductSetList = prores.data[0];
             this.recProShow = true;
           }
@@ -466,15 +466,13 @@ export default {
       }
 
       const userList = res.data;
-
       const map = new Map();
       for (const item of userList) {
         if (item.gc_id === 2 && !map.has(item.gid)) {
-          map.set(item.gid, item)
+          map.set(item.gid, item);
         }
       }
       this.videoList = [...map.values()];
-
     },
     //收藏
     collect() {
@@ -586,10 +584,8 @@ export default {
             // 检测是否存在p标签
             var regPtags = RegExp(/<p>/);
             if (regPtags.exec(this.dataAll.graphic_details)) {
-
               var desc = this.dataAll.graphic_intro;
-            }else {
-              
+            } else {
               var desc = this.dataAll.graphic_details;
             }
           }
@@ -617,14 +613,11 @@ export default {
           ) {
             var desc = "来自用户《" + this.dataAll.mem_name + "》的分享";
           } else {
-            
             // 检测是否存在p标签
             var regPtags = RegExp(/<p>/);
             if (regPtags.exec(this.dataAll.graphic_details)) {
-
               var desc = this.dataAll.graphic_intro;
-            }else {
-              
+            } else {
               var desc = this.dataAll.graphic_details;
             }
           }
@@ -665,10 +658,8 @@ export default {
                 // 检测是否存在p标签
                 var regPtags = RegExp(/<p>/);
                 if (regPtags.exec(this.dataAll.graphic_details)) {
-
                   var desc = this.dataAll.graphic_intro;
-                }else {
-                  
+                } else {
                   var desc = this.dataAll.graphic_details;
                 }
               }
@@ -692,10 +683,8 @@ export default {
                 // 检测是否存在p标签
                 var regPtags = RegExp(/<p>/);
                 if (regPtags.exec(this.dataAll.graphic_details)) {
-
                   var desc = this.dataAll.graphic_intro;
-                }else {
-                  
+                } else {
                   var desc = this.dataAll.graphic_details;
                 }
               }
@@ -762,7 +751,7 @@ export default {
     background-color: #000;
     .video {
       // position: absolute;
-       width: 100%;
+      width: 100%;
       height: 100%;
       // margin-left: 50%;
       // top: 0;

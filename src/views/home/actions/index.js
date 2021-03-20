@@ -49,3 +49,8 @@ export const articleDel = (id) => {
 export const memberCollect = (id, type, state) => {
     return request('/api/memberCollect', 'post', { mem_collect_id: id, mem_collect_class: type, state: state} )
 }
+
+//关注的超市店铺
+export const getSuperAttentionEnt = () => {
+    return request('/api/mySuperAttentionEnt', 'get')
+}

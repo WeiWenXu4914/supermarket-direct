@@ -29,6 +29,12 @@
           @scroll="remember($event)"
         >
           <van-pull-refresh v-model="item.downLoading" @refresh="onRefresh">
+            <div class="my-super-attention-ent" v-if="item.nid == 47 && mySuperEntList.length > 0">
+              <div class="my-super-attention-ent-list" @click="goEntHome(superItem.mem_attention_item)" v-for="(superItem, superIndex) in mySuperEntList" :key="superIndex">
+                <img :src="superItem.mem_attention_item.ent_logo" alt="" width="50px" height="50px">
+                <span>{{ superItem.mem_attention_item.ent_name | strSub(3) }}</span>
+              </div>
+            </div>
             <van-list
               v-model="item.upLoading"
               :finished="item.finished"
@@ -350,6 +356,7 @@ import {
   wexinConfig,
   forwardArticles,
   getHomeNav,
+  getSuperAttentionEnt
 } from "./actions";
 import { login, getTabbat } from "@/api";
 import { mapState, mapMutations } from "vuex";
@@ -413,7 +420,8 @@ export default {
       att_qrcode: {
         src: '',
         title: '请扫码关注公众号'
-      }
+      },
+      mySuperEntList: []
     };
   },
   // 组件开启缓存生效，激活组件(初始化和激活都执行)
@@ -613,7 +621,16 @@ export default {
           this.activeNav[this.activeIndex].finished = true;
           this.activeNav[this.activeIndex].downLoading = false;
         }
+        if(id == 47) {
+          this.getSuperAttentionEntFun();
+        }
+        
       });
+    },
+    getSuperAttentionEntFun() {
+      getSuperAttentionEnt().then(res=>{
+        this.mySuperEntList = res.data;
+      })
     },
     //获取图片像素比例
     handleWaterfulData(data) {
@@ -1083,6 +1100,21 @@ export default {
       height: 100%;
       padding-bottom: 150px;
       overflow-y: auto;
+    }
+  }
+}
+.my-super-attention-ent {
+  width: 96%;
+  margin: 0 auto;
+  padding: 10px 0 10px 0;
+  min-height: 60px;
+  .my-super-attention-ent-list {
+    display: flex;
+    width: 60px;
+    flex-direction: column;
+    align-items: center;
+    >img {
+      border-radius: 4px;
     }
   }
 }
