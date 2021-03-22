@@ -332,6 +332,7 @@ export default {
         name: this.$refs.myAddress.name,
         phone: this.$refs.myAddress.phone,
       };
+      console.log(orderAdd,"111")
       //服务站点
       if (
         this.$refs.myAddress.tipChooseSite == "请选择服务站点" &&

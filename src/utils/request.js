@@ -5,6 +5,7 @@
 // import axios from 'axios';
 import store from '@/store';
 import { Dialog, Toast } from "vant";
+import { Controller } from '_swiper@6.4.10@swiper';
 import router from '../router/index'
 // import router from '../router'
 const nAxios = window.axios.create({

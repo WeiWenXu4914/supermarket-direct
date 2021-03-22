@@ -1,8 +1,8 @@
 <template>
   <div class="payment">
-    <div class="top">
+    <!-- <div class="top">
       <p @click="$router.push('/agora')"><van-icon name="cross" /></p>
-    </div>
+    </div> -->
     <div class="content">
       <img src="../../components/img1/空心对勾.png" alt />
       <p>支付成功</p>
