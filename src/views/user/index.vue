@@ -400,6 +400,10 @@ export default {
     async userInfoFun() {
       const res = await userInfo();
 
+      if(res.data.token) {
+        window.localStorage.setItem('Authorization', res.data.token)
+      }
+      
       if (res.code === 100) {
         if (res.data.mem_phone != "" && res.data.mem_phone != null) {
           if (res.data.mem_phone.length > 0) {
@@ -422,7 +426,7 @@ export default {
           type: res.data.met_type_name,
           usertype: res.data.mmt_id,
         };
-
+        
         this.message = res.data.msg_num;
       }
     },
