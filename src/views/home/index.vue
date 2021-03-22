@@ -379,21 +379,15 @@ import newAddMerchant from "@/views/home/components/newAddMerchant";
 import smallVideo from "@/views/home/components/smallVideo";
 import {
   getHome,
-  getHomeList,
-  wexinConfig,
   forwardArticles,
   getHomeNav,
   getSuperAttentionEnt,
 } from "./actions";
-import { login, getTabbat } from "@/api";
+import { getTabbat } from "@/api";
 import { mapState, mapMutations } from "vuex";
 import axios from "axios";
-import wx from "weixin-js-sdk";
-import { getLocation, getLngLatLocation } from "@/utils/map.js";
 import { wxJSSDK } from "@/utils/wxshare.js";
-import Vue from "vue";
-import { Toast, Notify } from "vant";
-import { userInfo } from "../user/actions/index";
+import { Toast } from "vant";
 
 export default {
   name: "home",
