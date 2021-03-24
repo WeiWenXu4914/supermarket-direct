@@ -1151,9 +1151,11 @@ export default {
   margin: 0 auto;
   padding: 10px 0 10px 0;
   min-height: 60px;
+  display: flex;
   .my-super-attention-ent-list {
     display: flex;
     width: 60px;
+    margin-right: 10px;
     flex-direction: column;
     align-items: center;
     > img {
