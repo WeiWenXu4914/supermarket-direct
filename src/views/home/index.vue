@@ -45,9 +45,7 @@
                   width="50px"
                   height="50px"
                 />
-                <span>{{
-                  superItem.mem_attention_item.ent_name | strSub(3)
-                }}</span>
+                <span>{{ superItem.mem_attention_item.ent_name }}</span>
               </div>
             </div>
             <van-list
@@ -236,11 +234,24 @@
 
                       <template v-else-if="items.gc_id === 999">
                         <!-- 商品 -->
-                        <mer-chant
+                        <!-- <mer-chant
                           v-if="items.gc_id === 999"
                           :proItem="items"
                           :key="items.gid"
-                        />
+                        /> -->
+                        <van-card
+                          :num="items.pro_inventory"
+                          :price="priceTransform(items.pro_price)"
+                          :desc="items.pro_introduction"
+                          :title="items.pro_name"
+                          :thumb="items.pro_thumbnail"
+                          @click="goProductDetail(items)"
+                          style="margin-bottom: 10px"
+                        >
+                          <template #footer>
+                            <van-button size="mini">去购买</van-button>
+                          </template>
+                        </van-card>
                       </template>
 
                       <template v-else-if="item.nid === 71">
@@ -1152,12 +1163,23 @@ export default {
   padding: 10px 0 10px 0;
   min-height: 60px;
   display: flex;
+  flex-wrap: wrap;
   .my-super-attention-ent-list {
     display: flex;
     width: 60px;
+    height: 100px;
     margin-right: 10px;
     flex-direction: column;
     align-items: center;
+    > span {
+      margin-top: 5px;
+      word-break: break-all;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
     > img {
       border-radius: 4px;
     }

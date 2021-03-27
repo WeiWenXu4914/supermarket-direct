@@ -68,8 +68,8 @@
     </div>
     <!--已选数量-->
     <div class="chosed" @click="numShow = true">
-      <span>已选</span>
-      <span>{{ proDetail.pro_name }} {{ countChoose }} 件</span>
+      <span>选择</span>
+      <span>{{ proDetail.pro_name }}</span>
       <van-icon class="icon" name="weapp-nav" />
     </div>
     <!--地址-->
@@ -136,7 +136,7 @@
           <template #footer>
             <div style="padding: 15px 0; font-size: 14px">
               <span style="position: absolute; left: 10%; line-height: 30px"
-                >数量</span
+                >购买数量</span
               >
               <button @click="decreaseNum">-</button>
               <!-- <span class="count">{{ countChoose }}</span> -->
@@ -694,7 +694,7 @@ export default {
         this.countChoose = parseInt(this.countChoose);
         this.proDetail.pro_inventory++;
       } else {
-        Toast(`此商品${this.leastCount}件起售`);
+        Toast(`此商品起售数量为${this.leastCount}`);
       }
     },
     // 关闭面板
