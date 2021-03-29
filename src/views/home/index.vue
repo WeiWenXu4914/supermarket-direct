@@ -765,6 +765,21 @@ export default {
     ...mapState(["user"]),
     // 初始化登录信息,与员工任务
     initLogin() {
+      if (
+        localStorage.getItem("super_url") &&
+        !this.$route.query.wechatLoginConfig
+      ) {
+        var super_url = JSON.parse(localStorage.getItem("super_url"));
+        this.$router.push({
+          path: super_url.path,
+          query: {
+            res: super_url.res,
+            qrcode_entid: super_url.qrcode_entid,
+            qrcode_memid: this.user.id
+          },
+        });
+        return false;
+      }
       // if (
       //   (this.user.id != undefined && !this.user.phone) ||
       //   this.user.phone == ""
@@ -834,6 +849,19 @@ export default {
               this.$parent.TabBar(2);
               localStorage.removeItem("LoginToken");
               sessionStorage.removeItem("codeState");
+
+              if (localStorage.getItem("super_url")) {
+                var super_url = JSON.parse(localStorage.getItem("super_url"));
+                this.$router.push({
+                  path: super_url.path,
+                  query: {
+                    res: super_url.res,
+                    qrcode_entid: super_url.qrcode_entid,
+                    qrcode_memid: data?.userSession?.memid,
+                  },
+                });
+                return false;
+              }
 
               var host = location.host;
               location.href = "http://" + host + "/#/";
