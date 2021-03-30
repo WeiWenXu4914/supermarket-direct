@@ -498,16 +498,10 @@ export default {
           Toast("您已经在店铺内了");
           return;
         }
-        var obj = {
-          entid: val.rel_id,
-          entfid: 0,
-        };
-
-        var res = this.$Utils.demoRequest(JSON.stringify(obj));
 
         this.$router.push({
           path: "/merchants",
-          query: { res: res },
+          query: { entid: val.rel_id },
         });
       } else {
         if (this.$route.path == `/user/page/${val.mem_id}`) {

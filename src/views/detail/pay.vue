@@ -101,7 +101,7 @@ import {
   orderDel,
   orderState,
   DeliveryWay,
-  productAttr
+  productAttr,
 } from "./actions/index";
 export default {
   components: {
@@ -271,14 +271,9 @@ export default {
     },
     //进店
     intoStore() {
-      let obj = {
-        entid: this.dataMsg.entid,
-        entfid: 0,
-      };
-      let res = this.$Utils.demoRequest(JSON.stringify(obj));
       this.$router.push({
         path: "/merchants/produce",
-        query: { res: res },
+        query: { entid: this.dataMsg.entid },
       });
     },
     //支付
@@ -332,7 +327,7 @@ export default {
         name: this.$refs.myAddress.name,
         phone: this.$refs.myAddress.phone,
       };
-      console.log(orderAdd,"111")
+      console.log(orderAdd, "111");
       //服务站点
       if (
         this.$refs.myAddress.tipChooseSite == "请选择服务站点" &&

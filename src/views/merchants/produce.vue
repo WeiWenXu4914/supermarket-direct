@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       proList: {},
-      shows: 0
+      shows: 0,
     };
   },
   computed: {
@@ -45,7 +45,15 @@ export default {
   created() {
     this.getEntProduct();
     if (!this.user.id && this.$route.query.qrcode_entid) {
-      this.initLogin();
+      this.$dialog
+        .confirm({
+          title: "登陆",
+          message: "是否前往登陆?",
+        })
+        .then(() => {
+          this.initLogin();
+        })
+        .catch(() => {});
     }
   },
   methods: {
@@ -57,16 +65,14 @@ export default {
           .then((res) => {
             const data = res.data;
             if (data.code === 2) {
-
               var super_url = {
                 path: this.$route.path,
                 res: this.$route.query.res,
                 qrcode_entid: this.$route.query.qrcode_entid,
-              }
+              };
               localStorage.setItem("LoginToken", data.loginToken);
               localStorage.setItem("super_url", JSON.stringify(super_url));
               window.location.href = data.url;
-
             } else if (data.code === 200) {
               localStorage.removeItem("LoginToken");
               localStorage.removeItem("Token");
@@ -84,7 +90,15 @@ export default {
       }
     },
     getEntProduct(searchVal) {
-      var data = JSON.parse(this.$Utils.demoResponse(this.$route.query.res));
+      if (this.$route.query.entid) {
+        var data = {
+          entid: this.$route.query.entid,
+          entfid: 0,
+        };
+      } else {
+        var data = JSON.parse(this.$Utils.demoResponse(this.$route.query.res));
+      }
+
       if (searchVal) {
         data.val = searchVal;
       } else {

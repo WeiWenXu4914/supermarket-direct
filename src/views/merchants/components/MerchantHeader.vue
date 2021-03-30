@@ -266,10 +266,14 @@ export default {
     ...mapState(["user"]),
   },
   created() {
-    if (this.$route.query.qrcode_entid && this.$route.query.qrcode_memid) {
+    if (
+      this.$route.query.qrcode_entid &&
+      this.$route.query.qrcode_memid &&
+      this.user.id
+    ) {
       if (this.merchantInfo.mem_attention == "未关注") {
         this.changeFocus(this.merchantInfo.mem_attention);
-      }else{
+      } else {
         localStorage.removeItem("super_url");
       }
     }

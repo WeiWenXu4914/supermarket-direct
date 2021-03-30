@@ -34,8 +34,15 @@ export default {
   methods: {
     getEntProductApp(searchVal=''){
 
-      var data = JSON.parse(this.$Utils.demoResponse(this.$route.query.res))
-      console.log(data)
+      if (this.$route.query.entid) {
+        var data = {
+          entid: this.$route.query.entid,
+          entfid: 0,
+        };
+      } else {
+        var data = JSON.parse(this.$Utils.demoResponse(this.$route.query.res));
+      }
+      
       if(searchVal != ''){
         data.val = searchVal;
       }

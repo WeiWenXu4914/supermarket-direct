@@ -616,16 +616,10 @@ export default {
     },
     // 去企业首页
     userHandle() {
-      var obj = {
-        entid: this.proDetail.entid,
-        entfid: 0,
-      };
-
-      var res = this.$Utils.demoRequest(JSON.stringify(obj));
 
       this.$router.push({
         path: "/merchants",
-        query: { res: res },
+        query: { entid: this.proDetail.entid },
       });
     },
     goHandle(item) {
@@ -637,16 +631,9 @@ export default {
 
         this.setMerchant(this.$route.path);
 
-        var obj = {
-          entid: item.rel_id,
-          entfid: 0,
-        };
-
-        var res = this.$Utils.demoRequest(JSON.stringify(obj));
-
         this.$router.push({
           path: "/merchants",
-          query: { res: res },
+          query: { entid: item.rel_id },
         });
       } else {
         if (this.$route.path == `/user/page/${item.mem_id}`) {

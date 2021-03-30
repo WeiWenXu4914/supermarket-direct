@@ -353,16 +353,9 @@ export default {
         
         this.setMerchant(this.$route.path);
 
-        var obj = {
-          entid: this.article.rel_id,
-          entfid: 0,
-        };
-
-        var res = this.$Utils.demoRequest(JSON.stringify(obj));
-
         this.$router.push({
           path: "/merchants",
-          query: { res: res },
+          query: { entid: this.article.rel_id },
         });
       } else {
         
