@@ -41,8 +41,12 @@
               <div>企业简介:</div>
               <div class="message">{{enterpriseMsg.ent_introduction}}</div>
             </template>
-            <template v-if="enterpriseMsg.ent_style" >
+            <div class="msg">企业风采:</div>
+            <template v-if="!Array.isArray(enterpriseMsg.ent_style)" >
               <div class="first" v-html="enterpriseMsg.ent_style" @click="getpreview($event)"></div>
+            </template>
+            <template v-else>
+              <img class="style-img" :src="item" alt="" v-for="(item, index) in enterpriseMsg.ent_style" :key="index" @click="getpreview($event)">
             </template>
           </div>
         </div>
@@ -251,6 +255,10 @@ export default {
           object-fit: cover;
         }
       }
+    }
+    .style-img {
+      width: 100%;
+      object-fit: cover;
     }
   }
 }
