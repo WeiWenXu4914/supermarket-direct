@@ -51,6 +51,7 @@
             <van-list
               v-model="item.upLoading"
               :finished="item.finished"
+              :immediate-check="true"
               @load="onLoad"
               finished-text="没有更多了"
             >
@@ -615,6 +616,7 @@ export default {
       }
 
       getHome(obj).then((res) => {
+        console.log(res)
         Toast.clear();
         if (type == 2) {
           if (res.data.length < 0) {
@@ -733,6 +735,7 @@ export default {
       this.activeNav[this.activeIndex].num++;
 
       this.getHomeData(1, this.activeNav[this.activeIndex].nid);
+      console.log('触底了')
       setTimeout(() => {
         this.activeNav[this.activeIndex].upLoading = false;
       }, 1000);
@@ -1174,6 +1177,7 @@ export default {
     height: 100%;
     .scroll-wrapper {
       height: 100%;
+      min-height: 100vh;
       padding-bottom: 150px;
       overflow-y: auto;
     }

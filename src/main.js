@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import router from './router'
 import store from './store'
 import Vant, { Lazyload } from 'vant'
