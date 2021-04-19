@@ -54,8 +54,7 @@ export default {
     search() {
         orderSearch(this.value)
             .then((res) => {
-                  this.dataList = res.data.filter( item => item.is_del != 1 );
-                  
+                  this.dataList = res.data.filter( item => item.is_del != 1);
             })
             .catch((err) => {
                 Toast.fail('搜索失败，请重试')

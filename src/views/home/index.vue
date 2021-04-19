@@ -394,7 +394,7 @@ export default {
   },
   data() {
     return {
-      activeIndex: 1, //导航选中索引
+      activeIndex: 0, //导航选中索引
       activeNav: [], //导航数据
       activePreNav: [], //二级导航数据
       pageData: [], //页面数据
@@ -590,7 +590,7 @@ export default {
         obj.size = 10;
         obj.num = 1;
       }
-
+      
       getHome(obj).then((res) => {
         Toast.clear();
         if (type == 2) {
@@ -748,12 +748,12 @@ export default {
       //     },
       //   });
       // }
-
       if (this.$route.query.wechatLoginConfig) {
 
         var codeState = JSON.parse(this.$Utils.demoResponse(this.$route.query.wechatLoginConfig));
 
         var url = "http://api.lejiagx.cn/public/index.php/api/wechatUser";
+        
         this.login(codeState, url);
       }
     },
