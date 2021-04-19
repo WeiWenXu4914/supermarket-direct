@@ -10,6 +10,7 @@ module.exports = {
   lintOnSave: false,
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
+  assetsDir: '.',
   devServer: { // 实时保存、编译的配置段
     open: true, // 自动开启浏览器
     port: 8080 // 服务运行端口

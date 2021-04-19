@@ -45,7 +45,12 @@
         v-if="videoItemVal.mmt_id == 3 && videoItemVal.memid != 1"
         @click="userHandle"
       >
-        <van-button color="#D04443" size="mini" v-if="$route.path != '/merchants/produce'">进店</van-button>
+        <van-button
+          color="#D04443"
+          size="mini"
+          v-if="$route.path != '/merchants/produce'"
+          >进店</van-button
+        >
       </div>
     </div>
 
@@ -297,16 +302,9 @@ export default {
 
         this.setMerchant(this.$route.path);
 
-        var obj = {
-          entid: this.videoItem.rel_id,
-          entfid: 0,
-        };
-
-        var res = this.$Utils.demoRequest(JSON.stringify(obj));
-
         this.$router.push({
           path: "/merchants",
-          query: { res: res },
+          query: { entid: this.videoItem.rel_id },
         });
 
         // this.$router.push({
@@ -414,9 +412,7 @@ export default {
       }
     },
     goDetail(val) {
-      if (
-        val.graphic_width / val.graphic_height < 1
-      ) {
+      if (val.graphic_width / val.graphic_height < 1) {
         if (this.$route.path == `/article/full_screen_play/${val.gid}`) return;
 
         this.$router.push(`/article/full_screen_play/${val.gid}`);

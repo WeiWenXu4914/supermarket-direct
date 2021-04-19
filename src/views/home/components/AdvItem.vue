@@ -49,16 +49,9 @@ export default {
     userHandle () {
       if (this.advItem.mmt_id === 3) {
 
-        var obj = {
-          entid: this.advItem.rel_id,
-          entfid: 0
-        };
-
-        var res = this.$Utils.demoRequest(JSON.stringify(obj));
-
         this.$router.push({
           path: '/merchants',
-          query: {res: res}
+          query: {entid: this.advItem.rel_id}
         })
         
       } else {

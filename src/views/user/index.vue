@@ -147,11 +147,11 @@
               <div class="item-con">评价</div>
             </div>
             <div class="item" @click="toAllAfterSale">
-            <div class="item-img">
-              <img src="./img/售后.png" alt="" />
+              <div class="item-img">
+                <img src="./img/售后.png" alt="" />
+              </div>
+              <div class="item-con">退款/售后</div>
             </div>
-            <div class="item-con">退款/售后</div>
-          </div>
           </div>
         </div>
       </div>
@@ -337,8 +337,7 @@ export default {
       isLoading: false,
       audio: [
         {
-          url:
-            "http://api.lejiagx.cn/static/mp3/yinxiao1323.mp3",
+          url: "http://api.lejiagx.cn/static/mp3/yinxiao1323.mp3",
           pic: "http://api.lejiagx.cn/static/icon/lejia_logo.png",
         },
       ],
@@ -379,14 +378,9 @@ export default {
     // 去企业首页
     goEntHome(type) {
       if (type == 1) {
-        var obj = {
-          entid: this.userList.rel_id,
-          entfid: 0,
-        };
-        var res = this.$Utils.demoRequest(JSON.stringify(obj));
         this.$router.push({
           path: "/merchants/produce",
-          query: { res: res },
+          query: { entid: this.userList.rel_id },
         });
       } else {
         window.location.href = "http://wechat.lejiagx.cn/merchant/";
@@ -399,6 +393,10 @@ export default {
     // 获取用户信息
     async userInfoFun() {
       const res = await userInfo();
+
+      if (res.data.token) {
+        window.localStorage.setItem("Authorization", res.data.token);
+      }
 
       if (res.code === 100) {
         if (res.data.mem_phone != "" && res.data.mem_phone != null) {

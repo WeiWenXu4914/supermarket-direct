@@ -61,15 +61,9 @@ export default {
   methods: {
     // 去企业首页
     userHandle(id) {
-      var obj = {
-        entid: id,
-        entfid: 0,
-      };
-
-      var res = this.$Utils.demoRequest(JSON.stringify(obj));
       this.$router.push({
         path: "/merchants/produce",
-        query: { res: res },
+        query: { entid: id },
       });
     }
   }

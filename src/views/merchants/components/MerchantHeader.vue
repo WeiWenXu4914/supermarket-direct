@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div class="time">
+    <!-- <div class="time">
       <div class="time_left">
         <div class="time_site">
           <div>
@@ -78,13 +78,13 @@
               {{ merchantInfo.ent_detailed_site }}</span
             >
           </div>
-          <!-- <img src="../img/site.svg" alt="" @click="openMap"> -->
+          <img src="../img/site.svg" alt="" @click="openMap">
         </div>
       </div>
-      <!-- <div class="phone" @click="callPhone(merchantInfo.service_phone)" v-if="merchantInfo.mem_attention == '已关注'">
+      <div class="phone" @click="callPhone(merchantInfo.service_phone)" v-if="merchantInfo.mem_attention == '已关注'">
         <van-icon name="phone" color="#D04443" />
-      </div> -->
-    </div>
+      </div>
+    </div> -->
     <!-- <button @click="isShowTime = !isShowTime" v-if="!isShowTime" class="is-show-time">查看营业时间</button>
     <div class="time_text" v-else>
       <span class="time_title">营业时间：</span>
@@ -127,7 +127,7 @@
                 </div>
               </div>
             </div>
-            <div class="qrcode-number-item">
+            <!-- <div class="qrcode-number-item">
               <div class="numbers-rec">
                 <div class="rec-desc">关注</div>
                 <div class="rec-num">{{ merchantInfo.my_attention_num }}</div>
@@ -140,7 +140,7 @@
                 <div class="rec-desc">员工</div>
                 <div class="rec-num">{{ merchantInfo.my_employee }}</div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="qrcode-image">
             <vue-qr
@@ -150,7 +150,7 @@
               :size="200"
             />
           </div>
-          <div class="qrcode-time">
+          <!-- <div class="qrcode-time">
             <div class="time_left">
               <div class="time_text">
                 <span class="time_title">营业时间：</span>
@@ -191,7 +191,7 @@
                 <span class="time_con"> {{ merchantInfo.service_phone }}</span>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="qrcode-top" v-else>
           <img :src="imgUrl" width="100%" />
@@ -266,9 +266,15 @@ export default {
     ...mapState(["user"]),
   },
   created() {
-    if (this.$route.query.qrcode_entid && this.$route.query.qrcode_memid) {
-      if(this.merchantInfo.mem_attention == '未关注') {
-        this.changeFocus(this.merchantInfo.mem_attention)
+    if (
+      this.$route.query.qrcode_entid &&
+      this.$route.query.qrcode_memid &&
+      this.user.id
+    ) {
+      if (this.merchantInfo.mem_attention == "未关注") {
+        this.changeFocus(this.merchantInfo.mem_attention);
+      } else {
+        localStorage.removeItem("super_url");
       }
     }
   },
@@ -380,6 +386,7 @@ export default {
         if (res.code === 100) {
           this.$toast.success("关注成功");
           this.merchantInfo.mem_attention = "已关注";
+          localStorage.removeItem("super_url");
           this.$emit("changeFocus", 1);
         } else {
           this.$toast.fail("关注失败");

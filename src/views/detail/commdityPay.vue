@@ -1,10 +1,13 @@
 <template>
   <div class="detailPay" @scroll="scroll($event)">
-    
     <div class="lunbo">
       <div class="navigator-detail-pay">
-        <div class="back" @click="back"><img src="./img/back.svg" alt=""></div>
-        <div class="function" @click="PacmanModify"><img src="./img/forward.svg" alt=""></div>
+        <div class="back" @click="back">
+          <img src="./img/back.svg" alt="" />
+        </div>
+        <div class="function" @click="PacmanModify">
+          <img src="./img/forward.svg" alt="" />
+        </div>
       </div>
       <van-swipe @change="onChange" autoplay="3000">
         <van-swipe-item
@@ -38,7 +41,7 @@
         <p class="s2">{{ proDetail.pro_price }}</p>
         <span class="original-price" v-if="linePrice">￥{{ linePrice }}</span>
         <div class="init-count" v-if="leastCount > 1">
-           <span>{{ leastCount }}</span> 件起售
+          <span>{{ leastCount }}</span> 件起售
         </div>
       </div>
       <div class="product-desc">
@@ -47,38 +50,58 @@
       </div>
     </div>
     <!--优惠券展示-->
-    <div class="discount-items" @click="getCouponShow = true" v-if="couponList.length > 0">
+    <div
+      class="discount-items"
+      @click="getCouponShow = true"
+      v-if="couponList.length > 0"
+    >
       <span>领券</span>
       <div class="items-wrapper">
-        <span class="tags" v-for="(item, index) in couponList.slice(2)" :key="index">{{ couType(item) }}</span>
+        <span
+          class="tags"
+          v-for="(item, index) in couponList.slice(2)"
+          :key="index"
+          >{{ couType(item) }}</span
+        >
       </div>
       <van-icon class="icon" name="arrow" />
     </div>
     <!--已选数量-->
     <div class="chosed" @click="numShow = true">
-      <span>已选</span>
-      <span>{{ proDetail.pro_name }} {{ countChoose }} 件</span>
+      <span>选择</span>
+      <span>{{ proDetail.pro_name }}</span>
       <van-icon class="icon" name="weapp-nav" />
     </div>
     <!--地址-->
     <div @click="toEditAddress" :class="isSiteNull ? 'tipWarn' : 'address'">
       <span>送至</span>
-      <span v-if="address.city">{{ address.province }} {{ address.city }} {{ address.district }} {{ address.detailed_site }}</span>
+      <span v-if="address.city"
+        >{{ address.province }} {{ address.city }} {{ address.district }}
+        {{ address.detailed_site }}</span
+      >
       <span v-else>请添加默认地址</span>
-      <van-icon class="icon" name="arrow" :color="isSiteNull ? 'red' : ''"/>
+      <van-icon class="icon" name="arrow" :color="isSiteNull ? 'red' : ''" />
     </div>
     <!--地址-->
-    <div @click="parametersStatus = true" :class="isSiteNull ? 'tipWarn' : 'address'" v-if="parmaeterData.attr_param">
+    <div
+      @click="parametersStatus = true"
+      :class="isSiteNull ? 'tipWarn' : 'address'"
+      v-if="parmaeterData.attr_param"
+    >
       <span>参数</span>
       <span>规格参数 保质期 质地 ...</span>
-      <van-icon class="icon" name="arrow" :color="isSiteNull ? 'red' : ''"/>
+      <van-icon class="icon" name="arrow" :color="isSiteNull ? 'red' : ''" />
     </div>
     <!--商品详情图片-->
     <div class="shop">
       <p class="p1">商品详情</p>
       <div class="pro_desc" v-if="proDetail.pro_desc != null">
         <!-- <img v-lazy="item.pro_des_path" v-for="(item, index) in proDetail.pro_desc" :key="index" /> -->
-        <div v-html="proDetail.pro_desc" class="html-class" @click="showImg($event)"></div>
+        <div
+          v-html="proDetail.pro_desc"
+          class="html-class"
+          @click="showImg($event)"
+        ></div>
       </div>
       <van-empty
         style="margin-top: 10px"
@@ -113,7 +136,7 @@
           <template #footer>
             <div style="padding: 15px 0; font-size: 14px">
               <span style="position: absolute; left: 10%; line-height: 30px"
-                >数量</span
+                >购买数量</span
               >
               <button @click="decreaseNum">-</button>
               <!-- <span class="count">{{ countChoose }}</span> -->
@@ -203,7 +226,12 @@
       <div v-for="(item, index) in memberCommentList" :key="index">
         <div class="e2">
           <div>
-            <img :src="item.mem_head_portrait" alt class="i1" @click="goHandle(item)" />
+            <img
+              :src="item.mem_head_portrait"
+              alt
+              class="i1"
+              @click="goHandle(item)"
+            />
             <span>{{ item.mem_name }}</span>
           </div>
           <van-rate
@@ -220,7 +248,11 @@
           <p>{{ item.mem_comment_text }}</p>
         </div>
         <div class="e4">
-          <div v-for="img in item.mem_comment_imgs" :key="img" class="img-wrapper">
+          <div
+            v-for="img in item.mem_comment_imgs"
+            :key="img"
+            class="img-wrapper"
+          >
             <van-image
               :src="img"
               width="2.5rem"
@@ -280,14 +312,8 @@
       </div>
     </transition>
 
-    <van-popup
-     position="bottom" 
-     round 
-     v-model="parametersStatus"
-    >
-      <div class="parameter-title">
-        产品参数
-      </div>
+    <van-popup position="bottom" round v-model="parametersStatus">
+      <div class="parameter-title">产品参数</div>
       <div class="parameter-content" v-if="parmaeterData.attr_param">
         <template v-for="item in parmaeterData.attr_param">
           <div class="parameter-item" :key="item.canName" v-if="item.canCont">
@@ -297,12 +323,15 @@
         </template>
       </div>
       <div class="parameter-bottom">
-        <van-button color="linear-gradient(to right, #ff6034, #ee0a24)" class="button" @click="parametersStatus = false">
+        <van-button
+          color="linear-gradient(to right, #ff6034, #ee0a24)"
+          class="button"
+          @click="parametersStatus = false"
+        >
           返回
         </van-button>
       </div>
     </van-popup>
-
   </div>
 </template>
 
@@ -316,8 +345,18 @@ import {
   memberCommentList,
   shippingAddress,
   productAttr,
+  getSuperAttentionEnt,
+  searchSuperMarketList,
 } from "./actions/index.js";
-import { Lazyload, Sku, Swipe, SwipeItem, Toast, Icon, ImagePreview } from "vant";
+import {
+  Lazyload,
+  Sku,
+  Swipe,
+  SwipeItem,
+  Toast,
+  Icon,
+  ImagePreview,
+} from "vant";
 import { wxJSSDK } from "@/utils/wxshare.js";
 export default {
   name: "detail",
@@ -364,32 +403,37 @@ export default {
         res: this.$route.query.res,
       };
       window.localStorage.commdityTaskInfo = JSON.stringify(commdityTaskInfo);
-    } else if(this.$route.query.forward) {
+    } else if (this.$route.query.forward) {
       let commdityForwardInfo = {
         forward: this.$route.query.forward,
         res: this.$route.query.res,
       };
-      window.localStorage.commdityForwardInfo = JSON.stringify(commdityForwardInfo);
+      window.localStorage.commdityForwardInfo = JSON.stringify(
+        commdityForwardInfo
+      );
     } else {
       this.getproductCoupon();
       this.getproductCouponMem();
     }
-    
   },
   // beforeCreate() {
-	// 	Toast.loading({
-	// 		message: '加载中...',
-	// 		forbidClick: true,
-	// 		loadingType: 'spinner',
-	// 		overlay: true,
-	// 		duration:0
-	// 	});
+  // 	Toast.loading({
+  // 		message: '加载中...',
+  // 		forbidClick: true,
+  // 		loadingType: 'spinner',
+  // 		overlay: true,
+  // 		duration:0
+  // 	});
   // },
   watch: {
     countChoose: function (newVal, oldVal) {
-      this.proDetail.pro_inventory = parseInt(this.countAll) - parseInt(this.countChoose);
+      this.proDetail.pro_inventory =
+        parseInt(this.countAll) - parseInt(this.countChoose);
 
-      if (parseInt(this.countAll) - parseInt(this.countChoose) < parseInt(this.leastCount)) {
+      if (
+        parseInt(this.countAll) - parseInt(this.countChoose) <
+        parseInt(this.leastCount)
+      ) {
         this.proDetail.pro_inventory = 0;
         this.countChoose = this.leastCount;
       } else if (this.countChoose == "" && parseInt(this.countChoose) === 0) {
@@ -408,12 +452,29 @@ export default {
     },
   },
   methods: {
+    // 获取关注的超市
+    getSuperAttentionEntFun(site) {
+      getSuperAttentionEnt().then((res) => {
+        if (res.data.length > 0) {
+          // 获取关注超市地址
+          searchSuperMarketList({
+            where: res.data[0].mem_attention_item.ent_name,
+            site: site.province + "/" + site.city + "/" + "/" + site.district,
+          }).then((data) => {
+            if (data.data.length > 0) {
+              window.localStorage.serviceSiteResult = JSON.stringify(
+                data.data[0]
+              );
+            }
+          });
+        }
+      });
+    },
     //产品参数
     getParmeters() {
-      productAttr(this.proDetail.proid)
-      .then((res) => {
+      productAttr(this.proDetail.proid).then((res) => {
         this.parmaeterData = res.data;
-      })
+      });
     },
     //限制输入数量
     countNum() {
@@ -432,8 +493,8 @@ export default {
       }
     },
     toAllCommet() {
-      if(this.memberCommentList.length <= 0){
-        Toast('商品评论为空,快去下单评论吧。');
+      if (this.memberCommentList.length <= 0) {
+        Toast("商品评论为空,快去下单评论吧。");
         return false;
       }
       this.$router.push({
@@ -520,10 +581,10 @@ export default {
           this.countAll = this.proDetail.pro_inventory;
         }
 
-        if(res.data[0].pro_carousel_id != "") {
+        if (res.data[0].pro_carousel_id != "") {
           this.proDetailL = res.data[0].pro_carousel.length;
         }
-        
+
         this.price = parseFloat(res.data[0].pro_price).toFixed(2);
         if (res.data[0].is_collect == 1) {
           this.collctionState = true;
@@ -555,44 +616,28 @@ export default {
     },
     // 去企业首页
     userHandle() {
-      var obj = {
-        entid: this.proDetail.entid,
-        entfid: 0,
-      };
-
-      var res = this.$Utils.demoRequest(JSON.stringify(obj));
 
       this.$router.push({
         path: "/merchants",
-        query: { res: res },
+        query: { entid: this.proDetail.entid },
       });
     },
     goHandle(item) {
-      
       if (item.mmt_id === 3) {
-
-        if(this.$route.path == "/merchants/produce"){
-          Toast('您已经在店铺内了');
+        if (this.$route.path == "/merchants/produce") {
+          Toast("您已经在店铺内了");
           return;
         }
 
         this.setMerchant(this.$route.path);
 
-        var obj = {
-          entid: item.rel_id,
-          entfid: 0,
-        };
-
-        var res = this.$Utils.demoRequest(JSON.stringify(obj));
-
         this.$router.push({
           path: "/merchants",
-          query: { res: res },
+          query: { entid: item.rel_id },
         });
       } else {
-
-        if(this.$route.path == `/user/page/${item.mem_id}`){
-          Toast('您已经在自己的主页了');
+        if (this.$route.path == `/user/page/${item.mem_id}`) {
+          Toast("您已经在自己的主页了");
           return;
         }
 
@@ -604,8 +649,8 @@ export default {
     },
     // 显示下单操作
     buyPro(pro_id) {
-      if(!this.address.city) {
-        Toast("请点击红色区域添加地址")
+      if (!this.address.city) {
+        Toast("请点击红色区域添加地址");
         this.isSiteNull = true;
         return;
       }
@@ -636,7 +681,7 @@ export default {
         this.countChoose = parseInt(this.countChoose);
         this.proDetail.pro_inventory++;
       } else {
-        Toast(`此商品${this.leastCount}件起售`)
+        Toast(`此商品起售数量为${this.leastCount}`);
       }
     },
     // 关闭面板
@@ -696,14 +741,12 @@ export default {
       //state   1 收藏   0 取消
       memberCollect(this.proDetail.proid, 2, state)
         .then((res) => {
-          
           if (res.code == 100 && state == 1) {
             this.collctionState = true;
           } else if (res.code == 100 && state == 0) {
             this.collctionState = false;
           }
           Toast(res.msg);
-          
         })
         .catch((res) => {
           Toast("请求出错");
@@ -712,49 +755,46 @@ export default {
     },
     getAddress() {
       shippingAddress()
-      .then((res) => {
-        let addressList = res.data;
-        for(let i = 0; i < addressList.length; i++) {
-          if(addressList[i].by_default == 1) {
-            this.address = addressList[i];
-            break;
+        .then((res) => {
+          let addressList = res.data;
+          for (let i = 0; i < addressList.length; i++) {
+            if (addressList[i].by_default == 1) {
+              this.address = addressList[i];
+              this.getSuperAttentionEntFun(addressList[i]);
+              break;
+            }
           }
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     toEditAddress() {
-      this.$router.push({path:'/myaddress',query: { add: 1 } })
+      this.$router.push({ path: "/myaddress", query: { add: 1 } });
     },
     PacmanModify() {
-      
       const ua = window.navigator.userAgent.toLowerCase();
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        let linkInfo =
+          "http://" +
+          window.location.host +
+          "/#/commdityPay?res=" +
+          this.$route.query.res +
+          "&forward=1";
 
-              let linkInfo =
-                "http://" +
-                window.location.host +
-                "/#/commdityPay?res=" +
-                this.$route.query.res +
-                "&forward=1";
+        let form = {
+          title: this.proDetail.pro_name,
+          link: linkInfo,
+          imgUrl: this.proDetail.pro_thumbnail,
+          desc: this.proDetail.pro_introduction,
+        };
 
-              let form = {
-                title: this.proDetail.pro_name,
-                link: linkInfo,
-                imgUrl: this.proDetail.pro_thumbnail,
-                desc: this.proDetail.pro_introduction,
-              };
-
-            wxJSSDK(form);
-            this.forwardMark = true;
-            Toast("分享");
-            setTimeout(() => {
-              this.forwardMark = false;
-            }, 4000);
-          
-       
+        wxJSSDK(form);
+        this.forwardMark = true;
+        Toast("分享");
+        setTimeout(() => {
+          this.forwardMark = false;
+        }, 4000);
       } else {
         Toast("请在微信中分享");
       }
@@ -763,7 +803,6 @@ export default {
   mounted() {
     document.addEventListener("scroll", this.scroll);
     this.getAddress();
-
   },
 };
 </script>
@@ -775,7 +814,7 @@ export default {
   .parameter-title {
     font-size: 18px;
     width: 100%;
-    color: #393A3C;
+    color: #393a3c;
     height: 50px;
     line-height: 50px;
     vertical-align: middle;
@@ -838,7 +877,7 @@ export default {
         top: 50%;
         width: 15px;
         height: 15px;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
       }
     }
     .function {
@@ -849,7 +888,7 @@ export default {
     }
     .back {
       img {
-        transform: translate(-55%,-50%);
+        transform: translate(-55%, -50%);
       }
     }
   }
@@ -1063,7 +1102,7 @@ export default {
   .shop {
     background-color: #ffffff;
     margin-top: 0.2rem;
-    border-top: 1px solid #E1E6E0;
+    border-top: 1px solid #e1e6e0;
     .p1 {
       color: #282828;
       font-size: 15px;
@@ -1116,18 +1155,17 @@ export default {
         width: 0.8rem;
         height: 0.8rem;
         border-radius: 50%;
-        
       }
       div {
-          display: flex;
-          align-items: center;
-          margin-left: 15px;
+        display: flex;
+        align-items: center;
+        margin-left: 15px;
       }
       span {
-          color: #606060;
-          font-size: 0.4rem;
-          line-height: 0.8rem;
-          padding-left: 10px;
+        color: #606060;
+        font-size: 0.4rem;
+        line-height: 0.8rem;
+        padding-left: 10px;
       }
       .i2 {
         // position: absolute;
@@ -1257,8 +1295,8 @@ export default {
     margin-top: 0.2rem;
     align-items: center;
     background-color: #fff;
-    border-bottom: 1px solid #E1E6E0;
-    border-top: 1px solid #E1E6E0;
+    border-bottom: 1px solid #e1e6e0;
+    border-top: 1px solid #e1e6e0;
     span {
       margin: 0 10px;
       color: #656565;
@@ -1277,8 +1315,8 @@ export default {
     width: 100%;
     align-items: center;
     background-color: #fff;
-    border-bottom: 1px solid #E1E6E0;
-    border-top: 1px solid #E1E6E0;
+    border-bottom: 1px solid #e1e6e0;
+    border-top: 1px solid #e1e6e0;
     span {
       margin: 0 10px;
       color: #656565;
@@ -1298,8 +1336,8 @@ export default {
     margin-bottom: 0.2rem;
     align-items: center;
     background-color: #fff;
-    border-top: 1px solid #E1E6E0;
-    border-bottom: 1px solid #E1E6E0;
+    border-top: 1px solid #e1e6e0;
+    border-bottom: 1px solid #e1e6e0;
     span {
       margin: 0 10px;
       color: #656565;
@@ -1310,7 +1348,7 @@ export default {
       display: inline-block;
       flex: 1;
       .tags {
-        background-color: #E53240;
+        background-color: #e53240;
         padding: 2px 4px;
         margin: 0 5px;
         font-size: 12px;
@@ -1323,7 +1361,7 @@ export default {
       margin: 0;
     }
   }
-   .share-tip {
+  .share-tip {
     position: fixed;
     top: 0;
     left: 0;
@@ -1358,7 +1396,7 @@ export default {
   }
   .html-class {
     width: 100vw;
-    /deep/ h2{
+    /deep/ h2 {
       img {
         width: 100%;
       }

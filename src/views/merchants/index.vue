@@ -1,5 +1,9 @@
 <template>
-  <div class="merchantsHomeClass" ref="scroll-wrapper" @scroll="remember($event)">
+  <div
+    class="merchantsHomeClass"
+    ref="scroll-wrapper"
+    @scroll="remember($event)"
+  >
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <div :class="[SkShow ? 'container' : 'containers']" v-if="flag">
         <transition transition name="van-slide-down">
@@ -149,9 +153,9 @@
       </div>
     </transition>
     <transition name="van-fade">
-        <div class="go-top" v-show="btnShow" @click="goTop">
-            <van-icon name="arrow-up" />
-        </div>
+      <div class="go-top" v-show="btnShow" @click="goTop">
+        <van-icon name="arrow-up" />
+      </div>
     </transition>
   </div>
 </template>
@@ -228,18 +232,17 @@ export default {
     };
   },
   watch: {
-    'isActive':function (newVal,oldVal) {
-
+    isActive: function (newVal, oldVal) {
       let obj = {
         path: this.$route.path,
-        active: newVal
-      }
+        active: newVal,
+      };
 
-      this.$store.commit('setStoreTab',obj);
+      this.$store.commit("setStoreTab", obj);
     },
     searchValue(val) {
-      this.$refs.product[0].getEntProduct(val)
-    }
+      this.$refs.product[0].getEntProduct(val);
+    },
   },
   created() {
     this.getPageData();
@@ -250,7 +253,7 @@ export default {
     //保存tab标签状态
     keepTabState() {
       let obj = this.$store.state.watchStoreTab;
-      if(this.$route.path == obj.path) {
+      if (this.$route.path == obj.path) {
         this.isActive = obj.active;
       }
     },
@@ -351,16 +354,22 @@ export default {
     remember(e) {
       this.SkShow = !e.isFixed;
       if (e.target.scrollTop <= 150) {
-          this.btnShow = false;
+        this.btnShow = false;
       }
       if (e.target.scrollTop >= 400) {
-          this.btnShow = true;
+        this.btnShow = true;
       }
     },
     // 获取企业信息
     getPageData() {
-      var id = JSON.parse(this.$Utils.demoResponse(this.$route.query.res));
-      getEnterpriseHomepage(id.entid).then((res) => {
+      if (this.$route.query.entid) {
+        var id = this.$route.query.entid;
+      } else {
+        var id = JSON.parse(this.$Utils.demoResponse(this.$route.query.res))
+          .entid;
+      }
+
+      getEnterpriseHomepage(id).then((res) => {
         setTimeout(function () {
           Toast.clear();
         }, 200);
@@ -370,9 +379,9 @@ export default {
           this.tabbarList = res.data.ent_features;
 
           //删除全部标签
-          for(let i = 0; i < this.tabbarList.length; i++) {
-            if(this.tabbarList[i].class_name == '全部') {
-              this.tabbarList.splice(i,1);
+          for (let i = 0; i < this.tabbarList.length; i++) {
+            if (this.tabbarList[i].class_name == "全部") {
+              this.tabbarList.splice(i, 1);
               break;
             }
           }
@@ -401,8 +410,12 @@ export default {
     },
     //获取奖品列表
     getPrizeList() {
-      let id = JSON.parse(this.$Utils.demoResponse(this.$route.query.res))
-        .entid;
+      if(this.$route.query.entid) {
+        var id = this.$route.query.entid;
+      }else{
+        var id = JSON.parse(this.$Utils.demoResponse(this.$route.query.res)).entid;
+      }
+
       RotaryDraw(id).then((res) => {
         if (res.code == 100) {
           this.aid = res.data.aid;
@@ -426,35 +439,33 @@ export default {
       });
     },
     // 回到顶部
-        goTop() {
+    goTop() {
+      const dom = this.$refs["scroll-wrapper"];
 
-                const dom = this.$refs["scroll-wrapper"];
-                
-                let i = 0;
-                const timeTop = setInterval(() => {
-                dom.scrollTop = this.easeInOutQuad(
-                    10 * i,
-                    dom.scrollTop,
-                    -dom.scrollTop,
-                    500
-                );
-                // dom.scrollTop -= 50
-                if (dom.scrollTop <= 0) {
-                    clearInterval(timeTop);
-                }
-                i++;
-                }, 30);
-            
-        },
-        easeInOutQuad(t, b, c, d) {
-            // 判断当前时间是否总在总时间的一半以内，是的话执行缓入函数，否则的话执行缓出函数
-            if ((t /= d / 2) < 1) {
-                return (c / 2) * t * t + b;
-            } else {
-                // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
-                return (-c / 2) * (--t * (t - 2) - 1) + b;
-            }
-        },
+      let i = 0;
+      const timeTop = setInterval(() => {
+        dom.scrollTop = this.easeInOutQuad(
+          10 * i,
+          dom.scrollTop,
+          -dom.scrollTop,
+          500
+        );
+        // dom.scrollTop -= 50
+        if (dom.scrollTop <= 0) {
+          clearInterval(timeTop);
+        }
+        i++;
+      }, 30);
+    },
+    easeInOutQuad(t, b, c, d) {
+      // 判断当前时间是否总在总时间的一半以内，是的话执行缓入函数，否则的话执行缓出函数
+      if ((t /= d / 2) < 1) {
+        return (c / 2) * t * t + b;
+      } else {
+        // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
+        return (-c / 2) * (--t * (t - 2) - 1) + b;
+      }
+    },
   },
   mounted: function () {},
 };
@@ -465,22 +476,22 @@ export default {
   height: 100vh;
   overflow: scroll;
   .go-top {
-      position: fixed;
-      width: 40px;
-      height: 40px;
-      border-radius: 100%;
-      background: #fff;
-      box-shadow: 0 0 2px #eee;
-      right: 17px;
-      bottom: 70px;
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 23px;
-      -moz-box-shadow: 0px 0px 3px #333333;
-      -webkit-box-shadow: 0px 0px 3px #333333;
-      box-shadow: 0px 0px 3px #333333;
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background: #fff;
+    box-shadow: 0 0 2px #eee;
+    right: 17px;
+    bottom: 70px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    -moz-box-shadow: 0px 0px 3px #333333;
+    -webkit-box-shadow: 0px 0px 3px #333333;
+    box-shadow: 0px 0px 3px #333333;
   }
   .slide-fade-enter-active {
     transition: all 0.5s ease;
